@@ -1,0 +1,12 @@
+<?php
+namespace  DummyNamespace; // @todo: 这里是要生成类的命名空间
+
+use App\Http\Controllers\Controller;
+
+class DummyClass extends Controller {  // @todo DummyClass 这里是要生成的类名字
+
+	public function __construct($value = '') { // 这里就是要生成的类文件的通用代码了
+		# code...
+	}
+
+}
