@@ -24,7 +24,6 @@ $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($ro
 });
 
 
-
 $router->group(['namespace' => 'Auth', 'prefix' => 'auth', 'middleware' => 'auth'], function () use ($router) {
     $router->get('create', 'AuthController@create');
 });
@@ -36,6 +35,8 @@ $router->group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'auth
     $router->post('list', 'UserController@list');
     $router->post('del', 'UserController@del');
 });
+
+// Feedback
 
 
 $router->group(['namespace' => 'Feedback', 'prefix' => 'feedback'], function () use ($router) {
