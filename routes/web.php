@@ -36,3 +36,8 @@ $router->group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'auth
     $router->post('list', 'UserController@list');
     $router->post('del', 'UserController@del');
 });
+
+
+$router->group(['namespace' => 'Feedback', 'prefix' => 'feedback'], function () use ($router) {
+    $router->post('save', 'FeedbackController@save');
+});
