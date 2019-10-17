@@ -2,6 +2,5 @@
 /.idea
 Homestead.json
 Homestead.yaml
-.env
 public/public/files/
 public/ueditor/php/upload/
