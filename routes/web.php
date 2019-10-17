@@ -14,8 +14,7 @@
 use Carbon\Carbon;
 
 $router->get('/', function () use ($router) {
-    return phpinfo();
-    // return $router->app->version();
+    return $router->app->version();
 });
 
 $router->get('/test', 'TestController@test');
