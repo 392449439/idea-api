@@ -42,3 +42,9 @@ $router->group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'auth
 $router->group(['namespace' => 'Feedback', 'prefix' => 'feedback'], function () use ($router) {
     $router->post('save', 'FeedbackController@save');
 });
+
+// job
+$router->group(['namespace' => 'Job', 'prefix' => 'official/job'], function () use ($router) {
+    $router->post('list', 'JobController@list');
+    $router->post('info', 'JobController@info');
+});
