@@ -69,4 +69,19 @@ class FeedbackController extends Controller
 		];
 	}
 
+	// 删除接口
+	public function del(Request $request)
+	{
+
+		$result = DB::table('feedback') //定义表
+			->where('id', $request->input('id')) //前台传过来的id
+			->delete();
+
+		return [
+			'code' => $result ? 1 : -1,
+			'msg' => $result ? 'success' : 'error',
+			'data' => $result,
+		];
+	}
+
 }

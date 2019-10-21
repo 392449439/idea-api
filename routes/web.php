@@ -62,6 +62,7 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin'], function () use ($
     $router->group(['namespace' => 'Feedback', 'prefix' => 'feedback'], function () use ($router) {
         $router->post('list', 'FeedbackController@list');
         $router->post('info', 'FeedbackController@info');
+        $router->post('del', 'FeedbackController@del');
     });
 });
 
