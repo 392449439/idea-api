@@ -43,8 +43,18 @@ $router->group(['namespace' => 'Feedback', 'prefix' => 'feedback'], function () 
     $router->post('save', 'FeedbackController@save');
 });
 
-// job
-$router->group(['namespace' => 'Job', 'prefix' => 'official/job'], function () use ($router) {
-    $router->post('list', 'JobController@list');
-    $router->post('info', 'JobController@info');
+// 官网的路由
+$router->group(['namespace' => 'Official', 'prefix' => 'official'], function () use ($router) {
+    $router->group(['namespace' => 'Job', 'prefix' => 'job'], function () use ($router) {
+        $router->post('list', 'JobController@list');
+        $router->post('info', 'JobController@info');
+    });
+});
+
+// 官网后台管理
+$router->group(['namespace' => 'Admin', 'prefix' => 'admin'], function () use ($router) {
+    $router->group(['namespace' => 'Job', 'prefix' => 'job'], function () use ($router) {
+        $router->post('list', 'JobController@list');
+        $router->post('info', 'JobController@info');
+    });
 });
