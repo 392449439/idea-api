@@ -56,5 +56,12 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin'], function () use ($
     $router->group(['namespace' => 'Job', 'prefix' => 'job'], function () use ($router) {
         $router->post('list', 'JobController@list');
         $router->post('info', 'JobController@info');
+        $router->post('save', 'JobController@save');
+        $router->post('del', 'JobController@del');
+    });
+    $router->group(['namespace' => 'Feedback', 'prefix' => 'feedback'], function () use ($router) {
+        $router->post('list', 'FeedbackController@list');
+        $router->post('info', 'FeedbackController@info');
     });
 });
+
