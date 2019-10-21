@@ -14,16 +14,21 @@ class JobController extends Controller
 	public function list(Request $request)
 	{
 
-		$result = DB::table('job') //定义表
-			->orderBy('add_time', 'desc') //排序
-			->select(['id', 'name', 'type', 'add_time']) //想要查询的字段
-			->get(); //取列表
+		$DB = DB::table('job') //定义表
+			->orderBy('add_time', 'desc'); //排序
 
+		$total = $DB->count() + 0;
+
+		$DB->offset(($request->input('page', 1) - 1) * $request->input('page_size', 10))
+			->limit($request->input('page_size', 10));
+		
+		$result = $DB->get();
 
 		return [
 			'code' => $result ? 1 : -1,
 			'msg' => $result ? 'success' : 'error',
 			'data' => $result,
+			'total' => $total,
 		];
 	}
 
