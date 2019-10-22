@@ -64,5 +64,11 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin'], function () use ($
         $router->post('info', 'FeedbackController@info');
         $router->post('del', 'FeedbackController@del');
     });
+    $router->group(['namespace' => 'Perpre', 'prefix' => 'perpre'], function () use ($router) {
+        $router->post('save', 'PerpreController@save');
+        $router->post('info' , 'PerpreController@info');
+        $router->post('list' , 'PerpreController@list');
+        $router->post('del' , 'PerpreController@del');
+    });
 });
 
