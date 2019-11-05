@@ -17,13 +17,13 @@ class GoodsController extends Controller
 		# code...
 	}
 
-	public function list(Request $request) 
+	public function list(Request $request)
 	{
 
 		$DB = DB::table('goods')->orderBy('add_time', 'desc');
 
 		if ($request->filled('class_id')) {
-			$DB->where('class_id',$request->input('class_id'));
+			$DB->where('class_id', $request->input('class_id'));
 		}
 
 		$result = $DB->get();
@@ -33,7 +33,5 @@ class GoodsController extends Controller
 			'msg' => 'success',
 			'data' => $result,
 		]);
-
 	}
-
 }
