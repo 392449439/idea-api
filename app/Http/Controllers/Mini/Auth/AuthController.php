@@ -98,4 +98,37 @@ class AuthController extends Controller
 			'jwt' => $jwt,
 		];
 	}
+
+	public function list(Request $request) 
+	{
+
+		$DB = DB::table('goods_class') //定义表
+			->orderBy('add_time', 'desc'); //排序
+		
+		$result = $DB->get();
+
+		return [
+			'code' => $result ? 1 : -1,
+			'msg' => $result ? 'success' : 'error',
+			'data' => $result,
+		];
+
+	}
+
+	public function goodsList(Request $request) 
+	{
+
+		$DB = DB::table('goods_class') //定义表
+			->orderBy('add_time', 'desc'); //排序
+		
+		$result = $DB->get();
+
+		return [
+			'code' => $result ? 1 : -1,
+			'msg' => $result ? 'success' : 'error',
+			'data' => $result,
+		];
+
+	}
+
 }

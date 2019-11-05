@@ -78,6 +78,12 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini'], function () use ($ro
         $router->post('openid', 'AuthController@openid');
         $router->post('login', 'AuthController@login');
     });
+    $router->group(['namespace' => 'Goods', 'prefix' => 'goods'], function () use ($router) {
+        $router->post('list', 'GoodsController@list');
+    });
+    $router->group(['namespace' => 'Classi', 'prefix' => 'class'], function () use ($router) {
+        $router->post('list', 'ClassiController@list');
+    });
     $router->group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'miniauth'], function () use ($router) {
         $router->post('save', 'UserController@save');
         $router->post('info', 'UserController@info');
