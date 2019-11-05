@@ -71,3 +71,15 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin'], function () use ($
         $router->post('del', 'PerpreController@del');
     });
 });
+
+
+$router->group(['namespace' => 'Mini', 'prefix' => 'mini'], function () use ($router) {
+    $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($router) {
+        $router->post('openid', 'AuthController@openid');
+        $router->post('login', 'AuthController@login');
+    });
+    $router->group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'miniauth'], function () use ($router) {
+        $router->post('save', 'UserController@save');
+        $router->post('info', 'UserController@info');
+    });
+});
