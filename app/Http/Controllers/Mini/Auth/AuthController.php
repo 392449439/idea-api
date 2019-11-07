@@ -41,15 +41,14 @@ class AuthController extends Controller
 	public function openid(Request $request)
 	{
 
-		$code = $request->input('code');
-
-
-		// $app = Factory::miniProgram([
-		// 	'app_id' => 'wx28be07c96a9208a4',
-		// 	'secret' => '493ab22968bfda2795e1751aa9c9bc5e',
-		// 	'response_type' => 'array',
-		// ]);
-		// $res = $app->auth->session($code);
+		$app = Factory::miniProgram([
+			'app_id' => 'wxd2b47e26632f45cc',
+			'secret' => '0e45b998ce388ebbbf7a50d81a7865b6',
+			'response_type' => 'array',
+		]);
+		$res = $app->auth->session($request->input('code'));
+		$decryptedData = $app->encryptor->decryptData($res['session_key'], $request->input('iv'), $request->input('encryptedData'));
+		return $decryptedData;
 
 		// openid: "oraT74g14WCH6eKSv4_brTr4fmt4"
 		// session_key: "yCBnE2wBcfa53JmdhoXLxg=="
@@ -99,12 +98,12 @@ class AuthController extends Controller
 		];
 	}
 
-	public function list(Request $request) 
+	public function list(Request $request)
 	{
 
 		$DB = DB::table('goods_class') //定义表
 			->orderBy('add_time', 'desc'); //排序
-		
+
 		$result = $DB->get();
 
 		return [
@@ -112,15 +111,14 @@ class AuthController extends Controller
 			'msg' => $result ? 'success' : 'error',
 			'data' => $result,
 		];
-
 	}
 
-	public function goodsList(Request $request) 
+	public function goodsList(Request $request)
 	{
 
 		$DB = DB::table('goods_class') //定义表
 			->orderBy('add_time', 'desc'); //排序
-		
+
 		$result = $DB->get();
 
 		return [
@@ -128,7 +126,5 @@ class AuthController extends Controller
 			'msg' => $result ? 'success' : 'error',
 			'data' => $result,
 		];
-
 	}
-
 }
