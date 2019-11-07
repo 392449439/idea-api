@@ -42,8 +42,8 @@ class AuthController extends Controller
 	{
 
 		$app = Factory::miniProgram([
-			'app_id' => 'wxd2b47e26632f45cc',
-			'secret' => '0e45b998ce388ebbbf7a50d81a7865b6',
+			'app_id' => 'wx9f4a9bdc95bcc3d7',
+			'secret' => '7d073c85829782b9d690b40e81f12bb5',
 			'response_type' => 'array',
 		]);
 		$res = $app->auth->session($request->input('code'));
