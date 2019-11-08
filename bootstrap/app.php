@@ -103,6 +103,7 @@ $app->middleware([
 
 $app->routeMiddleware([
     'auth' => \App\Http\Middleware\AuthMiddleware::class,
+    'core' => \App\Http\Middleware\CoreMiddleware::class,
 ]);
 
 return $app;

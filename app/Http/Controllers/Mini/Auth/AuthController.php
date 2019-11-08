@@ -76,14 +76,11 @@ class AuthController extends Controller
 	public function login(Request $request)
 	{
 
-		$App = DB::table('app');
-
-		$appData = $App->where('app_id', $request->input("app_id"))->first();
 		// 'wx9f4a9bdc95bcc3d7'
 		// 7d073c85829782b9d690b40e81f12bb5
 		$app = Factory::miniProgram([
-			'app_id' => $appData->wx_appid,
-			'secret' =>  $appData->wx_secret,
+			'app_id' => $request->appInfo->wx_appid,
+			'secret' =>  $request->appInfo->wx_secret,
 			'response_type' => 'array',
 		]);
 		$res = $app->auth->session($request->input('code'));
@@ -130,36 +127,6 @@ class AuthController extends Controller
 			"msg" => "success",
 			"data" => $result,
 			'jwt' => $jwt,
-		];
-	}
-
-	public function list(Request $request)
-	{
-
-		$DB = DB::table('goods_class') //定义表
-			->orderBy('add_time', 'desc'); //排序
-
-		$result = $DB->get();
-
-		return [
-			'code' => $result ? 1 : -1,
-			'msg' => $result ? 'success' : 'error',
-			'data' => $result,
-		];
-	}
-
-	public function goodsList(Request $request)
-	{
-
-		$DB = DB::table('goods_class') //定义表
-			->orderBy('add_time', 'desc'); //排序
-
-		$result = $DB->get();
-
-		return [
-			'code' => $result ? 1 : -1,
-			'msg' => $result ? 'success' : 'error',
-			'data' => $result,
 		];
 	}
 }

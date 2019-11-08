@@ -17,7 +17,7 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-// $router->get('/test', 'TestController@test');
+$router->get('/test', 'TestController@test');
 
 $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($router) {
     $router->post('login', 'AuthController@login');
@@ -73,7 +73,7 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin'], function () use ($
 });
 
 
-$router->group(['namespace' => 'Mini', 'prefix' => 'mini'], function () use ($router) {
+$router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core'], function () use ($router) {
     $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($router) {
         $router->post('openid', 'AuthController@openid');
         $router->post('login', 'AuthController@login');
