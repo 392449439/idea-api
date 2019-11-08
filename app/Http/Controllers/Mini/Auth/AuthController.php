@@ -102,7 +102,7 @@ class AuthController extends Controller
 
 		$DB = DB::table('user');
 
-		$result = $DB->where('openid', $openid)->first();
+		$result = $DB->where('unionId', $unionId)->first();
 
 		if (!$result) {
 			// 没有，创建
@@ -114,7 +114,7 @@ class AuthController extends Controller
 				"head_img" =>  $decryptedData['avatarUrl'],
 
 			]);
-			$result = $DB->where('openid', $request->input('openid'))->first();
+			$result = $DB->where('unionId', $unionId)->first();
 		}
 
 
