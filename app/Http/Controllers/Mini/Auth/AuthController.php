@@ -102,7 +102,7 @@ class AuthController extends Controller
 
 		$DB = DB::table('user');
 
-		$result = $DB->where('openid', $request->input('openid'))->first();
+		$result = $DB->where('openid', $openid)->first();
 
 		if (!$result) {
 			// 没有，创建
