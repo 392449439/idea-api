@@ -84,6 +84,7 @@ class AuthController extends Controller
 		$res = $app->auth->session($request->input('code'));
 		$decryptedData = $app->encryptor->decryptData($res['session_key'], $request->input('iv'), $request->input('encryptedData'));
 		$openid = $decryptedData['openId'];
+		$unionId = $decryptedData['unionId'];
 
 
 		// avatarUrl: "https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLt51Sq1c4aicK3OVMpOazFlDzfTe5yJUP1PDpKyCDyJeBiauzAlIsBMKUqfSRuud2XKWJUPJTickVtw/132"
@@ -107,6 +108,7 @@ class AuthController extends Controller
 			// 没有，创建
 			$DB->insert([
 				"openid" => $openid,
+				"unionId" => $unionId,
 				"wx_info" => json_encode($decryptedData),
 				"name" => $decryptedData['nickName'],
 				"head_img" =>  $decryptedData['avatarUrl'],
