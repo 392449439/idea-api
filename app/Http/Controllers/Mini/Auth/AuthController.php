@@ -47,13 +47,25 @@ class AuthController extends Controller
 			'response_type' => 'array',
 		]);
 		$res = $app->auth->session($request->input('code'));
-		// return $res;
 		$decryptedData = $app->encryptor->decryptData($res['session_key'], $request->input('iv'), $request->input('encryptedData'));
+
+
+		// avatarUrl: "https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLt51Sq1c4aicK3OVMpOazFlDzfTe5yJUP1PDpKyCDyJeBiauzAlIsBMKUqfSRuud2XKWJUPJTickVtw/132"
+		// city: "Xuhui"
+		// country: "China"
+		// gender: 1
+		// language: "zh_CN"
+		// nickName: "敲代码的"
+		// openId: "oj92Q4vVfs8FJVrnUxIDT1JW-Tas"
+		// province: "Shanghai"
+		// unionId: "oMJGssz88vjRihjnyBVI9CMCifkg"
+		// watermark:
+		// 			appid: "wx9f4a9bdc95bcc3d7"
+		// 			timestamp: 1573177103
+
+
+
 		return $decryptedData;
-
-		// openid: "oraT74g14WCH6eKSv4_brTr4fmt4"
-		// session_key: "yCBnE2wBcfa53JmdhoXLxg=="
-
 		return [
 			"code" => 1,
 			"msg" => "success",
@@ -63,33 +75,48 @@ class AuthController extends Controller
 
 	public function login(Request $request)
 	{
-		if (!$request->filled('openid')) {
-			return [
-				"code" => -1,
-				"msg" => "openid 不能为空",
-				"data" => null
-			];
-		}
+
+		$app = Factory::miniProgram([
+			'app_id' => 'wx9f4a9bdc95bcc3d7',
+			'secret' => '7d073c85829782b9d690b40e81f12bb5',
+			'response_type' => 'array',
+		]);
+		$res = $app->auth->session($request->input('code'));
+		$decryptedData = $app->encryptor->decryptData($res['session_key'], $request->input('iv'), $request->input('encryptedData'));
+		$openid = $decryptedData['openId'];
 
 
-		$openid = $request->input('openid');
+		// avatarUrl: "https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLt51Sq1c4aicK3OVMpOazFlDzfTe5yJUP1PDpKyCDyJeBiauzAlIsBMKUqfSRuud2XKWJUPJTickVtw/132"
+		// city: "Xuhui"
+		// country: "China"
+		// gender: 1
+		// language: "zh_CN"
+		// nickName: "敲代码的"
+		// openId: "oj92Q4vVfs8FJVrnUxIDT1JW-Tas"
+		// province: "Shanghai"
+		// unionId: "oMJGssz88vjRihjnyBVI9CMCifkg"
+		// watermark:
+		// 			appid: "wx9f4a9bdc95bcc3d7"
+		// 			timestamp: 1573177103
+
 		$DB = DB::table('user');
 
 		$result = $DB->where('openid', $request->input('openid'))->first();
 
-		if ($result) {
-			// 已有
-
-		} else {
+		if (!$result) {
 			// 没有，创建
-			$DB->insert(["openid" => $openid]);
+			$DB->insert([
+				"openid" => $openid,
+				"wx_info" => json_encode($decryptedData),
+				"name" => $decryptedData['nickName'],
+				"head_img" =>  $decryptedData['avatarUrl'],
+
+			]);
 			$result = $DB->where('openid', $request->input('openid'))->first();
 		}
 
 
 		$jwt = encrypt(json_encode($result));
-
-
 
 		return [
 			"code" => 1,
