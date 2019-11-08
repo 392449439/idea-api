@@ -76,9 +76,14 @@ class AuthController extends Controller
 	public function login(Request $request)
 	{
 
+		$App = DB::table('app');
+
+		$appData = $App->where('app_id', $request->input("app_id"))->first();
+		// 'wx9f4a9bdc95bcc3d7'
+		// 7d073c85829782b9d690b40e81f12bb5
 		$app = Factory::miniProgram([
-			'app_id' => 'wx9f4a9bdc95bcc3d7',
-			'secret' => '7d073c85829782b9d690b40e81f12bb5',
+			'app_id' => $appData->wx_appid,
+			'secret' =>  $appData->wx_secret,
 			'response_type' => 'array',
 		]);
 		$res = $app->auth->session($request->input('code'));
