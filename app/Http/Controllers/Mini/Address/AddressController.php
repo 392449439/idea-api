@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class AddressController extends Controller
 {
 
-	// 图文列表
+	// 地址列表
 	public function list(Request $request)
 	{
 
@@ -26,7 +26,7 @@ class AddressController extends Controller
 		];
 	}
 
-	// 图文详情
+	// 地址详情
 	public function info(Request $request)
 	{
 
