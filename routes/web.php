@@ -17,7 +17,10 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->get('/test', 'TestController@test');
+$router->group(['middleware' => 'core'], function () use ($router) {
+    $router->get('test', 'TestController@test');
+    $router->post('test', 'TestController@test');
+});
 
 $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($router) {
     $router->post('login', 'AuthController@login');

@@ -10,8 +10,10 @@ class AuthMiddleware
 
     public function handle(Request $request, \Closure $next)
     {
-        // $request
-        $jwt = $request->header('Authorization');
+
+
+        $jwt =  $request->config['jwt'];
+
         if ($jwt == 'panel') {
             return $next($request);
         } else {

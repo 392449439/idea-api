@@ -15,6 +15,7 @@ class TestController extends Controller
 
     public function test(Request $request)
     {
+
         $random = new Random();
         $data = [];
         for ($i = 0; $i < 10; $i++) {

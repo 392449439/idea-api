@@ -12,7 +12,20 @@ class CoreMiddleware
     public function handle(Request $request, \Closure $next)
     {
 
-        if (!$request->filled('app_id')) {
+        // $request
+        $heads = $request->header('Authorization');
+        $heads  = explode(";", $heads);
+        $config = [];
+        collect($heads)->each(function ($el) use (&$config) {
+            $item = explode("=", $el);
+            $config[$item[0]] = $item[1];
+        });
+
+
+        $request->config = $config;
+
+
+        if (!$request->config['app_id']) {
             return response()->json([
                 "code" => -9000,
                 "msg" => '没有提供app_id',
