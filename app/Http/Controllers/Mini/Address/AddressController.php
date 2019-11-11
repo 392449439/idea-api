@@ -74,18 +74,18 @@ class AddressController extends Controller
 	}
 
 	// 删除接口
-	// public function del(Request $request)
-	// {
+	public function del(Request $request)
+	{
 
-	// 	$result = DB::table('perpre')
-	// 		->where('id', $request->input('id'))
-	// 		->delete();
+		$result = DB::table('address')
+			->where('id', $request->input('id'))
+			->delete();
 
-	// 	return [
-	// 		'code' => $result ? 1 : -1,
-	// 		'msg' => $result ? 'success' : 'error',
-	// 		'data' => $result,
-	// 	];
-	// }
+		return [
+			'code' => $result ? 1 : -1,
+			'msg' => $result ? 'success' : 'error',
+			'data' => $result,
+		];
+	}
 
 }
