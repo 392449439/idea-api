@@ -21,7 +21,6 @@ class CoreMiddleware
             $config[$item[0]] = $item[1];
         });
 
-
         $request->config = $config;
 
         if (!$request->config['app_id']) {
