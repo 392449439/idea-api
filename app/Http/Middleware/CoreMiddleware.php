@@ -24,7 +24,6 @@ class CoreMiddleware
 
         $request->config = $config;
 
-
         if (!$request->config['app_id']) {
             return response()->json([
                 "code" => -9000,
@@ -34,7 +33,7 @@ class CoreMiddleware
         }
 
         $App = DB::table('app');
-        $appInfo = $App->where('app_id', $request->input("app_id"))->first();
+        $appInfo = $App->where('app_id', $request->config['app_id'])->first();
         if (!$appInfo) {
             return response()->json([
                 "code" => -9001,
