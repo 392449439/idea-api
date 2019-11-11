@@ -90,6 +90,7 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
     $router->group(['namespace' => 'Address', 'prefix' => 'address'], function () use ($router) {
         $router->post('save', 'AddressController@save');
         $router->post('list', 'AddressController@list');
+        $router->post('info', 'AddressController@info');
     });
     $router->group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'miniauth'], function () use ($router) {
         $router->post('save', 'UserController@save');

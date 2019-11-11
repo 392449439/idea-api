@@ -27,21 +27,21 @@ class AddressController extends Controller
 	}
 
 	// 图文详情
-	// public function info(Request $request)
-	// {
+	public function info(Request $request)
+	{
 
-	// 	$result = DB::table('perpre')
-	// 		->where('id', $request->input('id'))
-	// 		->first();
+		$result = DB::table('address')
+			->where('id', $request->input('id'))
+			->first();
 
 
-	// 	return [
-	// 		'code' => $result ? 1 : -1,
-	// 		'msg' => $result ? 'success' : 'error',
-	// 		'data' => $result,
-	// 	];
+		return [
+			'code' => $result ? 1 : -1,
+			'msg' => $result ? 'success' : 'error',
+			'data' => $result,
+		];
 
-	// }
+	}
 
 	// 保存或者新增
 	public function save(Request $request)
