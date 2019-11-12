@@ -1,6 +1,6 @@
 <?php
 
-namespace  App\Http\Controllers\Admin\App; // @todo: 这里是要生成类的命名空间
+namespace  App\Http\Controllers\Admin\Domain; // @todo: 这里是要生成类的命名空间
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,14 +8,14 @@ use App\Listeners\Random;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
-class AppController extends Controller
+class DomainController extends Controller
 {
 
 	// 门店列表
 	public function list(Request $request)
 	{
 
-		$DB = DB::table('app') //定义表
+		$DB = DB::table('domain') //定义表
 			->orderBy('add_time', 'desc'); //排序
 
 		$total = $DB->count() + 0;
@@ -37,8 +37,8 @@ class AppController extends Controller
 	public function info(Request $request)
 	{
 
-		$result = DB::table('app')
-			->where('app_id', $request->input('app_id'))
+		$result = DB::table('domain')
+			->where('domain_id', $request->input('domain_id'))
 			->first();
 
 		return [
@@ -53,10 +53,10 @@ class AppController extends Controller
 	public function save(Request $request)
 	{
 
-		if ($request->filled('app_id')) {
+		if ($request->filled('domain_id')) {
 			
-			$result = DB::table('app')
-				->where('app_id', $request->input('app_id'))
+			$result = DB::table('domain')
+				->where('domain_id', $request->input('domain_id'))
 				->update($request->all());
 
 			return response()->json([
@@ -71,9 +71,9 @@ class AppController extends Controller
 
 			$random = new Random();
 
-			$data['app_id'] = $random->getRandom(16, 'A_');
+			$data['domain_id'] = $random->getRandom(16, 'D_');
 			
-			$result = DB::table('app')->insert($data);
+			$result = DB::table('domain')->insert($data);
 
 			return response()->json([
 				'code' => $result ? 1 : -1,
@@ -89,8 +89,8 @@ class AppController extends Controller
 	public function del(Request $request)
 	{
 
-		$result = DB::table('app')
-			->where('app_id', $request->input('app_id'))
+		$result = DB::table('domain')
+			->where('domain_id', $request->input('domain_id'))
 			->delete();
 
 		return [
