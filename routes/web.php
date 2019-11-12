@@ -73,6 +73,18 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin'], function () use ($
         $router->post('list', 'PerpreController@list');
         $router->post('del', 'PerpreController@del');
     });
+    $router->group(['namespace' => 'Store', 'prefix' => 'store'], function () use ($router) {
+        $router->post('save', 'StoreController@save');
+        $router->post('list', 'StoreController@list');
+        $router->post('info', 'StoreController@info');
+        $router->post('del', 'StoreController@del');
+    });
+    $router->group(['namespace' => 'App', 'prefix' => 'app'], function () use ($router) {
+        $router->post('save', 'AppController@save');
+        $router->post('list', 'AppController@list');
+        $router->post('info', 'AppController@info');
+        $router->post('del', 'AppController@del');
+    });
 });
 
 
