@@ -22,6 +22,12 @@ class GoodsController extends Controller
 
 		$DB = DB::table('goods')->orderBy('add_time', 'desc');
 
+		if($request->filled('store_id')) {
+			$DB->where('store_id',$request->input('store_id'));
+		}else {
+			$DB->where('store_id',$request->config['store_id']);
+		}
+
 		if ($request->filled('class_id')) {
 			$DB->where('class_id', $request->input('class_id'));
 		}
@@ -34,4 +40,5 @@ class GoodsController extends Controller
 			'data' => $result,
 		]);
 	}
+
 }
