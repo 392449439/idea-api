@@ -17,7 +17,7 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->group(['middleware' => 'core'], function () use ($router) {
+$router->group([], function () use ($router) {
     $router->get('test', 'TestController@test');
     $router->post('test', 'TestController@test');
 });
@@ -92,6 +92,12 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
         $router->post('list', 'AddressController@list');
         $router->post('info', 'AddressController@info');
         $router->post('del', 'AddressController@del');
+    });
+    $router->group(['namespace' => 'Store', 'prefix' => 'store'], function () use ($router) {
+        $router->post('save', 'StoreController@save');
+        $router->post('list', 'StoreController@list');
+        $router->post('info', 'StoreController@info');
+        $router->post('del', 'StoreController@del');
     });
     $router->group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'miniauth'], function () use ($router) {
         $router->post('save', 'UserController@save');
