@@ -46,8 +46,7 @@ class AddressController extends Controller
 	public function save(Request $request)
 	{
 
-		$data = $request->toArray();
-		if ($data['is_default'] == 1) {
+		if ($request->input('is_default') == 1) {
 			DB::table('address')->update(['is_default' => 0]);
 		}
 
@@ -55,7 +54,7 @@ class AddressController extends Controller
 
 			$result = DB::table('address')
 				->where('id', $request->input('id'))
-				->update($data);
+				->update($request->all());
 
 			return response()->json([
 				'code' => $result >= 0 ? 1 : -1,
@@ -64,10 +63,7 @@ class AddressController extends Controller
 			]);
 		} else {
 
-
-
-
-			$result = DB::table('address')->insert($data);
+			$result = DB::table('address')->insert($request->all());
 
 			return response()->json([
 				'code' => $result ? 1 : -1,
