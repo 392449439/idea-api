@@ -16,8 +16,13 @@ class StoreController extends Controller
 
 		$DB = DB::table('store')
 			->orderBy('add_time', 'desc');
-		
+
 		$result = $DB->get();
+		$result->map(function ($item) {
+			$item->label = explode(',', $item->label);
+			return $item;
+		});
+
 
 		return [
 			'code' => $result ? 1 : -1,
@@ -40,7 +45,6 @@ class StoreController extends Controller
 			'msg' => $result ? 'success' : 'error',
 			'data' => $result,
 		];
-
 	}
 
 	// 保存或者新增
@@ -48,7 +52,7 @@ class StoreController extends Controller
 	{
 
 		if ($request->filled('store_id')) {
-			
+
 			$result = DB::table('store')
 				->where('store_id', $request->input('store_id'))
 				->update($request->all());
@@ -58,9 +62,8 @@ class StoreController extends Controller
 				'msg' =>  $result >= 0 ? 'success' : 'error',
 				'data' => $result,
 			]);
-
 		} else {
-			
+
 			$result = DB::table('store')->insert($request->all());
 
 			return response()->json([
@@ -68,9 +71,7 @@ class StoreController extends Controller
 				'msg' => $result ? 'success' : 'error',
 				'data' => $result,
 			]);
-
 		}
-
 	}
 
 	// 删除门店接口
@@ -87,5 +88,4 @@ class StoreController extends Controller
 			'data' => $result,
 		];
 	}
-
 }
