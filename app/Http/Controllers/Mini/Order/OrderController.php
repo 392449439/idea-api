@@ -22,11 +22,10 @@ class OrderController extends Controller
 		$OrderDB = DB::table('order');
 		$PayDB = DB::table('pay');
 
-		$SnapshotDB->delete();
-		$OrderAddressDB->delete();
-		$OrderDB->delete();
-		$PayDB->delete();
-
+		// $SnapshotDB->delete();
+		// $OrderAddressDB->delete();
+		// $OrderDB->delete();
+		// $PayDB->delete();
 
 
 
@@ -137,16 +136,52 @@ class OrderController extends Controller
 	{
 
 		$DB = DB::table('order')->orderBy('add_time', 'desc');
-
 		$result = $DB->get();
+
 		$result->map(function ($item) {
-			// $item->label = explode(',', $item->label);
+			/**
+			 * 拿到快照数据
+			 */
+			$item->snapshotInfo = DB::table('snapshot')->where('order_id', $item->order_id)->get();
+			$item->storeInfo = DB::table('store')->where('store_id', $item->store_id)->first();
+
+			$item->snapshotInfo =	$item->snapshotInfo->map(function ($el) {
+				$el->data = json_decode($el->data, true);
+				return $el;
+			});
+			// $item->snapshotInfo->data = json_decode($item->snapshotInfo->data, true);
+
 			return $item;
 		});
 
 
 		return [
 			'code' => count($result),
+			'msg' => $result ? 'success' : 'error',
+			'data' => $result,
+		];
+	}
+	public function info(Request $request)
+	{
+
+		$DB = DB::table('order')->orderBy('add_time', 'desc');
+		$result = $DB->where('order_id', $request->input('order_id'))->first();
+
+		/**
+		 * 拿到快照数据
+		 */
+		$result->snapshotInfo = DB::table('snapshot')->where('order_id', $result->order_id)->get();
+		$result->storeInfo = DB::table('store')->where('store_id', $result->store_id)->first();
+
+		$result->snapshotInfo =	$result->snapshotInfo->map(function ($el) {
+			$el->data = json_decode($el->data, true);
+			return $el;
+		});
+
+
+
+		return [
+			'code' => $result ? 1 : -1,
 			'msg' => $result ? 'success' : 'error',
 			'data' => $result,
 		];

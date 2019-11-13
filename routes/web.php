@@ -124,5 +124,6 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
     $router->group(['namespace' => 'Order', 'prefix' => 'order'], function () use ($router) {
         $router->post('create', 'OrderController@create');
         $router->post('list', 'OrderController@list');
+        $router->post('info', 'OrderController@info');
     });
 });

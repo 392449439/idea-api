@@ -17,11 +17,18 @@ class ClassiController extends Controller
 		# code...
 	}
 
-	public function list(Request $request) 
+	public function list(Request $request)
 	{
 
-        $DB = DB::table('goods_class')->orderBy('add_time', 'desc');
-        
+
+		$DB = DB::table('class')->orderBy('add_time', 'desc');
+
+		if ($request->filled('store_id')) {
+			$DB->where('store_id', $request->input('store_id'));
+		} else {
+			$DB->where('store_id', $request->appInfo->store_id);
+		}
+
 		$result = $DB->get();
 
 		return response()->json([
@@ -29,7 +36,5 @@ class ClassiController extends Controller
 			'msg' => 'success',
 			'data' => $result,
 		]);
-
 	}
-
 }
