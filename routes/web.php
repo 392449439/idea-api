@@ -91,6 +91,12 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin'], function () use ($
         $router->post('info', 'DomainController@info');
         $router->post('del', 'DomainController@del');
     });
+    $router->group(['namespace' => 'Goods', 'prefix' => 'goods'], function () use ($router) {
+        $router->post('save', 'GoodsController@save');
+        $router->post('list', 'GoodsController@list');
+        $router->post('info', 'GoodsController@info');
+        $router->post('del', 'GoodsController@del');
+    });
 });
 
 
