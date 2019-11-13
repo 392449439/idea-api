@@ -16,7 +16,7 @@ class AddressController extends Controller
 
 		$DB = DB::table('address')
 			->orderBy('add_time', 'desc');
-		
+
 		$result = $DB->get();
 
 		return [
@@ -40,37 +40,41 @@ class AddressController extends Controller
 			'msg' => $result ? 'success' : 'error',
 			'data' => $result,
 		];
-
 	}
 
 	// 保存或者新增
 	public function save(Request $request)
 	{
 
+		$data = $request->toArray();
+		if ($data['is_default'] == 1) {
+			DB::table('address')->update(['is_default' => 0]);
+		}
+
 		if ($request->filled('id')) {
-			
+
 			$result = DB::table('address')
 				->where('id', $request->input('id'))
-				->update($request->all());
+				->update($data);
 
 			return response()->json([
 				'code' => $result >= 0 ? 1 : -1,
 				'msg' =>  $result >= 0 ? 'success' : 'error',
 				'data' => $result,
 			]);
-
 		} else {
-			
-			$result = DB::table('address')->insert($request->all());
+
+
+
+
+			$result = DB::table('address')->insert($data);
 
 			return response()->json([
 				'code' => $result ? 1 : -1,
 				'msg' => $result ? 'success' : 'error',
 				'data' => $result,
 			]);
-
 		}
-
 	}
 
 	// 删除接口
@@ -87,5 +91,4 @@ class AddressController extends Controller
 			'data' => $result,
 		];
 	}
-
 }
