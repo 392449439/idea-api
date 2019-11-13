@@ -20,10 +20,12 @@ class OrderController extends Controller
 		$AddressDB = DB::table('address');
 		$OrderAddressDB = DB::table('order_address');
 		$OrderDB = DB::table('order');
+		$PayDB = DB::table('pay');
 
 		$SnapshotDB->delete();
 		$OrderAddressDB->delete();
 		$OrderDB->delete();
+		$PayDB->delete();
 
 
 
@@ -52,7 +54,6 @@ class OrderController extends Controller
 
 		$addressInfo = $AddressDB->where('id', $address_id)->first();
 		$addressInfo = collect($addressInfo)->except(['id', 'edit_time', 'date_state']);
-		$addressInfo['order_id'] = $order_id;
 
 		/**
 		 * 组成快照
@@ -98,21 +99,29 @@ class OrderController extends Controller
 		$orderInfo['pay_id'] = $pay_id;
 		$orderInfo['user_id'] = '';
 		$orderInfo['store_id'] = $store_id;
-		$orderInfo['address_id'] = $address_id;
 		$orderInfo['app_id'] = $request->appInfo->app_id;
 		$orderInfo['price'] = $price;
 		$orderInfo['app_type'] = $app_type;
 		$orderInfo['remarks'] = $remarks;
-
-
-
-		return [$snapshotInfoArr, $orderInfo];
-
 		$address_id = $OrderAddressDB->insertGetId($addressInfo->toArray());
+
+		$orderInfo['address_id'] = $address_id;
+
+
+
+		/**
+		 * 组成支付单数据
+		 */
+
+		$payInfo = [];
+		$payInfo['pay_id'] = $pay_id;
+		$payInfo['price'] = $price;
+		$payInfo['app_type'] = $app_type;
+
+
 		$SnapshotDB->insert($snapshotInfoArr);
+		$PayDB->insert($payInfo);
 		$OrderDB->insert($orderInfo);
-
-
 
 		return [
 			'code' => 1,
@@ -121,6 +130,25 @@ class OrderController extends Controller
 				"pay_id" => $pay_id,
 				"order_id" => $order_id
 			],
+		];
+	}
+
+	public function list(Request $request)
+	{
+
+		$DB = DB::table('order')->orderBy('add_time', 'desc');
+
+		$result = $DB->get();
+		$result->map(function ($item) {
+			// $item->label = explode(',', $item->label);
+			return $item;
+		});
+
+
+		return [
+			'code' => count($result),
+			'msg' => $result ? 'success' : 'error',
+			'data' => $result,
 		];
 	}
 }
