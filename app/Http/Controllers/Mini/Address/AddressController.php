@@ -15,9 +15,11 @@ class AddressController extends Controller
 	{
 
 		$DB = DB::table('address')
+			->where('user_id',$request->jwt->id)
 			->orderBy('add_time', 'desc');
 
 		$result = $DB->get();
+
 
 		return [
 			'code' => $result ? 1 : -1,
@@ -63,7 +65,11 @@ class AddressController extends Controller
 			]);
 		} else {
 
-			$result = DB::table('address')->insert($request->all());
+			$data = [];
+
+			$data['user_id'] = $request->jwt->id;
+
+			$result = DB::table('address')->insert($data);
 
 			return response()->json([
 				'code' => $result ? 1 : -1,
