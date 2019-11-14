@@ -15,16 +15,28 @@ class TestController extends Controller
 
     public function test(Request $request)
     {
-        $order_id = 'ORDER' . Carbon::now()->format('YmdHis') . rand(10000, 99999);
-        $pay_id = 'PAY' . Carbon::now()->format('YmdHis') . rand(10000, 99999);
-        dump($order_id);
-        dump($pay_id);
-
         $random = new Random();
+        echo ('<h1>16位</h1>');
         $data = [];
         for ($i = 0; $i < 10; $i++) {
-            $data[] = $random->getRandom(16, 'yh');
+            $appid = $random->getRandom(16);
+            echo ("<div class='item'>($i). 16位appid: <b>$appid</b></div>");
         }
-        dump($data);
+
+        $random = new Random();
+        echo ('<h1>32位</h1>');
+        $data = [];
+        for ($i = 0; $i < 10; $i++) {
+            $appid = $random->getRandom(32);
+            echo ("<div class='item'>($i). 16位appid: <b>$appid</b></div>");
+        }
     }
 }
+?>
+
+<style>
+    .item {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+</style>
