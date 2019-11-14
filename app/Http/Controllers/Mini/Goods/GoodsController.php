@@ -20,7 +20,9 @@ class GoodsController extends Controller
 	public function list(Request $request)
 	{
 
-		$DB = DB::table('goods')->orderBy('add_time', 'desc');
+		$DB = DB::table('goods')
+				->where('data_state',1)
+				->orderBy('add_time', 'desc');
 
 		// if ($request->filled('store_id')) {
 		// 	$DB->where('store_id', $request->input('store_id'));

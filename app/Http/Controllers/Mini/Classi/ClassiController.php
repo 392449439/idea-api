@@ -21,7 +21,9 @@ class ClassiController extends Controller
 	{
 
 
-		$DB = DB::table('class')->orderBy('add_time', 'desc');
+		$DB = DB::table('class')
+				->where('data_state',1)
+				->orderBy('add_time', 'desc');
 
 		if ($request->filled('store_id')) {
 			$DB->where('store_id', $request->input('store_id'));

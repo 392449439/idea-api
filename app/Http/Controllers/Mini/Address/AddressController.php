@@ -15,6 +15,7 @@ class AddressController extends Controller
 	{
 
 		$DB = DB::table('address')
+			->where('data_state',1)
 			->where('user_id',$request->jwt->id)
 			->orderBy('add_time', 'desc');
 
@@ -33,6 +34,7 @@ class AddressController extends Controller
 	{
 
 		$result = DB::table('address')
+			->where('data_state',1)
 			->where('id', $request->input('id'))
 			->first();
 

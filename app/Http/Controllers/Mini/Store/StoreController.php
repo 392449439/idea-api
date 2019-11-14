@@ -36,6 +36,7 @@ class StoreController extends Controller
 	{
 
 		$result = DB::table('store')
+			->where('data_state',1)
 			->where('store_id', $request->input('store_id'))
 			->first();
 
