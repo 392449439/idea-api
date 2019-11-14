@@ -22,6 +22,7 @@ class GoodsController extends Controller
 
 		$DB = DB::table('goods')
 				->where('data_state',1)
+				->where('is_up',1)
 				->orderBy('add_time', 'desc');
 
 		// if ($request->filled('store_id')) {
