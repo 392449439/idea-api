@@ -84,6 +84,7 @@ class AuthController extends Controller
 			'response_type' => 'array',
 		]);
 		$res = $app->auth->session($request->input('code'));
+		return $res;
 		$decryptedData = $app->encryptor->decryptData($res['session_key'], $request->input('iv'), $request->input('encryptedData'));
 		$openid = $decryptedData['openId'];
 		$unionId = $decryptedData['unionId'];
