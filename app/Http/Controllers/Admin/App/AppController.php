@@ -20,9 +20,17 @@ class AppController extends Controller
 
 		$total = $DB->count() + 0;
 
-		$DB->offset(($request->input('page', 1) - 1) * $request->input('page_size', 10))
-			->limit($request->input('page_size', 10));
-		
+
+		if ($request->filled('page')) {
+			$DB->offset(($request->input('page', 1) - 1) * $request->input('page_size', 10));
+		}
+
+		if ($request->filled('page_size')) {
+			$DB->limit($request->input('page_size', 10));
+		}
+	
+
+
 		$result = $DB->get();
 
 		return [
@@ -46,7 +54,6 @@ class AppController extends Controller
 			'msg' => $result ? 'success' : 'error',
 			'data' => $result,
 		];
-
 	}
 
 	// 保存或者新增
@@ -54,7 +61,7 @@ class AppController extends Controller
 	{
 
 		if ($request->filled('app_id')) {
-			
+
 			$result = DB::table('app')
 				->where('app_id', $request->input('app_id'))
 				->update($request->all());
@@ -64,15 +71,14 @@ class AppController extends Controller
 				'msg' =>  $result >= 0 ? 'success' : 'error',
 				'data' => $result,
 			]);
-
 		} else {
-			
+
 			$data = $request->toArray();
 
 			$random = new Random();
 
 			$data['app_id'] = $random->getRandom(16, 'A_');
-			
+
 			$result = DB::table('app')->insert($data);
 
 			return response()->json([
@@ -80,9 +86,7 @@ class AppController extends Controller
 				'msg' => $result ? 'success' : 'error',
 				'data' => $result,
 			]);
-
 		}
-
 	}
 
 	// 删除门店接口
@@ -99,5 +103,6 @@ class AppController extends Controller
 			'data' => $result,
 		];
 	}
+
 
 }

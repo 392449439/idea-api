@@ -78,12 +78,18 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin'], function () use ($
         $router->post('list', 'StoreController@list');
         $router->post('info', 'StoreController@info');
         $router->post('del', 'StoreController@del');
+        $router->post('app/list', 'StoreController@appList');
+        $router->post('app/link', 'StoreController@linkApp');
+        $router->post('app/unlink', 'StoreController@unlinkApp');
     });
     $router->group(['namespace' => 'App', 'prefix' => 'app'], function () use ($router) {
         $router->post('save', 'AppController@save');
         $router->post('list', 'AppController@list');
         $router->post('info', 'AppController@info');
         $router->post('del', 'AppController@del');
+        $router->post('store/list', 'AppController@storeList');
+        $router->post('store/link', 'AppController@link');
+        $router->post('store/unlink', 'AppController@unlink');
     });
     $router->group(['namespace' => 'Domain', 'prefix' => 'domain'], function () use ($router) {
         $router->post('save', 'DomainController@save');
@@ -111,7 +117,7 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
     $router->group(['namespace' => 'Classi', 'prefix' => 'class'], function () use ($router) {
         $router->post('list', 'ClassiController@list');
     });
-    $router->group(['namespace' => 'Address', 'prefix' => 'address' ,"middleware"=>'auth'], function () use ($router) {
+    $router->group(['namespace' => 'Address', 'prefix' => 'address', "middleware" => 'auth'], function () use ($router) {
         $router->post('save', 'AddressController@save');
         $router->post('list', 'AddressController@list');
         $router->post('info', 'AddressController@info');
