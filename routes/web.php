@@ -129,11 +129,11 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
         $router->post('info', 'StoreController@info');
         $router->post('del', 'StoreController@del');
     });
-    $router->group(['namespace' => 'User', 'prefix' => 'user'], function () use ($router) {
+    $router->group(['namespace' => 'User', 'prefix' => 'user', "middleware" => 'auth'], function () use ($router) {
         $router->post('save', 'UserController@save');
         $router->post('info', 'UserController@info');
     });
-    $router->group(['namespace' => 'Order', 'prefix' => 'order'], function () use ($router) {
+    $router->group(['namespace' => 'Order', 'prefix' => 'order', "middleware" => 'auth'], function () use ($router) {
         $router->post('create', 'OrderController@create');
         $router->post('list', 'OrderController@list');
         $router->post('info', 'OrderController@info');
