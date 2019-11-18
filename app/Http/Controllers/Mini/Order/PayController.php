@@ -54,9 +54,7 @@ class PayController extends Controller
 
 	public function notify_url(Request $request)
 	{
-		// Log::info('微信调用接口：');
 		$config = [
-			// 必要配置
 			'app_id'             => 'wx9f4a9bdc95bcc3d7',
 			'mch_id'             => '1563112131',
 			'key'                => 'ZU30SEgmNbrmQdFNDR7gZZCF6uHLGDwC',   // API 密钥
@@ -64,8 +62,9 @@ class PayController extends Controller
 
 		$app = Factory::payment($config);
 		$response = $app->handlePaidNotify(function ($message, $fail) {
-			// Log::info('微信返回：', $message);
-			$payInfo = DB::table('notify')->insert(['info' => json_encode($message)]);
+			$out_trade_no =	$message['out_trade_no'];
+			DB::table('pay')->insert(['pay_id' => $out_trade_no])->save(['state' => 2, 'info' => json_encode($message)]);
+			DB::table('order')->insert(['pay_id' => $out_trade_no])->save(['state' => 2]);
 			return true;
 		});
 		return $response;
