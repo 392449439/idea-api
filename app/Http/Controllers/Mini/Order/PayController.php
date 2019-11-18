@@ -63,8 +63,16 @@ class PayController extends Controller
 		$app = Factory::payment($config);
 		$response = $app->handlePaidNotify(function ($message, $fail) {
 			$out_trade_no =	$message['out_trade_no'];
-			DB::table('pay')->where('pay_id', $out_trade_no)->save(['state' => 2, 'info' => json_encode($message)]);
-			DB::table('order')->where('pay_id', $out_trade_no)->save(['state' => 2]);
+			Log::info('微信返回：', $message);
+			DB::table('pay')
+				->where('pay_id', $out_trade_no)
+				->save([
+					'state' => 2,
+					'info' => json_encode($message)
+				]);
+			DB::table('order')
+				->where('pay_id', $out_trade_no)
+				->save(['state' => 2]);
 			return true;
 		});
 		return $response;
