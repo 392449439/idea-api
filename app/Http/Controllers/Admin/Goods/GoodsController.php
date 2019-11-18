@@ -22,7 +22,14 @@ class GoodsController extends Controller
 
 		$DB->offset(($request->input('page', 1) - 1) * $request->input('page_size', 10))
 			->limit($request->input('page_size', 10));
-		
+
+		if ($request->filled('class_id')) {
+			$DB->where('class_id', $request->input('class_id'));
+		}
+		if ($request->filled('store_id')) {
+			$DB->where('store_id', $request->input('store_id'));
+		}
+
 		$result = $DB->get();
 
 		return [
@@ -46,7 +53,6 @@ class GoodsController extends Controller
 			'msg' => $result ? 'success' : 'error',
 			'data' => $result,
 		];
-
 	}
 
 	// 保存或者新增
@@ -74,7 +80,6 @@ class GoodsController extends Controller
 				'data' => $result,
 			]);
 		}
-
 	}
 
 	// 删除门店接口
@@ -91,5 +96,4 @@ class GoodsController extends Controller
 			'data' => $result,
 		];
 	}
-
 }
