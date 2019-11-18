@@ -16,6 +16,8 @@ class PayController extends Controller
 
 	public function getMini(Request $request)
 	{
+
+		return url('pay/wx_notify_url');
 		$config = [
 			// 必要配置
 			'app_id'             => 'wx9f4a9bdc95bcc3d7',
