@@ -64,8 +64,8 @@ class PayController extends Controller
 
 		$app = Factory::payment($config);
 		$response = $app->handlePaidNotify(function ($message, $fail) {
-			$payInfo = DB::table('notify')->insert(['info' => json_encode($message)]);
 			Log::info('微信返回：', $message);
+			$payInfo = DB::table('notify')->insert(['info' => json_encode($message)]);
 			return true;
 		});
 		return $response;
