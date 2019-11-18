@@ -16,6 +16,7 @@ class PayController extends Controller
 
 	public function getMini(Request $request)
 	{
+		Log::info('调用支付');
 
 		$config = [
 			// 必要配置
