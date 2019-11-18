@@ -37,10 +37,10 @@ class PayController extends Controller
 			'trade_type' => 'JSAPI', // 请对应换成你的支付方式对应的值类型
 			'openid' =>  $request->jwt->openid,
 		]);
-		if ($request['return_code'] != 'SUCCESS') {
+		if ($result['return_code'] != 'SUCCESS') {
 			return [
 				'code' => -1,
-				'data' => $request,
+				'data' => $result,
 				'msg' => 'error',
 			];
 		}
