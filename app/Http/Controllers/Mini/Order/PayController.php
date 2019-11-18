@@ -41,7 +41,7 @@ class PayController extends Controller
 			'trade_type' => 'JSAPI', // 请对应换成你的支付方式对应的值类型
 			// 'openid' =>  $payInfo->price,
 		]);
-
+		return $result;
 		$config = $jssdk->sdkConfig($result['prepayId']); // 返回数组
 
 		return $config;
