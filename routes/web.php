@@ -137,5 +137,9 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
         $router->post('create', 'OrderController@create');
         $router->post('list', 'OrderController@list');
         $router->post('info', 'OrderController@info');
+        $router->post('getMini', 'PayController@getMini');
     });
 });
+
+
+$router->get('pay/wx_notify_url', 'PayController@notify_url');
