@@ -105,13 +105,17 @@ class AuthController extends Controller
 
 		$DB = DB::table('user');
 
-		$result = $DB->where('unionId', $unionId)->first();
+		$result = $DB
+			->where('app_id', $request->appInfo->app_id)
+			->where('unionId', $unionId)
+			->first();
 
 		if (!$result) {
 			// 没有，创建
 			$DB->insert([
 				"openid" => $openid,
 				"unionId" => $unionId,
+				"app_id" =>  $request->appInfo->app_id,
 				"wx_info" => json_encode($decryptedData),
 				"name" => $decryptedData['nickName'],
 				"head_img" =>  $decryptedData['avatarUrl'],
