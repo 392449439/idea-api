@@ -16,10 +16,12 @@ class PayController extends Controller
 	public function getMini(Request $request)
 	{
 
+
+
 		$config = [
 			// 必要配置
-			'app_id'             => $request->appInfo->wx_appid,
-			'mch_id'             => $request->appInfo->wx_mch_id,
+			'app_id'             => 'wxb246a816f6d5bc96',
+			'mch_id'             => '1563112131',
 			'key'                => 'ZU30SEgmNbrmQdFNDR7gZZCF6uHLGDwC',   // API 密钥
 			// 如需使用敏感接口（如退款、发送红包等）需要配置 API 证书路径(登录商户平台下载 API 证书)
 			// 'cert_path'          => 'path/to/your/cert.pem', // XXX: 绝对路径！！！！
@@ -52,8 +54,8 @@ class PayController extends Controller
 
 		$config = [
 			// 必要配置
-			'app_id'             => $request->appInfo->wx_appid,
-			'mch_id'             => $request->appInfo->wx_mch_id,
+			'app_id'             => 'wxb246a816f6d5bc96',
+			'mch_id'             => '1563112131',
 			'key'                => 'ZU30SEgmNbrmQdFNDR7gZZCF6uHLGDwC',   // API 密钥
 		];
 
