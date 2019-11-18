@@ -44,7 +44,7 @@ class PayController extends Controller
 				'msg' => 'error',
 			];
 		}
-		$config = $jssdk->sdkConfig($result['prepayId']); // 返回数组
+		$config = $jssdk->sdkConfig($result['prepay_id']); // 返回数组
 		return [
 			'code' => 1,
 			'data' => $config,
