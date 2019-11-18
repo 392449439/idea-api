@@ -53,6 +53,7 @@ class PayController extends Controller
 
 	public function notify_url(Request $request)
 	{
+		Log::info('微信调用接口：');
 		$config = [
 			// 必要配置
 			'app_id'             => 'wx9f4a9bdc95bcc3d7',
