@@ -63,7 +63,7 @@ class PayController extends Controller
 		$app = Factory::payment($config);
 		$response = $app->handlePaidNotify(function ($message, $fail) {
 			$out_trade_no =	$message['out_trade_no'];
-			Log::info('微信返回：', $message);
+			// Log::info('微信返回：', $message);
 			DB::table('pay')
 				->where('pay_id', $out_trade_no)
 				->update([
