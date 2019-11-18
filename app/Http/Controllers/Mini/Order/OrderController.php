@@ -22,10 +22,10 @@ class OrderController extends Controller
 		$OrderDB = DB::table('order');
 		$PayDB = DB::table('pay');
 
-		$SnapshotDB->delete();
-		$OrderAddressDB->delete();
-		$OrderDB->delete();
-		$PayDB->delete();
+		// $SnapshotDB->delete();
+		// $OrderAddressDB->delete();
+		// $OrderDB->delete();
+		// $PayDB->delete();
 
 
 
@@ -186,7 +186,4 @@ class OrderController extends Controller
 			'data' => $result,
 		];
 	}
-
-
-	
 }
