@@ -66,13 +66,13 @@ class PayController extends Controller
 			Log::info('微信返回：', $message);
 			DB::table('pay')
 				->where('pay_id', $out_trade_no)
-				->save([
+				->update([
 					'state' => 2,
 					'info' => json_encode($message)
 				]);
 			DB::table('order')
 				->where('pay_id', $out_trade_no)
-				->save(['state' => 2]);
+				->update(['state' => 2]);
 			return true;
 		});
 		return $response;
