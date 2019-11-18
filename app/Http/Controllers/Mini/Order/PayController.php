@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PayController extends Controller
 {
@@ -52,7 +53,6 @@ class PayController extends Controller
 
 	public function notify_url(Request $request)
 	{
-
 		$config = [
 			// 必要配置
 			'app_id'             => 'wx9f4a9bdc95bcc3d7',
@@ -62,7 +62,8 @@ class PayController extends Controller
 
 		$app = Factory::payment($config);
 		$response = $app->handlePaidNotify(function ($message, $fail) {
-			$payInfo = DB::table('notify')->insert(['info' => json_encode($message)]);
+			// $payInfo = DB::table('notify')->insert(['info' => json_encode($message)]);
+			Log::info('微信返回：', $message);
 			return true;
 		});
 
