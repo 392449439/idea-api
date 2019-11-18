@@ -34,10 +34,11 @@ class PayController extends Controller
 		$jssdk = $app->jssdk;
 
 		$payInfo = DB::table('pay')->where('pay_id', $request->input('pay_id'))->first();
+		// return [floatval($payInfo->price)];
 		$result = $app->order->unify([
 			'body' => '益火吃货-下单',
 			'out_trade_no' => $payInfo->pay_id,
-			'total_fee' => $payInfo->price * 1,
+			'total_fee' => floatval($payInfo->price),
 			// 'spbill_create_ip' => '123.12.12.123', // 可选，如不传该参数，SDK 将会自动获取相应 IP 地址
 			'trade_type' => 'JSAPI', // 请对应换成你的支付方式对应的值类型
 			// 'openid' =>  $payInfo->price,
