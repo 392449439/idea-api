@@ -61,15 +61,12 @@ class PayController extends Controller
 	{
 
 
-		dump($app_id);
-		die;
 		Log::info('微信返回，app_id：', [$app_id]);
 
 		$App = DB::table('app')->where('app_id', $app_id)->first();
 
 		Log::info('微信返回，app数据：', $App);
 		
-		return;
 
 		$config = [
 			'app_id'             => $App->wx_appid,
