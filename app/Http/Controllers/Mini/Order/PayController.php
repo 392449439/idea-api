@@ -16,13 +16,8 @@ class PayController extends Controller
 
 	public function getMini(Request $request)
 	{
-		Log::info('调用支付');
+		
 		$app_id = $request->appInfo->app_id;
-		Log::info('调用支付app_id：', [$app_id]);
-		Log::info('appInfo', [$request->appInfo]);
-		Log::info('wx_mch_id', [$request->appInfo->wx_mch_id]);
-		Log::info('wx_notify_url：', [url("pay/wx_notify_url/{$app_id}")]);
-
 		$config = [
 			// 必要配置
 			'app_id'             => $request->appInfo->wx_appid,
@@ -60,13 +55,7 @@ class PayController extends Controller
 	public function notify_url(String $app_id)
 	{
 
-
-		Log::info('微信返回，app_id：', [$app_id]);
-
 		$App = DB::table('app')->where('app_id', $app_id)->first();
-
-		Log::info('微信返回，app数据：', [$App]);
-		
 
 		$config = [
 			'app_id'             => $App->wx_appid,
