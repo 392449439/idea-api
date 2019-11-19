@@ -172,8 +172,7 @@ class OrderController extends Controller
 		 */
 		$result->snapshotInfo = DB::table('snapshot')->where('order_id', $result->order_id)->get();
 		$result->storeInfo = DB::table('store')->where('store_id', $result->store_id)->first();
-		$request->payInfo = DB::table('pay')->where('pay_id',$result->pay_id)->first();
-		// $result->addressInfo = DB::table('order_address')->where('id', $result->address_id)->first();
+		$result->payInfo = DB::table('pay')->where('pay_id',$result->pay_id)->first();
 		$result->addressInfo = DB::table('order_address')->where('id',$result->address_id)->first();
 
 		$result->snapshotInfo =	$result->snapshotInfo->map(function ($el) {
