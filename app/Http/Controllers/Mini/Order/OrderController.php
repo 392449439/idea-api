@@ -116,7 +116,7 @@ class OrderController extends Controller
 		$payInfo['pay_id'] = $pay_id;
 		$payInfo['price'] = $price;
 		$payInfo['app_type'] = $app_type;
-		$payInfo['app_id'] = $app_id;
+		$payInfo['app_id'] = $request->appInfo->app_id;
 
 
 		$SnapshotDB->insert($snapshotInfoArr);
