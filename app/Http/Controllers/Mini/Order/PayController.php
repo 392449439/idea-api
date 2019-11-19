@@ -19,6 +19,7 @@ class PayController extends Controller
 		Log::info('调用支付');
 		$app_id = $request->appInfo->app_id;
 		Log::info('调用支付app_id：', [$app_id]);
+		Log::info('appInfo', [$request->appInfo]);
 		Log::info('wx_notify_url：', [url("pay/wx_notify_url/{$app_id}")]);
 
 		$config = [
