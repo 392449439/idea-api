@@ -83,11 +83,8 @@ class AuthController extends Controller
 			'secret' =>  $request->appInfo->wx_secret,
 			'response_type' => 'array',
 		]);
-return [$request->appInfo];
-
 
 		$res = $app->auth->session($request->input('code'));
-		return $res;
 		$decryptedData = $app->encryptor->decryptData($res['session_key'], $request->input('iv'), $request->input('encryptedData'));
 		$openid = $decryptedData['openId'];
 		$unionId = $decryptedData['unionId'];
