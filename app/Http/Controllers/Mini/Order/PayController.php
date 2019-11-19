@@ -65,7 +65,7 @@ class PayController extends Controller
 
 		$App = DB::table('app')->where('app_id', $app_id)->first();
 
-		Log::info('微信返回，app数据：', $App);
+		Log::info('微信返回，app数据：', [$App]);
 		
 
 		$config = [
