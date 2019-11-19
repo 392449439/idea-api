@@ -83,7 +83,7 @@ class AuthController extends Controller
 			'secret' =>  $request->appInfo->wx_secret,
 			'response_type' => 'array',
 		]);
-
+return [$request->appInfo];
 
 
 		$res = $app->auth->session($request->input('code'));
