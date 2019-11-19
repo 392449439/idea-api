@@ -18,8 +18,8 @@ class PayController extends Controller
 	{
 		Log::info('调用支付');
 		$app_id = $request->appInfo->app_id;
-		Log::info('调用支付app_id：', $app_id);
-		Log::info('wx_notify_url：', url("pay/wx_notify_url/{$app_id}"));
+		Log::info('调用支付app_id：', [$app_id]);
+		Log::info('wx_notify_url：', [url("pay/wx_notify_url/{$app_id}")]);
 
 		$config = [
 			// 必要配置
@@ -58,7 +58,7 @@ class PayController extends Controller
 	public function notify_url(String $app_id)
 	{
 
-		Log::info('微信返回，app_id：', $app_id);
+		Log::info('微信返回，app_id：', [$app_id]);
 
 		$App = DB::table('app')->where('app_id', $app_id)->first();
 
@@ -73,7 +73,7 @@ class PayController extends Controller
 		$app = Factory::payment($config);
 		$response = $app->handlePaidNotify(function ($message, $fail) {
 			$out_trade_no =	$message['out_trade_no'];
-			
+
 			DB::table('pay')
 				->where('pay_id', $out_trade_no)
 				->update([
