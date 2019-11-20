@@ -103,6 +103,12 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin'], function () use ($
         $router->post('info', 'GoodsController@info');
         $router->post('del', 'GoodsController@del');
     });
+    $router->group(['namespace' => 'Article', 'prefix' => 'article'], function () use ($router) {
+        $router->post('save', 'ArticleController@save');
+        $router->post('list', 'ArticleController@list');
+        $router->post('info', 'ArticleController@info');
+        $router->post('del', 'ArticleController@del');
+    });
 });
 
 
@@ -138,6 +144,12 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
         $router->post('list', 'OrderController@list');
         $router->post('info', 'OrderController@info');
         $router->post('getMini', 'PayController@getMini');
+    });
+    $router->group(['namespace' => 'Article', 'prefix' => 'article', "middleware" => 'auth'], function () use ($router) {
+        $router->post('save', 'ArticleController@save');
+        $router->post('list', 'ArticleController@list');
+        $router->post('info', 'ArticleController@info');
+        $router->post('del', 'ArticleController@del');
     });
 });
 
