@@ -27,6 +27,11 @@ $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($ro
 });
 
 
+$router->group(['namespace' => 'File', 'prefix' => 'file'], function () use ($router) {
+    $router->post('upload', 'FileController@upload');
+});
+
+
 $router->group(['namespace' => 'Auth', 'prefix' => 'auth', 'middleware' => 'auth'], function () use ($router) {
     $router->get('create', 'AuthController@create');
 });
