@@ -15,13 +15,25 @@ class ArticleController extends Controller
 	{
 
 		$DB = DB::table('paper')
+			->where('type', $request->type)
 			->orderBy('add_time', 'desc');
 
-		if ($request->filled('app_id')) {
-			$DB->where('app_id', $request->input('app_id'));
-		} else {
-			$DB->where('app_id', $request->appInfo->app_id);
+
+		if ($request->filled('title')) {
+
+			$DB->where('title', 'like',  '%' . $request->input('title') . '%');
 		}
+
+		if ($request->filled('is_up')) {
+
+			$DB->where('is_up', $request->input('is_up'));
+		}
+
+		// if ($request->filled('app_id')) {
+		// 	$DB->where('app_id', $request->input('app_id'));
+		// } else {
+		// 	$DB->where('app_id', $request->appInfo->app_id);
+		// }
 
 		$result = $DB->get();
 		// $result->map(function ($item) {
@@ -46,6 +58,9 @@ class ArticleController extends Controller
 			->first();
 
 
+		$result->img_list = json_decode($result->img_list);
+
+
 		return [
 			'code' => $result ? 1 : -1,
 			'msg' => $result ? 'success' : 'error',
@@ -57,11 +72,16 @@ class ArticleController extends Controller
 	public function save(Request $request)
 	{
 
+		$data = $request->toArray();
+		if (Arr::has($data, 'img_list')) {
+			$data['img_list'] = json_encode($data['img_list']);
+		}
+
 		if ($request->filled('id')) {
 
 			$result = DB::table('paper')
 				->where('id', $request->input('id'))
-				->update($request->all());
+				->update($data);
 
 			return response()->json([
 				'code' => $result >= 0 ? 1 : -1,
@@ -70,7 +90,8 @@ class ArticleController extends Controller
 			]);
 		} else {
 
-			$result = DB::table('paper')->insert($request->all());
+
+			$result = DB::table('paper')->insert($data);
 
 			return response()->json([
 				'code' => $result ? 1 : -1,
