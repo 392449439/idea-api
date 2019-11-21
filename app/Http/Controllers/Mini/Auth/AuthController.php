@@ -7,7 +7,7 @@ use App\Http\Controllers\User\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use EasyWeChat\Factory;
-
+use Illuminate\Support\Arr;
 
 class AuthController extends Controller
 {  // @todo AuthController 这里是要生成的类名字
@@ -85,7 +85,7 @@ class AuthController extends Controller
 		$res = $app->auth->session($request->input('code'));
 		$decryptedData = $app->encryptor->decryptData($res['session_key'], $request->input('iv'), $request->input('encryptedData'));
 		$openid = $decryptedData['openId'];
-		$unionId = $decryptedData['unionId'];
+		$unionId = Arr::has($decryptedData, 'unionId') ? $decryptedData['unionId'] : '';
 
 
 		// avatarUrl: "https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLt51Sq1c4aicK3OVMpOazFlDzfTe5yJUP1PDpKyCDyJeBiauzAlIsBMKUqfSRuud2XKWJUPJTickVtw/132"
@@ -105,7 +105,7 @@ class AuthController extends Controller
 
 		$result = $DB
 			->where('app_id', $request->appInfo->app_id)
-			->where('unionId', $unionId)
+			->where('openid', $openid)
 			->first();
 
 		if (!$result) {
@@ -119,7 +119,11 @@ class AuthController extends Controller
 				"head_img" =>  $decryptedData['avatarUrl'],
 
 			]);
-			$result = $DB->where('unionId', $unionId)->first();
+
+			$result = $DB
+				->where('app_id', $request->appInfo->app_id)
+				->where('openid', $openid)
+				->first();
 		}
 
 

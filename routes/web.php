@@ -103,6 +103,12 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin'], function () use ($
         $router->post('info', 'GoodsController@info');
         $router->post('del', 'GoodsController@del');
     });
+    $router->group(['namespace' => 'Article', 'prefix' => 'article'], function () use ($router) {
+        $router->post('save', 'ArticleController@save');
+        $router->post('list', 'ArticleController@list');
+        $router->post('info', 'ArticleController@info');
+        $router->post('del', 'ArticleController@del');
+    });
 });
 
 
@@ -139,8 +145,14 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
         $router->post('info', 'OrderController@info');
         $router->post('getMini', 'PayController@getMini');
     });
+    $router->group(['namespace' => 'Article', 'prefix' => 'article', "middleware" => 'auth'], function () use ($router) {
+        $router->post('save', 'ArticleController@save');
+        $router->post('list', 'ArticleController@list');
+        $router->post('info', 'ArticleController@info');
+        $router->post('del', 'ArticleController@del');
+    });
 });
 
 
-$router->get('pay/wx_notify_url/{app_id}', 'Mini\Order\PayController@notify_url');
-$router->post('pay/wx_notify_url/{app_id}', 'Mini\Order\PayController@notify_url');
+$router->get('pay/wx_notify_url', 'Mini\Order\PayController@notify_url');
+$router->post('pay/wx_notify_url', 'Mini\Order\PayController@notify_url');
