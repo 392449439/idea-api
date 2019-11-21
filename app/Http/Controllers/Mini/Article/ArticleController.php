@@ -15,13 +15,27 @@ class ArticleController extends Controller
 	{
 
 		$DB = DB::table('paper')
-			->orderBy('add_time', 'desc');
+				->where('type',$request->type)
+				->orderBy('add_time', 'desc');
 
-		if ($request->filled('app_id')) {
-			$DB->where('app_id', $request->input('app_id'));
-		} else {
-			$DB->where('app_id', $request->appInfo->app_id);
+		
+		if ($request->filled('title')) {
+
+			$DB->where('title', 'like',  '%' . $request->input('title') . '%');
+
 		}
+
+		if ($request->filled('is_up')) {
+
+			$DB->where('is_up',$request->input('is_up'));
+
+		}
+
+		// if ($request->filled('app_id')) {
+		// 	$DB->where('app_id', $request->input('app_id'));
+		// } else {
+		// 	$DB->where('app_id', $request->appInfo->app_id);
+		// }
 
 		$result = $DB->get();
 		// $result->map(function ($item) {
