@@ -137,6 +137,15 @@ class OrderController extends Controller
 	{
 
 		$DB = DB::table('order')->orderBy('add_time', 'desc');
+
+		if ($request->filled('page')) {
+			$DB->offset(($request->input('page', 1) - 1) * $request->input('page_size', 10));
+		}
+
+		if ($request->filled('page_size')) {
+			$DB->limit($request->input('page_size', 10));
+		}
+
 		$result = $DB->get();
 
 		$result->map(function ($item) {
@@ -160,6 +169,7 @@ class OrderController extends Controller
 			'code' => count($result),
 			'msg' => $result ? 'success' : 'error',
 			'data' => $result,
+			'total' => $total,
 		];
 	}
 	public function info(Request $request)
