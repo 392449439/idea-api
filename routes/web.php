@@ -32,12 +32,12 @@ $router->group(['namespace' => 'Auth', 'prefix' => 'auth', 'middleware' => 'auth
 });
 
 
-$router->group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'auth'], function () use ($router) {
-    $router->post('save', 'UserController@save');
-    $router->post('info', 'UserController@info');
-    $router->post('list', 'UserController@list');
-    $router->post('del', 'UserController@del');
-});
+// $router->group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'auth'], function () use ($router) {
+//     $router->post('save', 'UserController@save');
+//     $router->post('info', 'UserController@info');
+//     $router->post('list', 'UserController@list');
+//     $router->post('del', 'UserController@del');
+// });
 
 // Feedback
 
@@ -114,6 +114,13 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin'], function () use ($
         $router->post('list', 'OpenController@list');
         $router->post('info', 'OpenController@info');
         $router->post('del', 'OpenController@del');
+    });
+
+    $router->group(['namespace' => 'User', 'prefix' => 'user'], function () use ($router) {
+        $router->post('save', 'UserController@save');
+        $router->post('info', 'UserController@info');
+        $router->post('list', 'UserController@list');
+        $router->post('del', 'UserController@del');
     });
 });
 

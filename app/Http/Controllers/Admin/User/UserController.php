@@ -1,6 +1,6 @@
 <?php
 
-namespace  App\Http\Controllers\User; // @todo: 这里是要生成类的命名空间
+namespace  App\Http\Controllers\Admin\User; // @todo: 这里是要生成类的命名空间
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -13,18 +13,13 @@ class UserController extends Controller
 	public function save(Request $request)
 	{
 		if ($request->filled('id')) {
-			// 保存
-			// $request->toArray()
-
-
 			$data = [];
-			$data['company_id'] = $request->input('company_id');
 			$data['phone'] = $request->input('phone');
 			if ($request->filled('pwd1')) {
 				$data['pwd'] = md5($_ENV['APP_KEY'] .  $request->input('pwd1'));
 			}
 			$data['name'] = $request->input('name');
-			$data['power_group_id'] = $request->input('power_group_id');
+			// $data['power_group_id'] = $request->input('power_group_id');
 
 			$result = DB::table('user')
 				->where('id', $request->input('id'))
@@ -48,11 +43,10 @@ class UserController extends Controller
 				]);
 			} else {
 				$data = [];
-				$data['company_id'] = $request->input('company_id');
 				$data['phone'] = $request->input('phone');
 				$data['pwd'] = md5($_ENV['APP_KEY'] .  $request->input('pwd1'));
 				$data['name'] = $request->input('name');
-				$data['power_group_id'] = $request->input('power_group_id');
+				$data['user_type'] = $request->input('user_type');
 
 				$result = DB::table('user')->insert($data);
 				return response()->json([
@@ -78,14 +72,6 @@ class UserController extends Controller
 			->where('id', $id)
 			->first();
 
-		if ($result) {
-			if ($result->company_id) {
-				$result->company_name =	DB::table('company')->where('id', $result->company_id)->value('name');
-			} else {
-				$result->company_name = '';
-			}
-			$result->power_group_name =	DB::table('power_group')->where('id', $result->power_group_id)->value('name');
-		}
 
 		return response()->json([
 			'code' => $result ? 1 : -1,
@@ -121,6 +107,12 @@ class UserController extends Controller
 		if ($request->filled('state')) {
 			$DB->where('state', $request->input('state'));
 		}
+
+		if ($request->filled('user_type')) {
+			$DB->where('user_type', $request->input('user_type'));
+		}
+
+
 		$total = $DB->count() + 0;
 
 		$DB->offset(($request->input('page', 1) - 1) * $request->input('page_size', 10))
@@ -129,17 +121,9 @@ class UserController extends Controller
 		$result = $DB->get();
 
 
-		$result->transform(function ($user) {
-			if ($user->company_id) {
-				$user->company_name =	DB::table('company')->where('id', $user->company_id)->value('name');
-			} else {
-				$user->company_name = '';
-			}
-
-			$user->power_group_name =	DB::table('power_group')->where('id', $user->power_group_id)->value('name');
-
-			return $user;
-		});
+		// $result->transform(function ($user) {
+		// 	return $user;
+		// });
 
 		return response()->json([
 			'code' => $result  ? 1 : -1,

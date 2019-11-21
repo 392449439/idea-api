@@ -28,8 +28,10 @@ class AppController extends Controller
 		if ($request->filled('page_size')) {
 			$DB->limit($request->input('page_size', 10));
 		}
-	
 
+		if ($request->filled('open_id')) {
+			$DB->where('open_id', $request->input('open_id'));
+		}
 
 		$result = $DB->get();
 
@@ -103,6 +105,4 @@ class AppController extends Controller
 			'data' => $result,
 		];
 	}
-
-
 }
