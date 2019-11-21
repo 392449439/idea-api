@@ -76,8 +76,6 @@ class AuthController extends Controller
 	public function login(Request $request)
 	{
 
-		// 'wx9f4a9bdc95bcc3d7'
-		// 7d073c85829782b9d690b40e81f12bb5
 		$app = Factory::miniProgram([
 			'app_id' => $request->appInfo->wx_appid,
 			'secret' =>  $request->appInfo->wx_secret,
