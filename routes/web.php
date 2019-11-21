@@ -109,6 +109,12 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin'], function () use ($
         $router->post('info', 'ArticleController@info');
         $router->post('del', 'ArticleController@del');
     });
+    $router->group(['namespace' => 'Open', 'prefix' => 'open'], function () use ($router) {
+        $router->post('save', 'OpenController@save');
+        $router->post('list', 'OpenController@list');
+        $router->post('info', 'OpenController@info');
+        $router->post('del', 'OpenController@del');
+    });
 });
 
 
