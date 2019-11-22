@@ -19,7 +19,8 @@ $router->get('/', function () use ($router) {
 
 $router->group([], function () use ($router) {
     $router->get('test', 'TestController@test');
-    $router->post('test', 'TestController@test');
+    $router->get('out', 'TestController@out');
+    $router->get('outStoreList', 'TestController@outStoreList');
 });
 
 $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($router) {
