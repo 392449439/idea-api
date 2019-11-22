@@ -49,23 +49,27 @@ class TestController extends Controller
         ]);
         $store_id = 'STORE_' . Carbon::now()->format('YmdHis') . rand(10000, 99999);
         $order_id = 'ORDER_' . Carbon::now()->format('YmdHis') . rand(10000, 99999);
-        // $dada->cityCode('');
-        $dada->http('/api/balance/query', [
-            "category" => 1,
-        ]);
-        // $dada->order([
-        //     "shop_no" => "11047059",         //	门店编号，门店创建后可在门店列表和单页查看
-        //     "origin_id" => $order_id,       //	第三方订单ID
-        //     "city_code" => "021",       //	订单所在城市的code（查看各城市对应的code值）
-        //     "cargo_price" => 99.99,         //	订单金额
-        //     "is_prepay" => 0,       //	是否需要垫付 1:是 0:否 (垫付订单金额，非运费)
-        //     "receiver_name" => "李传浩",       //	收货人姓名
-        //     "receiver_address" => "测试地址",        //	收货人地址
-        //     "receiver_phone" => "17621643903",        //	收货人地址
-        //     "receiver_lng" => 121.235258,        //	收货人地址经度（高德坐标系）
-        //     "receiver_lat" => 31.006555,        //	收货人地址维度（高德坐标系）
-        //     "callback" => "s",        //	回调URL（查看回调说明）
+
+        // $dada->http('/api/balance/query', [
+        //     "category" => 1,
         // ]);
+
+        $dada->order([
+            "shop_no" => "11047059",         //	门店编号，门店创建后可在门店列表和单页查看
+            "origin_id" => $order_id,       //	第三方订单ID
+            "city_code" => "021",       //	订单所在城市的code（查看各城市对应的code值）
+            "cargo_price" => 99.99,         //	订单金额
+            "is_prepay" => 0,       //	是否需要垫付 1:是 0:否 (垫付订单金额，非运费)
+            "receiver_name" => "李传浩",       //	收货人姓名
+            "receiver_address" => "测试地址",        //	收货人地址
+            "receiver_phone" => "17621643903",        //	收货人地址
+            "receiver_lng" => 121.235258,        //	收货人地址经度（高德坐标系）
+            "receiver_lat" => 31.006555,        //	收货人地址维度（高德坐标系）
+            "callback" => "s",        //	回调URL（查看回调说明）
+        ]);
+        $res = $dada->request();
+        echo json_encode($res);
+
         // $dada->merchant([
         //     "mobile" => '17621643903',                                          //	联系人电话
         //     "city_name" => '上海',                                              //	城市名称(如,上海)
@@ -93,8 +97,6 @@ class TestController extends Controller
         //     ],
         // ]);
 
-        $res = $dada->request();
-        echo json_encode($res);
 
         return;
         //*********************1.配置项*************************
