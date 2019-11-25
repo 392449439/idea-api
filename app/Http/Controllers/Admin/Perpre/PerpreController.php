@@ -14,7 +14,7 @@ class PerpreController extends Controller
 	public function list(Request $request)
 	{
 
-		$DB = DB::table('perpre')
+		$DB = DB::table('paper')
 			->orderBy('add_time', 'desc');
 
 		$total = $DB->count() + 0;
@@ -37,7 +37,7 @@ class PerpreController extends Controller
 	public function info(Request $request)
 	{
 
-		$result = DB::table('perpre')
+		$result = DB::table('paper')
 			->where('id', $request->input('id'))
 			->first();
 
@@ -56,7 +56,7 @@ class PerpreController extends Controller
 
 		if ($request->filled('id')) {
 			
-			$result = DB::table('perpre')
+			$result = DB::table('paper')
 				->where('id', $request->input('id'))
 				->update($request->all());
 
@@ -68,7 +68,7 @@ class PerpreController extends Controller
 
 		} else {
 			
-			$result = DB::table('perpre')->insert($request->all());
+			$result = DB::table('paper')->insert($request->all());
 
 			return response()->json([
 				'code' => $result ? 1 : -1,
@@ -84,7 +84,7 @@ class PerpreController extends Controller
 	public function del(Request $request)
 	{
 
-		$result = DB::table('perpre')
+		$result = DB::table('paper')
 			->where('id', $request->input('id'))
 			->delete();
 
