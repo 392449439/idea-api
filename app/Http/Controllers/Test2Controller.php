@@ -21,27 +21,10 @@ class Test2Controller extends Controller
 
         $pay_id = 'PAY2019112517355696799';
 
-        $order_id = DB::table('order')
+        $pay = DB::table('pay')
             ->where('pay_id', $pay_id)
-            ->value('order_id');
-
-        $snapshotInfo = DB::table('snapshot')
-            ->where('order_id', $order_id)
             ->get();
-
-        $data = $snapshotInfo->map(function ($item) {
-            $item->data = json_decode($item->data, true);
-            $newItem = [
-                'title' => $item->data['title'],
-                'price' => $item->data['price'],
-                'num' =>  $item->data['quantity'],
-            ];
-            return $newItem;
-        });
-
-        $printer = new Printer();
-        $res = $printer->printData($data, '921510805');
-        return ["data" => $res];
+        return ["data" => $pay];
 
 
 
