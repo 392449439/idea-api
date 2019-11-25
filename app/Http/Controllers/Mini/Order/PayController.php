@@ -142,7 +142,7 @@ class PayController extends Controller
 
 				$time =	Carbon::parse("+$day days")->timestamp;
 
-				$snapshotInfo = DB::table('snapshot')
+				DB::table('vip')
 					->where('user_id', $order->user_id)
 					->update(['end_time' => $time]);
 			}
