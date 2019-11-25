@@ -41,6 +41,13 @@ class CoreMiddleware
             ], 401);
         }
         $request->appInfo = $appInfo;
+
+        try {
+            $request->jwt = json_decode(decrypt($request->config['jwt']));
+        } catch (\Throwable $th) {
+            $request->jwt = null;
+        }
+
         return $next($request);
     }
 }

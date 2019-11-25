@@ -180,6 +180,7 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
     });
     $router->post('article/info', 'Article\ArticleController@info');
     $router->post('article/list', 'Article\ArticleController@list');
+    $router->post('article/vip/list', 'Article\ArticleController@vipList');
 });
 
 
