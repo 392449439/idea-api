@@ -82,16 +82,15 @@ class PayController extends Controller
 			/**
 			 * 支付成功后打印订单
 			 */
-			$this->printOrder($out_trade_no);
+			PayController::printOrder($out_trade_no);
 
 			return true;
 		});
 		return $response;
 	}
 
-	private function printOrder($pay_id)
+	private static function printOrder($pay_id)
 	{
-
 		$order_id = DB::table('order')
 			->where('pay_id', $pay_id)
 			->value('order_id');
@@ -111,8 +110,8 @@ class PayController extends Controller
 		});
 
 		$printer = new Printer();
-		return $printer->printData($data, '921510805');
-
+		$res = $printer->printData($data, '921510805');
+		return ["data" => $res];
 
 		// if ($res) {
 		// 	return response()->json([

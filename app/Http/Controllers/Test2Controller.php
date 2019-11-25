@@ -19,7 +19,7 @@ class Test2Controller extends Controller
     public function test(Request $request)
     {
 
-        $pay_id = 'PAY2019112516581741020';
+        $pay_id = 'PAY2019112517355696799';
 
         $order_id = DB::table('order')
             ->where('pay_id', $pay_id)
@@ -29,8 +29,6 @@ class Test2Controller extends Controller
             ->where('order_id', $order_id)
             ->get();
 
-
-        dump($snapshotInfo);
         $data = $snapshotInfo->map(function ($item) {
             $item->data = json_decode($item->data, true);
             $newItem = [
@@ -40,12 +38,10 @@ class Test2Controller extends Controller
             ];
             return $newItem;
         });
-        dump($data);
 
         $printer = new Printer();
         $res = $printer->printData($data, '921510805');
-        dump($res);
-
+        return ["data" => $res];
 
 
 
