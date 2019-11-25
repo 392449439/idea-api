@@ -23,7 +23,9 @@ class PaperController extends Controller
 		$DB->offset(($request->input('page', 1) - 1) * $request->input('page_size', 10))
 			->limit($request->input('page_size', 10));
 		
-		$result = $DB->get(['id','img','title','info','is_up','add_time','edit_time','data_state']);
+		// ['id','img','title','info','is_up','add_time','edit_time','data_state']
+
+		$result = $DB->get();
 
 		return [
 			'code' => $result ? 1 : -1,

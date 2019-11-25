@@ -74,7 +74,7 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin'], function () use ($
         $router->post('info', 'FeedbackController@info');
         $router->post('del', 'FeedbackController@del');
     });
-    $router->group(['namespace' => 'Paper', 'prefix' => 'Paper'], function () use ($router) {
+    $router->group(['namespace' => 'Paper', 'prefix' => 'paper'], function () use ($router) {
         $router->post('save', 'PaperController@save');
         $router->post('info', 'PaperController@info');
         $router->post('list', 'PaperController@list');
