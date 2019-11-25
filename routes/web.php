@@ -74,11 +74,11 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin'], function () use ($
         $router->post('info', 'FeedbackController@info');
         $router->post('del', 'FeedbackController@del');
     });
-    $router->group(['namespace' => 'Perpre', 'prefix' => 'perpre'], function () use ($router) {
-        $router->post('save', 'PerpreController@save');
-        $router->post('info', 'PerpreController@info');
-        $router->post('list', 'PerpreController@list');
-        $router->post('del', 'PerpreController@del');
+    $router->group(['namespace' => 'Paper', 'prefix' => 'Paper'], function () use ($router) {
+        $router->post('save', 'PaperController@save');
+        $router->post('info', 'PaperController@info');
+        $router->post('list', 'PaperController@list');
+        $router->post('del', 'PaperController@del');
     });
     $router->group(['namespace' => 'Store', 'prefix' => 'store'], function () use ($router) {
         $router->post('save', 'StoreController@save');
