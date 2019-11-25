@@ -44,7 +44,8 @@ class StoreController extends Controller
 			->where('data_state', 1)
 			->where('store_id', $request->input('store_id'))
 			->first();
-
+			
+		$result->label = explode(',', $result->label);
 
 		return [
 			'code' => $result ? 1 : -1,
