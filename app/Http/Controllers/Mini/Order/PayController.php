@@ -97,12 +97,20 @@ class PayController extends Controller
 
 	private static function printOrder($pay_id)
 	{
-		$order_id = DB::table('order')
+		$pay = DB::table('pay')
 			->where('pay_id', $pay_id)
-			->value('order_id');
+			->first();
+
+		$order = DB::table('order')
+			->where('pay_id', $pay_id)
+			->first();
+
+		$orderAddress = DB::table('order_address')
+			->where('id',  $order->address_id)
+			->first();
 
 		$snapshotInfo = DB::table('snapshot')
-			->where('order_id', $order_id)
+			->where('order_id', $order->order_id)
 			->get();
 
 		$data = $snapshotInfo->map(function ($item) {
@@ -116,7 +124,20 @@ class PayController extends Controller
 		});
 
 		$printer = new Printer();
-		$res = $printer->printData($data, '921510805');
+		$footer = [
+			'--------------------------------<BR>',
+			'订单号：' . $order->order_id,
+			'支付订单号：' . $pay->pay_id,
+			'合计：' . number_format($pay->price, 1) . '元<BR>',
+			'送货地点：' . $orderAddress->address . '<BR>',
+			'联系电话：' .	$orderAddress->phone,
+			'联系人：' .	$orderAddress->contacts,
+			'订餐时间：' . $order->add_time,
+			'备注：' . $order->remarks . '<BR><BR>',
+			'<QR>https://www.yihuo-cloud.com/</QR>',
+		];
+
+		$res = $printer->printData($data, $footer, '921510805');
 		return ["data" => $res];
 
 		// if ($res) {

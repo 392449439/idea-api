@@ -12,12 +12,22 @@ class Printer
     private $ukey = "6KcZwgp6D5VfEvIz";
     private $sn = "6KcZwgp6D5VfEvIz";
 
-    public function printData($arr, $sn)
+    public function printData($header, $body, $footer, $sn)
     {
         //名称14 单价6 数量3 金额6-->这里的字节数可按自己需求自由改写，14+6+3+6再加上代码写的3个空格就是32了，58mm打印机一行总占32字节
         $this->sn = $sn;
+        $data = '';
 
-        $data = $this->format($arr, 14, 6, 3, 6);
+        foreach ($header as  $v) {
+            $data .= $v . "<BR>";
+        }
+
+        $data .= $this->format($body, 14, 6, 3, 6);
+
+        foreach ($footer as  $v) {
+            $data .= $v . "<BR>";
+        }
+
         return $this->print($data);
     }
 
@@ -81,9 +91,7 @@ class Printer
     }
     function format($arr, $A, $B, $C, $D)
     {
-        $orderInfo = '<CB>益火外卖</CB><BR>';
-        $orderInfo .= '名称           单价  数量 金额<BR>';
-        $orderInfo .= '--------------------------------<BR>';
+        $orderInfo = '';
         foreach ($arr as $k5 => $v5) {
             $name = $v5['title'];
             $price = $v5['price'];
@@ -164,14 +172,7 @@ class Printer
             $orderInfo .= $head . $tail;
             @$nums += $prices;
         }
-        $time = date('Y-m-d H:i:s', time());
-        $orderInfo .= '--------------------------------<BR>';
-        $orderInfo .= '合计：' . number_format($nums, 1) . '元<BR>';
-        $orderInfo .= '送货地点：平高1711<BR>';
-        $orderInfo .= '联系电话：17621643903<BR>';
-        $orderInfo .= '订餐时间：' . $time . '<BR>';
-        $orderInfo .= '备注：加辣加辣加辣加辣超级辣<BR><BR>';
-        $orderInfo .= '<QR>https://www.yihuo-cloud.com/</QR>'; //把二维码字符串用标签套上即可自动生成二维码
+
         return $orderInfo;
     }
 }
