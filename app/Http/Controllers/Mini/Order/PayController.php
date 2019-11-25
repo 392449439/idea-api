@@ -105,6 +105,10 @@ class PayController extends Controller
 			->where('pay_id', $pay_id)
 			->first();
 
+		$store = DB::table('store')
+			->where('store_id', $order->store_id)
+			->first();
+
 		$orderAddress = DB::table('order_address')
 			->where('id',  $order->address_id)
 			->first();
@@ -124,20 +128,28 @@ class PayController extends Controller
 		});
 
 		$printer = new Printer();
+
+		$header = [
+			"<CB>" . $store->name . "</CB><BR>",
+			'名称           单价  数量 金额<BR>',
+			'--------------------------------<BR>',
+		];
+
 		$footer = [
 			'--------------------------------<BR>',
 			'订单号：' . $order->order_id,
-			'支付订单号：' . $pay->pay_id,
-			'合计：' . number_format($pay->price, 1) . '元<BR>',
+			'支付号：' . $pay->pay_id,
+			'合计：' . number_format($pay->price, 2) . '元<BR>',
 			'送货地点：' . $orderAddress->address . '<BR>',
-			'联系电话：' .	$orderAddress->phone,
-			'联系人：' .	$orderAddress->contacts,
+			'联系电话：' .    $orderAddress->phone,
+			'联系人：' .    $orderAddress->contacts,
 			'订餐时间：' . $order->add_time,
-			'备注：' . $order->remarks . '<BR><BR>',
+			'备注：' . $order->remarks ? $order->remarks : '无' . '<BR><BR>',
 			'<QR>https://www.yihuo-cloud.com/</QR>',
 		];
 
-		$res = $printer->printData($data, $footer, '921510805');
+
+		$res = $printer->printData($header, $data, $footer, '921510805');
 		return ["data" => $res];
 
 		// if ($res) {
