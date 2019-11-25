@@ -57,6 +57,8 @@ class PayController extends Controller
 	public function notify_url(String $app_id)
 	{
 
+		dump($app_id);
+		die;
 		$App = DB::table('app')->where('app_id', $app_id)->first();
 
 		$config = [
