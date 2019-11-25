@@ -72,7 +72,7 @@ class PayController extends Controller
 			$pay = DB::table('pay')
 				->where('pay_id', $out_trade_no)
 				->get();
-			if ($pay['state'] != 2) {
+			if ($pay->state != 2) {
 				DB::table('pay')
 					->where('pay_id', $out_trade_no)
 					->update([
