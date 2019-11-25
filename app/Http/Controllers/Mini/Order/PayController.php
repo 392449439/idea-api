@@ -144,7 +144,7 @@ class PayController extends Controller
 			'联系电话：' .    $orderAddress->phone,
 			'联系人：' .    $orderAddress->contacts,
 			'订餐时间：' . $order->add_time,
-			'备注：' . $order->remarks ? $order->remarks : '无' . '<BR><BR>',
+			'备注：' . ($order->remarks ? $order->remarks : '无') . '<BR><BR>',
 			'<QR>https://www.yihuo-cloud.com/</QR>',
 		];
 
