@@ -1,6 +1,6 @@
 <?php
 
-namespace  App\Http\Controllers\Auth; // @todo: 这里是要生成类的命名空间
+namespace  App\Http\Controllers\Admin\Auth; // @todo: 这里是要生成类的命名空间
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -47,12 +47,12 @@ class AuthController extends Controller
 				->where('phone', $request->input('phone'))
 				->first([
 					'id',
-					'company_id',
+					// 'company_id',
 					'user_type',
 					'phone',
 					'name',
-					'power_group_id',
-					'state',
+					// 'power_group_id',
+					// 'state',
 					'add_time',
 					'edit_time',
 					'data_state',

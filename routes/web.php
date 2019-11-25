@@ -129,6 +129,10 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin'], function () use ($
         $router->post('list', 'UserController@list');
         $router->post('del', 'UserController@del');
     });
+
+    $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($router) {
+        $router->post('login', 'AuthController@login');
+    });
 });
 
 
