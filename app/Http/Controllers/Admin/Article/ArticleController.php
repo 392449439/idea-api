@@ -14,6 +14,8 @@ class ArticleController extends Controller
 	public function list(Request $request)
 	{
 
+
+		return [$request];
 		$DB = DB::table('paper')
 			->where('type', $request->type)
 			->orderBy('add_time', 'desc');

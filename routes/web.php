@@ -62,7 +62,7 @@ $router->group(['namespace' => 'Official', 'prefix' => 'official'], function () 
 });
 
 // 官网后台管理
-$router->group(['namespace' => 'Admin', 'prefix' => 'admin'], function () use ($router) {
+$router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'core'], function () use ($router) {
     $router->group(['namespace' => 'Job', 'prefix' => 'job'], function () use ($router) {
         $router->post('list', 'JobController@list');
         $router->post('info', 'JobController@info');
