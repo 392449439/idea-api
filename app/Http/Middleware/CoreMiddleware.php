@@ -40,7 +40,19 @@ class CoreMiddleware
                 "data" => null
             ], 401);
         }
+
         $request->appInfo = $appInfo;
+
+        $openInfo = null;
+
+        if ($appInfo->open_id) {
+            $openInfo = DB::table('open')->where('open_id', $appInfo->open_id)->first();
+            $openInfo->apps = DB::table('app')->where('open_id', $appInfo->open_id)->pluck('app_id');
+        }
+
+        $request->openInfo = $openInfo;
+
+
 
         try {
             $request->jwt = json_decode(decrypt($request->config['jwt']));

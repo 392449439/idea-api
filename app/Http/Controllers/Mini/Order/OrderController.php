@@ -136,6 +136,9 @@ class OrderController extends Controller
 
 		$DB = DB::table('order')->orderBy('add_time', 'desc');
 
+		$DB->where('user_id', $request->jwt->user_id);
+		$DB->whereIn('app_id', $request->openInfo->apps);
+
 		$total = $DB->count();
 
 		if ($request->filled('page')) {

@@ -59,6 +59,7 @@ class ArticleController extends Controller
 	public function vipList(Request $request)
 	{
 
+
 		$isLogin = !!$request->jwt;
 		$isVip = false;
 		$noVipMaxTotal = 2;
