@@ -82,11 +82,6 @@ class OrderController extends Controller
 			$snapshotInfoArr[] = $snapshotInfo;
 		}
 
-
-
-
-
-
 		/**
 		 * 组成订单
 		 */
@@ -115,6 +110,7 @@ class OrderController extends Controller
 		$payInfo = [];
 		$payInfo['pay_id'] = $pay_id;
 		$payInfo['price'] = $price;
+		$payInfo['price'] = 0.01;
 		$payInfo['app_type'] = $app_type;
 		$payInfo['app_id'] = $request->appInfo->app_id;
 
@@ -122,6 +118,7 @@ class OrderController extends Controller
 		$SnapshotDB->insert($snapshotInfoArr);
 		$PayDB->insert($payInfo);
 		$OrderDB->insert($orderInfo);
+
 
 		return [
 			'code' => 1,
@@ -133,10 +130,13 @@ class OrderController extends Controller
 		];
 	}
 
+
 	public function list(Request $request)
 	{
 
 		$DB = DB::table('order')->orderBy('add_time', 'desc');
+
+		$total = $DB->count();
 
 		if ($request->filled('page')) {
 			$DB->offset(($request->input('page', 1) - 1) * $request->input('page_size', 10));
@@ -169,7 +169,7 @@ class OrderController extends Controller
 			'code' => count($result),
 			'msg' => $result ? 'success' : 'error',
 			'data' => $result,
-			'total' => $total,
+			'total' => $total * 1,
 		];
 	}
 	public function info(Request $request)

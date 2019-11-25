@@ -21,6 +21,7 @@ $router->group([], function () use ($router) {
     $router->get('test', 'TestController@test');
     $router->get('out', 'TestController@out');
     $router->get('outStoreList', 'TestController@outStoreList');
+    $router->get('test2', 'Test2Controller@test');
 });
 
 $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($router) {

@@ -10,13 +10,15 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+use App\Lib\Printer\Printer;
+
 class PayController extends Controller
 {
 
 
 	public function getMini(Request $request)
 	{
-		
+
 		$app_id = $request->appInfo->app_id;
 		$config = [
 			// 必要配置
@@ -76,8 +78,54 @@ class PayController extends Controller
 			DB::table('order')
 				->where('pay_id', $out_trade_no)
 				->update(['state' => 2]);
+
+			/**
+			 * 支付成功后打印订单
+			 */
+			$this->printOrder($out_trade_no);
+
 			return true;
 		});
 		return $response;
+	}
+
+	private function printOrder($pay_id)
+	{
+
+		$order_id = DB::table('order')
+			->where('pay_id', $pay_id)
+			->value('order_id');
+
+		$snapshotInfo = DB::table('snapshot')
+			->where('order_id', $order_id)
+			->get();
+
+		$data = $snapshotInfo->map(function ($item) {
+			$item->data = json_decode($item->data, true);
+			$newItem = [
+				'title' => $item->data['title'],
+				'price' => $item->data['price'],
+				'num' =>  $item->data['quantity'],
+			];
+			return $newItem;
+		});
+
+		$printer = new Printer();
+		return $printer->printData($data, '921510805');
+
+
+		// if ($res) {
+		// 	return response()->json([
+		// 		'code' => 1,
+		// 		'msg' => 'success',
+		// 		'data' => $res,
+		// 	]);
+		// } else {
+		// 	return response()->json([
+		// 		'code' => -1,
+		// 		'msg' => 'error',
+		// 		'data' => null,
+		// 	]);
+		// }
 	}
 }
