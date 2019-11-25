@@ -18,12 +18,53 @@ class Test2Controller extends Controller
 
     public function test(Request $request)
     {
-         dump(Carbon::parse('+1 days')->timestamp);
-         dump(Carbon::parse('-1 days')->timestamp);
-         return;
-         
-         
-         
+        //  dump(Carbon::parse('+1 days')->timestamp);
+        //  dump(Carbon::parse('-1 days')->timestamp);
+
+        // PAY2019112601292353681
+        die;
+        $out_trade_no =    'PAY2019112601575415199';
+
+        $pay = DB::table('pay')
+            ->where('pay_id', $out_trade_no)
+            ->first();
+
+        $order = DB::table('order')
+            ->where('pay_id', $out_trade_no)
+            ->first();
+
+        if ($pay->state != 2) {
+            DB::table('pay')
+                ->where('pay_id', $out_trade_no)
+                ->update([
+                    'state' => 2,
+                    'info' => null
+                ]);
+
+            DB::table('order')
+                ->where('pay_id', $out_trade_no)
+                ->update(['state' => 2]);
+
+            /**
+             * 支付成功后加x天
+             */
+
+            $snapshotInfo = DB::table('snapshot')
+                ->where('order_id', $order->order_id)
+                ->first();
+            $vipData = json_decode($snapshotInfo->data, true);
+            $day = $vipData['day'];
+
+            $time =    Carbon::parse("+$day days")->timestamp;
+
+            DB::table('vip')
+                ->where('user_id', $order->user_id)
+                ->update(['end_time' => $time]);
+        }
+        return;
+
+
+
 
         // $pay_id = 'PAY2019112517355696799';
 

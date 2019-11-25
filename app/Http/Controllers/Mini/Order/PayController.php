@@ -113,6 +113,11 @@ class PayController extends Controller
 			$pay = DB::table('pay')
 				->where('pay_id', $out_trade_no)
 				->first();
+
+			$order = DB::table('order')
+				->where('pay_id', $out_trade_no)
+				->first();
+
 			if ($pay->state != 2) {
 				DB::table('pay')
 					->where('pay_id', $out_trade_no)
@@ -126,9 +131,20 @@ class PayController extends Controller
 					->update(['state' => 2]);
 
 				/**
-				 * 支付成功后打印订单
+				 * 支付成功后加x天
 				 */
-				PayController::printOrder($out_trade_no);
+
+				$snapshotInfo = DB::table('snapshot')
+					->where('order_id', $order->order_id)
+					->first();
+				$vipData = json_decode($snapshotInfo->data, true);
+				$day = $vipData['day'];
+
+				$time =	Carbon::parse("+$day days")->timestamp;
+
+				$snapshotInfo = DB::table('snapshot')
+					->where('user_id', $order->user_id)
+					->update(['end_time' => $time]);
 			}
 
 			return true;
