@@ -86,7 +86,7 @@ class VipController extends Controller
         $payInfo = [];
         $payInfo['pay_id'] = $pay_id;
         $payInfo['price'] = $price;
-        // $payInfo['price'] = 0.01;
+        $payInfo['price'] = 0.01;
         $payInfo['app_type'] = $app_type;
         $payInfo['app_id'] = $app_id;
         $payInfo['type'] = 'VIP_BUY';
