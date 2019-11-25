@@ -156,14 +156,14 @@ class OrderController extends Controller
 			 * 拿到快照数据
 			 */
 			$item->snapshotInfo = DB::table('snapshot')->where('order_id', $item->order_id)->get();
-			$item->storeInfo = DB::table('store')->where('store_id', $item->store_id)->first();
+			if ($item->store_id) {
+				$item->storeInfo = DB::table('store')->where('store_id', $item->store_id)->first();
+			}
 
 			$item->snapshotInfo =	$item->snapshotInfo->map(function ($el) {
 				$el->data = json_decode($el->data, true);
 				return $el;
 			});
-			// $item->snapshotInfo->data = json_decode($item->snapshotInfo->data, true);
-
 			return $item;
 		});
 
