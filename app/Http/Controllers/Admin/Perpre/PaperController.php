@@ -1,13 +1,13 @@
 <?php
 
-namespace  App\Http\Controllers\Admin\Perpre; // @todo: 这里是要生成类的命名空间
+namespace  App\Http\Controllers\Admin\Paper; // @todo: 这里是要生成类的命名空间
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
-class PerpreController extends Controller
+class PaperController extends Controller
 {
 
 	// 图文列表
