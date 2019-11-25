@@ -20,14 +20,19 @@ class ArticleController extends Controller
 
 
 		if ($request->filled('title')) {
-
 			$DB->where('title', 'like',  '%' . $request->input('title') . '%');
 		}
 
-		if ($request->filled('is_up')) {
+		$DB->where('is_up', $request->input('is_up', 1));
 
-			$DB->where('is_up', $request->input('is_up'));
-		}
+
+		$total = $DB->count();
+
+
+		$DB->offset(($request->input('page', 1) - 1) * $request->input('page_size', 5));
+		$DB->limit($request->input('page_size', 10));
+
+
 
 		// if ($request->filled('app_id')) {
 		// 	$DB->where('app_id', $request->input('app_id'));
@@ -36,15 +41,17 @@ class ArticleController extends Controller
 		// }
 
 		$result = $DB->get();
-		// $result->map(function ($item) {
-		// 	$item->label = explode(',', $item->label);
-		// 	return $item;
-		// });
+
+		$result->map(function ($item) {
+			$item->img_list = json_decode($item->img_list);
+			return $item;
+		});
 
 		return [
-			'code' => $result ? 1 : -1,
+			'code' => $result->count(),
 			'msg' => $result ? 'success' : 'error',
 			'data' => $result,
+			'total' => $total * 1,
 		];
 	}
 
@@ -75,6 +82,8 @@ class ArticleController extends Controller
 		$data = $request->toArray();
 		if (Arr::has($data, 'img_list')) {
 			$data['img_list'] = json_encode($data['img_list']);
+		} else {
+			$data['img_list'] = '[]';
 		}
 
 		if ($request->filled('id')) {
@@ -108,6 +117,46 @@ class ArticleController extends Controller
 		$result = DB::table('paper')
 			->where('id', $request->input('id'))
 			->delete();
+
+		return [
+			'code' => $result ? 1 : -1,
+			'msg' => $result ? 'success' : 'error',
+			'data' => $result,
+		];
+	}
+
+	// 文章详情
+	public function getPhone(Request $request)
+	{
+
+
+		$user_id = $request->jwt->id;
+
+		$vip = DB::table('vip')
+			->where('user_id', $user_id)
+			->first();
+
+
+		$contact = DB::table('paper')
+			->where('data_state', 1)
+			->where('id', $request->input('id'))
+			->value('contact');
+
+
+		if (time() < $vip->end_time) {
+			// 未到期
+			return response()->json([
+				'code' => 1,
+				'msg' =>  '未到期',
+				'data' => $contact,
+			]);
+		} else {
+			return response()->json([
+				'code' => -1,
+				'msg' =>  '已到期',
+				'data' => null,
+			]);
+		}
 
 		return [
 			'code' => $result ? 1 : -1,

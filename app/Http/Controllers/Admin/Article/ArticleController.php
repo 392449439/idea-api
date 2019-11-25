@@ -74,6 +74,8 @@ class ArticleController extends Controller
 		$data = $request->toArray();
 		if (Arr::has($data, 'img_list')) {
 			$data['img_list'] = json_encode($data['img_list']);
+		} else {
+			$data['img_list'] = '[]';
 		}
 
 		if ($request->filled('id')) {

@@ -117,4 +117,30 @@ class UserController extends Controller
 			'data' => $result,
 		]);
 	}
+
+	public function verifyVip(Request $request)
+	{
+
+		$user_id = $request->jwt->id;
+
+		$vip = DB::table('vip')
+			->where('user_id', $user_id)
+			->first();
+
+
+		if (time() < $vip->end_time) {
+			// 未到期
+			return response()->json([
+				'code' => 1,
+				'msg' =>  '未到期',
+				'data' => $vip,
+			]);
+		} else {
+			return response()->json([
+				'code' => -1,
+				'msg' =>  '已到期',
+				'data' => $vip,
+			]);
+		}
+	}
 }

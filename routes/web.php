@@ -158,7 +158,15 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
     $router->group(['namespace' => 'User', 'prefix' => 'user', "middleware" => 'auth'], function () use ($router) {
         $router->post('save', 'UserController@save');
         $router->post('info', 'UserController@info');
+        $router->post('verifyVip', 'UserController@verifyVip');
     });
+
+    $router->group(['namespace' => 'Vip', 'prefix' => 'vip', "middleware" => 'auth'], function () use ($router) {
+        $router->post('verifyVip', 'VipController@verifyVip');
+        $router->post('price/list', 'VipController@priceList');
+        $router->post('buy', 'VipController@buy');
+    });
+
     $router->group(['namespace' => 'Order', 'prefix' => 'order', "middleware" => 'auth'], function () use ($router) {
         $router->post('create', 'OrderController@create');
         $router->post('list', 'OrderController@list');
@@ -167,12 +175,14 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
     });
     $router->group(['namespace' => 'Article', 'prefix' => 'article', "middleware" => 'auth'], function () use ($router) {
         $router->post('save', 'ArticleController@save');
-        $router->post('list', 'ArticleController@list');
-        $router->post('info', 'ArticleController@info');
         $router->post('del', 'ArticleController@del');
+        $router->post('getPhone', 'ArticleController@getPhone');
     });
+    $router->post('article/info', 'Article\ArticleController@info');
+    $router->post('article/list', 'Article\ArticleController@list');
 });
 
 
 $router->get('pay/wx_notify_url/{app_id}', 'Mini\Order\PayController@notify_url');
 $router->post('pay/wx_notify_url/{app_id}', 'Mini\Order\PayController@notify_url');
+$router->post('pay/vip_notify_url/{app_id}', 'Mini\Order\PayController@vip_notify_url');

@@ -95,6 +95,49 @@ class PayController extends Controller
 		return $response;
 	}
 
+	public function vip_notify_url(String $app_id)
+	{
+
+		$App = DB::table('app')->where('app_id', $app_id)->first();
+
+		$config = [
+			'app_id'             => $App->wx_appid,
+			'mch_id'             => $App->wx_mch_id,
+			'key'                => $App->wx_mch_secret,
+		];
+
+		$app = Factory::payment($config);
+		$response = $app->handlePaidNotify(function ($message, $fail) {
+			$out_trade_no =	$message['out_trade_no'];
+
+			$pay = DB::table('pay')
+				->where('pay_id', $out_trade_no)
+				->first();
+			if ($pay->state != 2) {
+				DB::table('pay')
+					->where('pay_id', $out_trade_no)
+					->update([
+						'state' => 2,
+						'info' => json_encode($message)
+					]);
+
+				DB::table('order')
+					->where('pay_id', $out_trade_no)
+					->update(['state' => 2]);
+
+				/**
+				 * 支付成功后打印订单
+				 */
+				PayController::printOrder($out_trade_no);
+			}
+
+			return true;
+		});
+		return $response;
+	}
+
+
+
 	private static function printOrder($pay_id)
 	{
 		$pay = DB::table('pay')

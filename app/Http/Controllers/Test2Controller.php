@@ -18,62 +18,68 @@ class Test2Controller extends Controller
 
     public function test(Request $request)
     {
+         dump(Carbon::parse('+1 days')->timestamp);
+         dump(Carbon::parse('-1 days')->timestamp);
+         return;
+         
+         
+         
 
-        $pay_id = 'PAY2019112517355696799';
+        // $pay_id = 'PAY2019112517355696799';
 
-        $pay = DB::table('pay')
-            ->where('pay_id', $pay_id)
-            ->first();
+        // $pay = DB::table('pay')
+        //     ->where('pay_id', $pay_id)
+        //     ->first();
 
-        $order = DB::table('order')
-            ->where('pay_id', $pay_id)
-            ->first();
+        // $order = DB::table('order')
+        //     ->where('pay_id', $pay_id)
+        //     ->first();
 
-        $store = DB::table('store')
-            ->where('store_id', $order->store_id)
-            ->first();
+        // $store = DB::table('store')
+        //     ->where('store_id', $order->store_id)
+        //     ->first();
 
-        $orderAddress = DB::table('order_address')
-            ->where('id',  $order->address_id)
-            ->first();
+        // $orderAddress = DB::table('order_address')
+        //     ->where('id',  $order->address_id)
+        //     ->first();
 
-        $snapshotInfo = DB::table('snapshot')
-            ->where('order_id', $order->order_id)
-            ->get();
+        // $snapshotInfo = DB::table('snapshot')
+        //     ->where('order_id', $order->order_id)
+        //     ->get();
 
-        $data = $snapshotInfo->map(function ($item) {
-            $item->data = json_decode($item->data, true);
-            $newItem = [
-                'title' => $item->data['title'],
-                'price' => $item->data['price'],
-                'num' =>  $item->data['quantity'],
-            ];
-            return $newItem;
-        });
+        // $data = $snapshotInfo->map(function ($item) {
+        //     $item->data = json_decode($item->data, true);
+        //     $newItem = [
+        //         'title' => $item->data['title'],
+        //         'price' => $item->data['price'],
+        //         'num' =>  $item->data['quantity'],
+        //     ];
+        //     return $newItem;
+        // });
 
-        $printer = new Printer();
+        // $printer = new Printer();
 
-        $header = [
-            "<CB>" . $store->name . "</CB><BR>",
-            '名称           单价  数量 金额<BR>',
-            '--------------------------------<BR>',
-        ];
+        // $header = [
+        //     "<CB>" . $store->name . "</CB><BR>",
+        //     '名称           单价  数量 金额<BR>',
+        //     '--------------------------------<BR>',
+        // ];
 
-        $footer = [
-            '--------------------------------<BR>',
-            '订单号：' . $order->order_id,
-            '支付号：' . $pay->pay_id,
-            '合计：' . number_format($pay->price, 2) . '元<BR>',
-            '送货地点：' . $orderAddress->address . '<BR>',
-            '联系电话：' .    $orderAddress->phone,
-            '联系人：' .    $orderAddress->contacts,
-            '订餐时间：' . $order->add_time,
-            '备注：' . $order->remarks ? $order->remarks : '无' . '<BR><BR>',
-            '<QR>https://www.yihuo-cloud.com/</QR>',
-        ];
+        // $footer = [
+        //     '--------------------------------<BR>',
+        //     '订单号：' . $order->order_id,
+        //     '支付号：' . $pay->pay_id,
+        //     '合计：' . number_format($pay->price, 2) . '元<BR>',
+        //     '送货地点：' . $orderAddress->address . '<BR>',
+        //     '联系电话：' .    $orderAddress->phone,
+        //     '联系人：' .    $orderAddress->contacts,
+        //     '订餐时间：' . $order->add_time,
+        //     '备注：' . $order->remarks ? $order->remarks : '无' . '<BR><BR>',
+        //     '<QR>https://www.yihuo-cloud.com/</QR>',
+        // ];
 
 
-        $res = $printer->printData($header, $data, $footer, '921510805');
+        // $res = $printer->printData($header, $data, $footer, '921510805');
 
         return ["data" => $res];
 

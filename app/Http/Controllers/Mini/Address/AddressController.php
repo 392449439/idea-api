@@ -73,11 +73,11 @@ class AddressController extends Controller
 
 			$result = DB::table('address')->insert($data);
 
-			return response()->json([
+			return [
 				'code' => $result ? 1 : -1,
 				'msg' => $result ? 'success' : 'error',
 				'data' => $result,
-			]);
+			];
 		}
 	}
 
