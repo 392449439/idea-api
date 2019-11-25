@@ -139,6 +139,7 @@ class OrderController extends Controller
 		$DB->where('user_id', $request->jwt->id);
 		$DB->whereIn('app_id', $request->openInfo->apps);
 
+		// return  $request->jwt->id;
 		$total = $DB->count();
 
 		if ($request->filled('page')) {
