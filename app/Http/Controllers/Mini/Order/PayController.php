@@ -3,6 +3,7 @@
 namespace  App\Http\Controllers\Mini\Order; // @todo: 这里是要生成类的命名空间
 
 use App\Http\Controllers\Controller;
+use App\Lib\Printer\Printer;
 use EasyWeChat\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -10,7 +11,6 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-use App\Lib\Printer\Printer;
 
 class PayController extends Controller
 {
