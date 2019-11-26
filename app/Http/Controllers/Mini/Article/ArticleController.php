@@ -50,7 +50,7 @@ class ArticleController extends Controller
 		$result->map(function ($item) {
 
 			if ($item->user_id) {
-				$item->userInfo = DB::table('paper')->where('user_id', $item->user_id)->first();
+				$item->userInfo = DB::table('user')->where('id', $item->user_id)->first();
 			}
 
 			return $item;
@@ -122,6 +122,16 @@ class ArticleController extends Controller
 		$result->map(function ($item) {
 			$item->img_list = json_decode($item->img_list);
 			return $item;
+		});
+
+		$result->map(function ($item) {
+
+			if ($item->user_id) {
+				$item->userInfo = DB::table('user')->where('id', $item->user_id)->first();
+			}
+
+			return $item;
+
 		});
 
 		return [
@@ -258,6 +268,16 @@ class ArticleController extends Controller
 				->where('user_id',$user_id);
 
 		$result = $myList->get();
+
+		$result->map(function ($item) {
+
+			if ($item->user_id) {
+				$item->userInfo = DB::table('user')->where('id', $item->user_id)->first();
+			}
+
+			return $item;
+
+		});
 
 		return [
 			'code' => $result ? 1 : -1,
