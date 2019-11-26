@@ -179,14 +179,6 @@ class ArticleController extends Controller
 			]);
 		} else {
 
-			$data = $request->toArray();
-
-			// if (Arr::has($data, 'img_list')) {
-			// 	$data['img_list'] = json_encode($data['img_list']);
-			// } else {
-			// 	$data['img_list'] = '[]';
-			// }
-
 			$data['user_id'] = $request->jwt->id;
 			$data['app_id'] = $request->jwt->app_id;
 
