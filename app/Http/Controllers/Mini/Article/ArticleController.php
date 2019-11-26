@@ -47,6 +47,28 @@ class ArticleController extends Controller
 			return $item;
 		});
 
+		// $result->map(function ($item) {
+			
+
+		// 	$item->user_id = DB::table('paper')->where('user_id', $item->user_id)->get();
+
+		// 	if ($item->user_id) {
+		// 		$item->user_id = DB::table('user')->where('id', $item->id)->first();
+		// 	}
+
+		// 	$item->user_id=$item->id->map(function ($el) {
+		// 		$el->data = json_decode($el->data, true);
+		// 		return $el;
+		// 	});
+
+		// 	return $item;
+
+		// });
+
+		if ($item->user_id) {
+			$item->userInfo = DB::table('paper')->where('user_id', $item->user_id)->first();
+		}
+
 		return [
 			'code' => $result->count(),
 			'msg' => $result ? 'success' : 'error',
@@ -159,7 +181,7 @@ class ArticleController extends Controller
 			$result = DB::table('paper')
 				->where('id', $request->input('id'))
 				->update($data);
-
+			
 			return response()->json([
 				'code' => $result >= 0 ? 1 : -1,
 				'msg' =>  $result >= 0 ? 'success' : 'error',
@@ -167,8 +189,19 @@ class ArticleController extends Controller
 			]);
 		} else {
 
+			$data = $request->toArray();
+
+			// if (Arr::has($data, 'img_list')) {
+			// 	$data['img_list'] = json_encode($data['img_list']);
+			// } else {
+			// 	$data['img_list'] = '[]';
+			// }
+
+			$data['user_id'] = $request->jwt->id;
+			$data['app_id'] = $request->jwt->app_id;
 
 			$result = DB::table('paper')->insert($data);
+			
 
 			return response()->json([
 				'code' => $result ? 1 : -1,
@@ -232,4 +265,23 @@ class ArticleController extends Controller
 			'data' => $result,
 		];
 	}
+
+	// 我的发布
+	public function mylist(Request $request)
+	{
+
+		$user_id = $request->jwt->id;
+
+		$myList = DB::table('paper')
+				->where('user_id',$user_id);
+
+		$result = $myList->get();
+
+		return [
+			'code' => $result ? 1 : -1,
+			'msg' => $result ? 'success' : 'error',
+			'data' => $result,
+		];
+	}
+
 }

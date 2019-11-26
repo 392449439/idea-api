@@ -28,10 +28,9 @@ $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($ro
     $router->post('login', 'AuthController@login');
 });
 
-$router->group(['middleware' => 'core'], function () use ($router) {
-    $router->group(['namespace' => 'File', 'prefix' => 'file', 'middleware' => 'auth'], function () use ($router) {
-        $router->post('upload', 'FileController@upload');
-    });
+
+$router->group(['namespace' => 'File', 'prefix' => 'file', 'middleware' => 'auth'], function () use ($router) {
+    $router->post('upload', 'FileController@upload');
 });
 
 
@@ -186,6 +185,7 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
     $router->post('article/info', 'Article\ArticleController@info');
     $router->post('article/list', 'Article\ArticleController@list');
     $router->post('article/vip/list', 'Article\ArticleController@vipList');
+    $router->post('article/my/list', 'Article\ArticleController@myList');
 });
 
 
