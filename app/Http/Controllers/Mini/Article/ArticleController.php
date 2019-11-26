@@ -19,8 +19,9 @@ class ArticleController extends Controller
 			->orderBy('add_time', 'desc');
 
 
-		if ($request->filled('title')) {
-			$DB->where('title', 'like',  '%' . $request->input('title') . '%');
+		if ($request->filled('key')) {
+			$DB->orWhere('title', 'like',  '%' . $request->input('key') . '%');
+			$DB->orWhere('content', 'like',  '%' . $request->input('key') . '%');
 		}
 
 		$DB->where('is_up', $request->input('is_up', 1));
@@ -44,19 +45,11 @@ class ArticleController extends Controller
 
 		$result->map(function ($item) {
 			$item->img_list = json_decode($item->img_list);
-			return $item;
-		});
-
-		$result->map(function ($item) {
-
 			if ($item->user_id) {
 				$item->userInfo = DB::table('user')->where('id', $item->user_id)->first();
 			}
-
 			return $item;
-
 		});
-
 		
 
 		return [
@@ -95,8 +88,9 @@ class ArticleController extends Controller
 			->orderBy('add_time', 'desc');
 
 
-		if ($request->filled('title')) {
-			$DB->where('title', 'like',  '%' . $request->input('title') . '%');
+		if ($request->filled('key')) {
+			$DB->orWhere('title', 'like',  '%' . $request->input('key') . '%');
+			$DB->orWhere('content', 'like',  '%' . $request->input('key') . '%');
 		}
 
 		$DB->where('is_up', $request->input('is_up', 1));
@@ -121,18 +115,12 @@ class ArticleController extends Controller
 
 		$result->map(function ($item) {
 			$item->img_list = json_decode($item->img_list);
-			return $item;
-		});
-
-		$result->map(function ($item) {
-
 			if ($item->user_id) {
 				$item->userInfo = DB::table('user')->where('id', $item->user_id)->first();
 			}
-
 			return $item;
-
 		});
+
 
 		return [
 			'code' => $result->count(),
@@ -264,10 +252,15 @@ class ArticleController extends Controller
 
 		$user_id = $request->jwt->id;
 
-		$myList = DB::table('paper')
+		$DB = DB::table('paper')
 				->where('user_id',$user_id);
+		
+		if ($request->filled('key')) {
+			$DB->orWhere('title', 'like',  '%' . $request->input('key') . '%');
+			$DB->orWhere('content', 'like',  '%' . $request->input('key') . '%');
+		}
 
-		$result = $myList->get();
+		$result = $DB->get();
 
 		$result->map(function ($item) {
 			$item->img_list = json_decode($item->img_list);
@@ -284,10 +277,17 @@ class ArticleController extends Controller
 
 		});
 
+		$total = $DB->count();
+
+
+		$DB->offset(($request->input('page', 1) - 1) * $request->input('page_size', 5));
+		$DB->limit($request->input('page_size', 10));
+
 		return [
 			'code' => $result ? 1 : -1,
 			'msg' => $result ? 'success' : 'error',
 			'data' => $result,
+			'total' => $total * 1,
 		];
 	}
 
