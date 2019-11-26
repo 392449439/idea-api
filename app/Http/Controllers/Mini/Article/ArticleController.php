@@ -47,27 +47,15 @@ class ArticleController extends Controller
 			return $item;
 		});
 
-		// $result->map(function ($item) {
-			
+		$result->map(function ($item) {
 
-		// 	$item->user_id = DB::table('paper')->where('user_id', $item->user_id)->get();
+			if ($item->user_id) {
+				$item->userInfo = DB::table('paper')->where('user_id', $item->user_id)->first();
+			}
 
-		// 	if ($item->user_id) {
-		// 		$item->user_id = DB::table('user')->where('id', $item->id)->first();
-		// 	}
+		});
 
-		// 	$item->user_id=$item->id->map(function ($el) {
-		// 		$el->data = json_decode($el->data, true);
-		// 		return $el;
-		// 	});
-
-		// 	return $item;
-
-		// });
-
-		if ($item->user_id) {
-			$item->userInfo = DB::table('paper')->where('user_id', $item->user_id)->first();
-		}
+		
 
 		return [
 			'code' => $result->count(),
