@@ -270,6 +270,11 @@ class ArticleController extends Controller
 		$result = $myList->get();
 
 		$result->map(function ($item) {
+			$item->img_list = json_decode($item->img_list);
+			return $item;
+		});
+
+		$result->map(function ($item) {
 
 			if ($item->user_id) {
 				$item->userInfo = DB::table('user')->where('id', $item->user_id)->first();
