@@ -53,6 +53,8 @@ class ArticleController extends Controller
 				$item->userInfo = DB::table('paper')->where('user_id', $item->user_id)->first();
 			}
 
+			return $item;
+
 		});
 
 		
