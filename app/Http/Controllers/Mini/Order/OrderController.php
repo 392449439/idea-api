@@ -91,7 +91,7 @@ class OrderController extends Controller
 
 		$orderInfo['order_id'] = $order_id;
 		$orderInfo['pay_id'] = $pay_id;
-		$orderInfo['user_id'] = '';
+		$orderInfo['user_id'] = $request->jwt->id;
 		$orderInfo['store_id'] = $store_id;
 		$orderInfo['app_id'] = $request->appInfo->app_id;
 		$orderInfo['price'] = $price;
