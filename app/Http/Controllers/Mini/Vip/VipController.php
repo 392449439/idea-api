@@ -28,6 +28,17 @@ class VipController extends Controller
     public function buy(Request $request)
     {
 
+        /**
+         * vip包
+         * 天数
+         * 看手机号次数
+         * 
+         * 用户需要有vip卡  
+         * 
+         */
+
+
+
         $DB = DB::table('vip_price');
         $result = $DB->where('id', $request->input('vip_price_id'))->first();
         $price = $result->price;
@@ -40,10 +51,8 @@ class VipController extends Controller
         $OrderDB = DB::table('order');
         $PayDB = DB::table('pay');
 
-
         $order_id = 'ORDER' . Carbon::now()->format('YmdHis') . rand(10000, 99999);
         $pay_id = 'PAY' . Carbon::now()->format('YmdHis') . rand(10000, 99999);
-
 
         $app_type = $request->appInfo->app_type; //app的类型，在这里指订单类型，订单来源
         $app_id = $request->appInfo->app_id;
@@ -51,22 +60,19 @@ class VipController extends Controller
         /**
          * 组成快照
          */
-
-        // $goodsData = [];
         $snapshotInfo = [
             'order_id' => $order_id,
-            'user_id' => '',
+            'user_id' => $request->jwt->id,
             'app_id' => $app_id,
             'type' => 'VIP_BUY',
-            'title' =>  '会员充值',
-            'data' =>    collect(['price' => $price, "day" => $day])->toJson(),
+            'title' => '会员充值',
+            'data' => collect(['price' => $price, "day" => $day])->toJson(),
         ];
 
 
         /**
          * 组成订单
          */
-
 
         $orderInfo = [];
 
