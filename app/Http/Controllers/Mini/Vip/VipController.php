@@ -28,8 +28,8 @@ class VipController extends Controller
     public function buy(Request $request)
     {
 
-        $DB = DB::table('vip_price')->where('id', $request->input('vip_price_id'));
-        $result = $DB->first();
+        $DB = DB::table('vip_price');
+        $result = $DB->where('id', $request->input('vip_price_id'))->first();
         $price = $result->price;
         $day = $result->day;
 
