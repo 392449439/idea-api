@@ -37,8 +37,6 @@ class VipController extends Controller
          * 
          */
 
-
-
         $DB = DB::table('vip_price');
         $result = $DB->where('id', $request->input('vip_price_id'))->first();
         $price = $result->price;
