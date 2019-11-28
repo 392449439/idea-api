@@ -18,132 +18,14 @@ class Test2Controller extends Controller
 
     public function test(Request $request)
     {
-        //  dump(Carbon::parse('+1 days')->timestamp);
-        //  dump(Carbon::parse('-1 days')->timestamp);
+        // //  dump(Carbon::parse('+1 days')->timestamp);
+        // //  dump(Carbon::parse('-1 days')->timestamp);
+        // $data = [];
+        // $data['user_id'] = 20;
+        // $data['end_time'] = Carbon::parse('+30 days')->timestamp;
+        // $data['max'] = 30;
 
-        // PAY2019112601292353681
-        die;
-        $out_trade_no =    'PAY2019112601575415199';
-
-        $pay = DB::table('pay')
-            ->where('pay_id', $out_trade_no)
-            ->first();
-
-        $order = DB::table('order')
-            ->where('pay_id', $out_trade_no)
-            ->first();
-
-        if ($pay->state != 2) {
-            DB::table('pay')
-                ->where('pay_id', $out_trade_no)
-                ->update([
-                    'state' => 2,
-                    'info' => null
-                ]);
-
-            DB::table('order')
-                ->where('pay_id', $out_trade_no)
-                ->update(['state' => 2]);
-
-            /**
-             * 支付成功后加x天
-             */
-
-            $snapshotInfo = DB::table('snapshot')
-                ->where('order_id', $order->order_id)
-                ->first();
-            $vipData = json_decode($snapshotInfo->data, true);
-            $day = $vipData['day'];
-
-            $time =    Carbon::parse("+$day days")->timestamp;
-
-            DB::table('vip')
-                ->where('user_id', $order->user_id)
-                ->update(['end_time' => $time]);
-        }
-        return;
-
-
-
-
-        // $pay_id = 'PAY2019112517355696799';
-
-        // $pay = DB::table('pay')
-        //     ->where('pay_id', $pay_id)
-        //     ->first();
-
-        // $order = DB::table('order')
-        //     ->where('pay_id', $pay_id)
-        //     ->first();
-
-        // $store = DB::table('store')
-        //     ->where('store_id', $order->store_id)
-        //     ->first();
-
-        // $orderAddress = DB::table('order_address')
-        //     ->where('id',  $order->address_id)
-        //     ->first();
-
-        // $snapshotInfo = DB::table('snapshot')
-        //     ->where('order_id', $order->order_id)
-        //     ->get();
-
-        // $data = $snapshotInfo->map(function ($item) {
-        //     $item->data = json_decode($item->data, true);
-        //     $newItem = [
-        //         'title' => $item->data['title'],
-        //         'price' => $item->data['price'],
-        //         'num' =>  $item->data['quantity'],
-        //     ];
-        //     return $newItem;
-        // });
-
-        // $printer = new Printer();
-
-        // $header = [
-        //     "<CB>" . $store->name . "</CB><BR>",
-        //     '名称           单价  数量 金额<BR>',
-        //     '--------------------------------<BR>',
-        // ];
-
-        // $footer = [
-        //     '--------------------------------<BR>',
-        //     '订单号：' . $order->order_id,
-        //     '支付号：' . $pay->pay_id,
-        //     '合计：' . number_format($pay->price, 2) . '元<BR>',
-        //     '送货地点：' . $orderAddress->address . '<BR>',
-        //     '联系电话：' .    $orderAddress->phone,
-        //     '联系人：' .    $orderAddress->contacts,
-        //     '订餐时间：' . $order->add_time,
-        //     '备注：' . $order->remarks ? $order->remarks : '无' . '<BR><BR>',
-        //     '<QR>https://www.yihuo-cloud.com/</QR>',
-        // ];
-
-
-        // $res = $printer->printData($header, $data, $footer, '921510805');
-
-        return ["data" => $res];
-
-
-
-        // $arr = [];
-        // $arr[] = ['title' => '怪兽炒饭a套餐', 'price' => '1', 'num' => '1'];
-        // $arr[] = ['title' => '怪兽炒饭a套餐', 'price' => '1', 'num' => '1'];
-        // $arr[] = ['title' => '怪兽炒饭a套餐', 'price' => '1', 'num' => '1'];
-        // $printer = new Printer();
-        // $res = $printer->printData($arr, '921510805');
-        // if ($res) {
-        //     return response()->json([
-        //         'code' => 1,
-        //         'msg' => 'success',
-        //         'data' => $res,
-        //     ]);
-        // } else {
-        //     return response()->json([
-        //         'code' => -1,
-        //         'msg' => 'error',
-        //         'data' => null,
-        //     ]);
-        // }
+        // $result = DB::table('vip_user_count')->where('user_id', 20)->update($data);
+        // return $result;
     }
 }

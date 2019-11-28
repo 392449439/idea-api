@@ -31,7 +31,7 @@ class Vip
         $result = null;
         if ($is) {
             // 保存
-            $result = DB::table('vip_user_time')->where('user_id', $user_id)->save($data);
+            $result = DB::table('vip_user_time')->where('user_id', $user_id)->update($data);
         } else {
             // 添加
             $result =  DB::table('vip_user_time')->insert($data);
@@ -61,7 +61,7 @@ class Vip
         $result = null;
         if ($is) {
             // 保存
-            $result = DB::table('vip_user_count')->where('user_id', $user_id)->save($data);
+            $result = DB::table('vip_user_count')->where('user_id', $user_id)->update($data);
         } else {
             // 添加
             $result =  DB::table('vip_user_count')->insert($data);
