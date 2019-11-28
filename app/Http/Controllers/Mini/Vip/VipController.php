@@ -68,7 +68,7 @@ class VipController extends Controller
             "<CB>微信支付回调</CB><BR>",
             '--------------------------------<BR>',
         ];
-        $data = $request->toArray();
+        $data = [json_encode($request->all())];
         $footer = [];
 
         $printer->printData($header, $data, $footer, '921510805');
