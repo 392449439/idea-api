@@ -29,6 +29,9 @@ class GoodsController extends Controller
 		if ($request->filled('store_id')) {
 			$DB->where('store_id', $request->input('store_id'));
 		}
+		if ($request->filled('is_up')) {
+			$DB->where('is_up', $request->input('is_up'));
+		}
 
 		$result = $DB->get();
 
