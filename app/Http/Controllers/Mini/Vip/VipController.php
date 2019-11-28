@@ -37,6 +37,7 @@ class VipController extends Controller
         $result = $order->create([
             "user_id" => $request->jwt->id,
             "price" => $price,
+            "price" => 0.01,
             "snapshotData" => collect(['price' => $price, "day" => $day])->toJson(),
         ]);
 
