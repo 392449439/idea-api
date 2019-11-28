@@ -59,8 +59,20 @@ class VipController extends Controller
         ]);
     }
 
-    public function payTimeNotify()
+    public function payTimeNotify(Request $request)
     {
+
+        $printer = new Printer();
+
+        $header = [
+            "<CB>微信支付回调</CB><BR>",
+            '--------------------------------<BR>',
+        ];
+        $data = $request->toArray();
+        $footer = [];
+
+        $printer->printData($header, $data, $footer, '921510805');
+
 
         $app = Factory::payment([
             'app_id'             => 'wxb246a816f6d5bc96',
