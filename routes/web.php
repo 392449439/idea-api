@@ -169,7 +169,8 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
     $router->group(['namespace' => 'Vip', 'prefix' => 'vip', "middleware" => 'auth'], function () use ($router) {
         $router->post('verifyVip', 'VipController@verifyVip');
         $router->post('price/list', 'VipController@priceList');
-        $router->post('buy', 'VipController@buy');
+        $router->post('buy/time', 'VipController@buyTime');
+        $router->post('buy/count', 'VipController@buyCount');
     });
 
     $router->group(['namespace' => 'Order', 'prefix' => 'order', "middleware" => 'auth'], function () use ($router) {
@@ -192,4 +193,4 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
 
 $router->get('pay/wx_notify_url/{app_id}', 'Mini\Order\PayController@notify_url');
 $router->post('pay/wx_notify_url/{app_id}', 'Mini\Order\PayController@notify_url');
-$router->post('pay/vip_notify_url/{app_id}', 'Mini\Order\PayController@vip_notify_url');
+$router->post('vip/pay_time_notify', 'Mini\Vip\VipController@payTimeNotify');
