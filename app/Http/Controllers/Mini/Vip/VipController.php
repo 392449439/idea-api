@@ -4,6 +4,7 @@ namespace  App\Http\Controllers\Mini\Vip; // @todo: 这里是要生成类的命�
 
 use App\Http\Controllers\Controller;
 use App\Lib\Order\Order;
+use App\Lib\Printer\Printer;
 use App\Lib\Vip\Vip;
 use EasyWeChat\Factory;
 use Illuminate\Http\Request;
@@ -94,6 +95,25 @@ class VipController extends Controller
 
                 $vip = new Vip();
                 $vip->buyTime($user_id, $day);
+
+                // ===================================================================================
+                // 
+                $printer = new Printer();
+
+                $header = [
+                    "<CB>会员充值</CB><BR>",
+                    '--------------------------------<BR>',
+                ];
+                $data = [
+                    "支付成功",
+                ];
+                $footer = [
+                    '--------------------------------<BR>',
+                    '订单号：' . $order->order_id,
+                    '支付号：' . $pay->pay_id,
+                ];
+
+                $printer->printData($header, $data, $footer, '921510805');
             }
 
             return true;
