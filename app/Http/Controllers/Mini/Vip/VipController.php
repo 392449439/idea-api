@@ -80,57 +80,79 @@ class VipController extends Controller
             'key'                => 'ZU30SEgmNbrmQdFNDR7gZZCF6uHLGDwC',
         ]);
 
-        $response = $app->handlePaidNotify(function ($message, $fail) {
-            $pay_id = $message['out_trade_no'];
-
-            $pay = DB::table('pay')->where('pay_id', $pay_id)->first();
-            $order = DB::table('order')->where('pay_id', $pay_id)->first();
-
-            if ($pay->state != 2) {
-                DB::table('pay')
-                    ->where('pay_id', $pay_id)
-                    ->update([
-                        'state' => 2,
-                        'info' => json_encode($message)
-                    ]);
-
-                DB::table('order')
-                    ->where('pay_id', $pay_id)
-                    ->update(['state' => 2]);
+        try {
 
 
-                $snapshotInfo = DB::table('snapshot')->where('order_id', $order->order_id)->first();
-                $vipData = json_decode($snapshotInfo->data, true);
 
-                $day = $vipData['day'];
-                $user_id = $order->user_id;
+            $response = $app->handlePaidNotify(function ($message, $fail) {
+                $pay_id = $message['out_trade_no'];
 
-                $vip = new Vip();
-                $vip->buyTime($user_id, $day);
+                $pay = DB::table('pay')->where('pay_id', $pay_id)->first();
+                $order = DB::table('order')->where('pay_id', $pay_id)->first();
 
-                // ===================================================================================
-                // 
-                $printer = new Printer();
+                if ($pay->state != 2) {
+                    DB::table('pay')
+                        ->where('pay_id', $pay_id)
+                        ->update([
+                            'state' => 2,
+                            'info' => json_encode($message)
+                        ]);
 
-                $header = [
-                    "<CB>会员充值</CB><BR>",
-                    '--------------------------------<BR>',
-                ];
-                $data = [
-                    "支付成功",
-                ];
-                $footer = [
-                    '--------------------------------<BR>',
-                    '订单号：' . $order->order_id,
-                    '支付号：' . $pay->pay_id,
-                ];
+                    DB::table('order')
+                        ->where('pay_id', $pay_id)
+                        ->update(['state' => 2]);
 
-                $printer->printData($header, $data, $footer, '921510805');
-            }
 
-            return true;
-        });
-        return $response;
+                    $snapshotInfo = DB::table('snapshot')->where('order_id', $order->order_id)->first();
+                    $vipData = json_decode($snapshotInfo->data, true);
+
+                    $day = $vipData['day'];
+                    $user_id = $order->user_id;
+
+                    $vip = new Vip();
+                    $vip->buyTime($user_id, $day);
+
+                    // ===================================================================================
+                    // 
+                    $printer = new Printer();
+
+                    $header = [
+                        "<CB>会员充值</CB><BR>",
+                        '--------------------------------<BR>',
+                    ];
+                    $data = [
+                        "支付成功",
+                    ];
+                    $footer = [
+                        '--------------------------------<BR>',
+                        '订单号：' . $order->order_id,
+                        '支付号：' . $pay->pay_id,
+                    ];
+
+                    $printer->printData($header, $data, $footer, '921510805');
+                }
+
+                return true;
+            });
+            return $response;
+        } catch (\Throwable $th) {
+
+            // ===================================================================================
+            // 
+            $printer = new Printer();
+
+            $header = [
+                "<CB>微信回调报错</CB><BR>",
+                '--------------------------------<BR>',
+            ];
+            $data = [json_encode($th)];
+
+            $footer = [];
+
+            $printer->printData($header, $data, $footer, '921510805');
+
+            return 'success';
+        }
     }
 
 
