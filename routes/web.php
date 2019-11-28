@@ -196,3 +196,6 @@ $router->post('pay/wx_notify_url/{app_id}', 'Mini\Order\PayController@notify_url
 
 $router->get('vip/pay_time_notify', 'Mini\Vip\VipController@payTimeNotify');
 $router->post('vip/pay_time_notify', 'Mini\Vip\VipController@payTimeNotify');
+
+$router->get('vip/pay_count_notify', 'Mini\Vip\VipController@payCountNotify');
+$router->post('vip/pay_count_notify', 'Mini\Vip\VipController@payCountNotify');

@@ -59,6 +59,41 @@ class VipController extends Controller
         ]);
     }
 
+
+    public function buyCount(Request $request)
+    {
+
+        $day = $request->input('day');
+        $max = $request->input('max');
+
+        /** 总价=(次数*单价)*天 */
+        $price = ($max * 0.05) * $day;
+
+        $order = new Order();
+        $result = $order->create([
+            "user_id" => $request->jwt->id,
+            "price" => $price,
+            "price" => 0.01,
+            "snapshotData" => ['price' => $price, "day" => $day, "max" => $max],
+        ]);
+
+
+        $pay_id = $result['pay_id'];
+        $order_id = $result['order_id'];
+
+        $pay_data =  $order->getPayData($request->jwt->openid, $pay_id, 'vip/pay_count_notify');
+
+        return response()->json([
+            'code' =>  $result ? 1 : -1,
+            'msg' =>  $result  ? 'success' : 'error',
+            'data' => [
+                "pay_id" => $pay_id,
+                "order_id" => $order_id,
+                "pay_data" => $pay_data,
+            ],
+        ]);
+    }
+
     public function payTimeNotify(Request $request)
     {
 
@@ -99,6 +134,53 @@ class VipController extends Controller
 
                 $vip = new Vip();
                 $vip->buyTime($user_id, $day);
+            }
+
+            return true;
+        });
+        return $response;
+    }
+
+    public function payCountNotify(Request $request)
+    {
+
+        $app = Factory::payment([
+            'app_id'             => 'wxb246a816f6d5bc96',
+            'mch_id'             => '1563112131',
+            'key'                => 'ZU30SEgmNbrmQdFNDR7gZZCF6uHLGDwC',
+        ]);
+
+
+        $response = $app->handlePaidNotify(function ($message, $fail) {
+            $pay_id = $message['out_trade_no'];
+
+            $pay = DB::table('pay')->where('pay_id', $pay_id)->first();
+            $order = DB::table('order')->where('pay_id', $pay_id)->first();
+
+            if ($pay->state != 2) {
+                DB::table('pay')
+                    ->where('pay_id', $pay_id)
+                    ->update([
+                        'state' => 2,
+                        'info' => json_encode($message)
+                    ]);
+
+                DB::table('order')
+                    ->where('pay_id', $pay_id)
+                    ->update(['state' => 2]);
+
+
+                $snapshotInfo = DB::table('snapshot')->where('order_id', $order->order_id)->first();
+                $vipData = json_decode($snapshotInfo->data, true);
+
+                $day = $vipData['day'];
+                $max = $vipData['max'];
+                $user_id = $order->user_id;
+
+                // ===================================================================================
+                // 
+                $vip = new Vip();
+                $vip->buyCount($user_id, $day, $max);
             }
 
             return true;
