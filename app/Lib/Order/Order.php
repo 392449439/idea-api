@@ -2,6 +2,7 @@
 
 namespace  App\Lib\Order;
 
+use EasyWeChat\Factory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
