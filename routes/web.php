@@ -193,4 +193,6 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
 
 $router->get('pay/wx_notify_url/{app_id}', 'Mini\Order\PayController@notify_url');
 $router->post('pay/wx_notify_url/{app_id}', 'Mini\Order\PayController@notify_url');
+
+$router->get('vip/pay_time_notify', 'Mini\Vip\VipController@payTimeNotify');
 $router->post('vip/pay_time_notify', 'Mini\Vip\VipController@payTimeNotify');
