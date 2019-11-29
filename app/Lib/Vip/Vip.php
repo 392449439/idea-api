@@ -52,6 +52,7 @@ class Vip
         $data['user_id'] = $user_id;
         $data['end_time'] = $end_time;
         $data['max'] = $max;
+        $data['sub'] = $max;
 
 
         /**没有就添加，有就覆盖 */
@@ -68,4 +69,17 @@ class Vip
         }
         return $result ? true : false;
     }
+
+
+    /**
+     * 减去剩余数量
+     */
+    public function devSub()
+    { }
+
+    /**
+     * 获取剩余数量
+     */
+    public function getSub()
+    { }
 }
