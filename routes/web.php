@@ -70,6 +70,17 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'co
         $router->post('save', 'JobController@save');
         $router->post('del', 'JobController@del');
     });
+    $router->group(['namespace' => 'Order', 'prefix' => 'order'], function () use ($router) {
+        // $router->post('create', 'OrderController@create');
+        $router->post('list', 'OrderController@list');
+        $router->post('info', 'OrderController@info');
+        // $router->post('getMini', 'PayController@getMini');
+    });
+    $router->group(['namespace' => 'Classi', 'prefix' => 'class'], function () use ($router) {
+        $router->post('list', 'ClassiController@list');
+        $router->post('del', 'ClassiController@del');
+        $router->post('save', 'ClassiController@save');
+    });
     $router->group(['namespace' => 'Feedback', 'prefix' => 'feedback'], function () use ($router) {
         $router->post('list', 'FeedbackController@list');
         $router->post('info', 'FeedbackController@info');
