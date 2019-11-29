@@ -80,6 +80,7 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'co
         $router->post('list', 'ClassiController@list');
         $router->post('del', 'ClassiController@del');
         $router->post('save', 'ClassiController@save');
+        $router->post('info', 'ClassiController@info');
     });
     $router->group(['namespace' => 'Feedback', 'prefix' => 'feedback'], function () use ($router) {
         $router->post('list', 'FeedbackController@list');

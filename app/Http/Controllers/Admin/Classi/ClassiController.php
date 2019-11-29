@@ -35,6 +35,25 @@ class ClassiController extends Controller
 			'data' => $result,
 		]);
     }
+
+    public function info(Request $request)
+	{
+
+
+		$DB = DB::table('class')
+				->where('data_state',1)
+				->orderBy('add_time', 'desc');
+
+		$DB->where('id', $request->input('id'));
+
+		$result = $DB->get();
+
+		return response()->json([
+			'code' => 1,
+			'msg' => 'success',
+			'data' => $result,
+		]);
+    }
     
     // 保存或者新增
 	public function save(Request $request)
