@@ -188,15 +188,15 @@ class OrderController extends Controller
 		/**
 		 * 拿到快照数据
 		 */
-		// $result->snapshotInfo = DB::table('snapshot')->where('order_id', $result->order_id)->get();
-		// $result->storeInfo = DB::table('store')->where('store_id', $result->store_id)->first();
-		// $result->payInfo = DB::table('pay')->where('pay_id', $result->pay_id)->first();
-		// $result->addressInfo = DB::table('order_address')->where('id', $result->address_id)->first();
+		$result->snapshotInfo = DB::table('snapshot')->where('order_id', $result->order_id)->get();
+		$result->storeInfo = DB::table('store')->where('store_id', $result->store_id)->first();
+		$result->payInfo = DB::table('pay')->where('pay_id', $result->pay_id)->first();
+		$result->addressInfo = DB::table('order_address')->where('id', $result->address_id)->first();
 
-		// $result->snapshotInfo =	$result->snapshotInfo->map(function ($el) {
-		// 	$el->data = json_decode($el->data, true);
-		// 	return $el;
-		// });
+		$result->snapshotInfo =	$result->snapshotInfo->map(function ($el) {
+			$el->data = json_decode($el->data, true);
+			return $el;
+		});
 
 		return [
 			'code' => $result ? 1 : -1,

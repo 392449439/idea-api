@@ -39,21 +39,17 @@ class ClassiController extends Controller
     public function info(Request $request)
 	{
 
+		$result = DB::table('class') //定义表
+			->where('id', $request->input('id')) //前台传过来的id
+			->first(); //获取数据
 
-		$DB = DB::table('class')
-				->where('data_state',1)
-				->orderBy('add_time', 'desc');
 
-		$DB->where('id', $request->input('id'));
-
-		$result = $DB->get();
-
-		return response()->json([
-			'code' => 1,
-			'msg' => 'success',
+		return [
+			'code' => $result ? 1 : -1,
+			'msg' => $result ? 'success' : 'error',
 			'data' => $result,
-		]);
-    }
+		];
+	}
     
     // 保存或者新增
 	public function save(Request $request)
