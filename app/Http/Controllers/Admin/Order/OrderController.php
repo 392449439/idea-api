@@ -155,21 +155,21 @@ class OrderController extends Controller
 
 		$result = $DB->get();
 
-		// $result->map(function ($item) {
-		// 	/**
-		// 	 * 拿到快照数据
-		// 	 */
-		// 	$item->snapshotInfo = DB::table('snapshot')->where('order_id', $item->order_id)->get();
-		// 	if ($item->store_id) {
-		// 		$item->storeInfo = DB::table('store')->where('store_id', $item->store_id)->first();
-		// 	}
+		$result->map(function ($item) {
+			/**
+			 * 拿到快照数据
+			 */
+			$item->snapshotInfo = DB::table('snapshot')->where('order_id', $item->order_id)->get();
+			if ($item->store_id) {
+				$item->storeInfo = DB::table('store')->where('store_id', $item->store_id)->first();
+			}
 
-		// 	$item->snapshotInfo =	$item->snapshotInfo->map(function ($el) {
-		// 		$el->data = json_decode($el->data, true);
-		// 		return $el;
-		// 	});
-		// 	return $item;
-		// });
+			$item->snapshotInfo =	$item->snapshotInfo->map(function ($el) {
+				$el->data = json_decode($el->data, true);
+				return $el;
+			});
+			return $item;
+		});
 
 
 		return [
