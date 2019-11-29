@@ -15,10 +15,11 @@ class ArticleController extends Controller
 	{
 
 
-		return [$request];
+		// return [$request];
 		$DB = DB::table('paper')
-			->where('type', $request->type)
-			->orderBy('add_time', 'desc');
+				->where('app_id',$request->input('app_id'))
+				// ->where('type', $request->type)
+				->orderBy('add_time', 'desc');
 
 
 		if ($request->filled('title')) {
