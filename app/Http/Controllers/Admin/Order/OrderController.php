@@ -142,6 +142,11 @@ class OrderController extends Controller
 		// $DB->where('user_id', $request->jwt->id);
 		// $DB->whereIn('app_id', $request->openInfo->apps);
 
+		if ($request->filled('state')) {
+			$DB->where('state',$request->input('state'));
+		}
+		
+
 		// return  $request->jwt->id;
 		$total = $DB->count();
 
