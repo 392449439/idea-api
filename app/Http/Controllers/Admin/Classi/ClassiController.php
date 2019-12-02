@@ -22,6 +22,7 @@ class ClassiController extends Controller
 
 
 		$DB = DB::table('class')
+				->where('domain_id',$request->domain_id)
 				->where('data_state',1)
 				->orderBy('add_time', 'desc');
 

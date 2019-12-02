@@ -16,6 +16,7 @@ class GoodsController extends Controller
 	{
 
 		$DB = DB::table('goods') //定义表
+			->where('domain_id',$request->domain_id)
 			->orderBy('add_time', 'desc'); //排序
 
 		$total = $DB->count() + 0;

@@ -136,6 +136,7 @@ class OrderController extends Controller
 
 		$DB = DB::table('order')
 				->where('store_id',$request->input('store_id'))
+				->where('domain_id',$request->domain_id)
 				// ->where('app_id',$request->input('app_id'))
 				->orderBy('add_time', 'desc');
 

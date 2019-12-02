@@ -86,7 +86,9 @@ class UserController extends Controller
 	{
 
 
-		$DB = DB::table('user')->orderBy('add_time', 'desc');
+		$DB = DB::table('user')
+			->where('domain_id',$request->domain_id)
+			->orderBy('add_time', 'desc');
 
 
 		if ($request->filled('id')) {
