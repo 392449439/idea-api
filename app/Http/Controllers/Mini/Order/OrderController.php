@@ -36,15 +36,11 @@ class OrderController extends Controller
 
 		$goodsArr = $request->input('goods'); //商品
 		$store_id = ''; //店铺id
-		$buy_type =  $request->input('buy_type'); //交易类型
-		$app_type = $request->appInfo->app_type; //app的类型，在这里指订单类型，订单来源
 		$remarks = $request->input('remarks'); // 用户的备注
 		$address_id = $request->input('address_id'); // 用户选择的地址，不能直接使用，需要拿出来备份
 
 		if ($request->filled('store_id')) {
 			$store_id = $request->input('store_id');
-		} else {
-			$store_id = $request->appInfo->store_id;
 		}
 
 		/**
@@ -74,7 +70,7 @@ class OrderController extends Controller
 			$snapshotInfo['order_id'] = $order_id;
 			$snapshotInfo['user_id'] = '';
 			$snapshotInfo['store_id'] = $store_id;
-			$snapshotInfo['app_id'] = $request->appInfo->app_id;
+			$snapshotInfo['domain_id'] = $request->domainInfo->domain_id;
 			$snapshotInfo['type'] = 'pay_order';
 			$snapshotInfo['title'] =  $goodsInfo['title'];
 			$snapshotInfo['data'] =	collect([$goods, $goodsInfo])->collapse()->toJson();
@@ -93,9 +89,8 @@ class OrderController extends Controller
 		$orderInfo['pay_id'] = $pay_id;
 		$orderInfo['user_id'] = $request->jwt->id;
 		$orderInfo['store_id'] = $store_id;
-		$orderInfo['app_id'] = $request->appInfo->app_id;
+		$orderInfo['domain_id'] = $request->domainInfo->domain_id;
 		$orderInfo['price'] = $price;
-		$orderInfo['app_type'] = $app_type;
 		$orderInfo['remarks'] = $remarks;
 		$address_id = $OrderAddressDB->insertGetId($addressInfo->toArray());
 
@@ -111,8 +106,7 @@ class OrderController extends Controller
 		$payInfo['pay_id'] = $pay_id;
 		$payInfo['price'] = $price;
 		$payInfo['price'] = 0.01;
-		$payInfo['app_type'] = $app_type;
-		$payInfo['app_id'] = $request->appInfo->app_id;
+		$payInfo['domain_id'] = $request->domainInfo->domain_id;
 
 
 		$SnapshotDB->insert($snapshotInfoArr);
@@ -137,9 +131,8 @@ class OrderController extends Controller
 		$DB = DB::table('order')->orderBy('add_time', 'desc');
 
 		$DB->where('user_id', $request->jwt->id);
-		$DB->whereIn('app_id', $request->openInfo->apps);
+		$DB->whereIn('domain_id', $request->domainInfo->domain_id);
 
-		// return  $request->jwt->id;
 		$total = $DB->count();
 
 		if ($request->filled('page')) {

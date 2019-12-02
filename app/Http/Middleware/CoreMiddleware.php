@@ -12,7 +12,7 @@ class CoreMiddleware
     public function handle(Request $request, \Closure $next)
     {
 
-        // $request
+        /**拿到domain */
         $heads = $request->header('Authorization');
         $heads  = explode(";", $heads);
         $config = [];
@@ -20,9 +20,12 @@ class CoreMiddleware
             $item = explode("=", $el);
             $config[$item[0]] = $item[1];
         });
-
         $request->config = $config;
+
+
+        /**拿到domain */
         $request->domain_id = $config['domain_id'];
+        $request->domainInfo = DB::table('domain')->where('domain_id',  $config['domain_id'])->first();
 
         try {
             $request->jwt = json_decode(decrypt($request->config['jwt']));

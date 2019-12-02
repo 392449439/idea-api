@@ -104,7 +104,6 @@ class AuthController extends Controller
 		$DB = DB::table('user');
 
 		$result = $DB
-			->where('app_id', $request->appInfo->app_id)
 			->where('openid', $openid)
 			->first();
 
@@ -113,7 +112,6 @@ class AuthController extends Controller
 			$DB->insert([
 				"openid" => $openid,
 				"unionId" => $unionId,
-				"app_id" =>  $request->appInfo->app_id,
 				"wx_info" => json_encode($decryptedData),
 				"name" => $decryptedData['nickName'],
 				"head_img" =>  $decryptedData['avatarUrl'],
@@ -121,7 +119,6 @@ class AuthController extends Controller
 			]);
 
 			$result = $DB
-				->where('app_id', $request->appInfo->app_id)
 				->where('openid', $openid)
 				->first();
 		}

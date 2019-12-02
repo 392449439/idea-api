@@ -35,12 +35,6 @@ class ArticleController extends Controller
 
 
 
-		// if ($request->filled('app_id')) {
-		// 	$DB->where('app_id', $request->input('app_id'));
-		// } else {
-		// 	$DB->where('app_id', $request->appInfo->app_id);
-		// }
-
 		$result = $DB->get();
 
 		$result->map(function ($item) {
@@ -50,7 +44,7 @@ class ArticleController extends Controller
 			}
 			return $item;
 		});
-		
+
 
 		return [
 			'code' => $result->count(),
@@ -169,7 +163,7 @@ class ArticleController extends Controller
 			$result = DB::table('paper')
 				->where('id', $request->input('id'))
 				->update($data);
-			
+
 			return response()->json([
 				'code' => $result >= 0 ? 1 : -1,
 				'msg' =>  $result >= 0 ? 'success' : 'error',
@@ -178,10 +172,9 @@ class ArticleController extends Controller
 		} else {
 
 			$data['user_id'] = $request->jwt->id;
-			$data['app_id'] = $request->jwt->app_id;
 
 			$result = DB::table('paper')->insert($data);
-			
+
 
 			return response()->json([
 				'code' => $result ? 1 : -1,
@@ -253,8 +246,8 @@ class ArticleController extends Controller
 		$user_id = $request->jwt->id;
 
 		$DB = DB::table('paper')
-				->where('user_id',$user_id);
-		
+			->where('user_id', $user_id);
+
 		if ($request->filled('key')) {
 			$DB->orWhere('title', 'like',  '%' . $request->input('key') . '%');
 			$DB->orWhere('content', 'like',  '%' . $request->input('key') . '%');
@@ -274,7 +267,6 @@ class ArticleController extends Controller
 			}
 
 			return $item;
-
 		});
 
 		$total = $DB->count();
@@ -290,5 +282,4 @@ class ArticleController extends Controller
 			'total' => $total * 1,
 		];
 	}
-
 }

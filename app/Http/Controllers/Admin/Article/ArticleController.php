@@ -17,9 +17,8 @@ class ArticleController extends Controller
 
 		// return [$request];
 		$DB = DB::table('paper')
-				->where('app_id',$request->input('app_id'))
-				// ->where('type', $request->type)
-				->orderBy('add_time', 'desc');
+			// ->where('type', $request->type)
+			->orderBy('add_time', 'desc');
 
 
 		if ($request->filled('title')) {
@@ -32,17 +31,7 @@ class ArticleController extends Controller
 			$DB->where('is_up', $request->input('is_up'));
 		}
 
-		// if ($request->filled('app_id')) {
-		// 	$DB->where('app_id', $request->input('app_id'));
-		// } else {
-		// 	$DB->where('app_id', $request->appInfo->app_id);
-		// }
-
 		$result = $DB->get();
-		// $result->map(function ($item) {
-		// 	$item->label = explode(',', $item->label);
-		// 	return $item;
-		// });
 
 		return [
 			'code' => $result ? 1 : -1,
