@@ -31,17 +31,17 @@ class StoreController extends Controller
 		}
 
 
-		if ($request->filled('app_id')) {
-			$DB->where('app_id', $request->input('app_id'));
-		}
+		// if ($request->filled('app_id')) {
+		// 	$DB->where('app_id', $request->input('app_id'));
+		// }
 
 
 		$result = $DB->get();
-		$result->map(function ($item) {
-			$item->label = explode(',', $item->label);
-			$item->appInfo = DB::table('app')->where('app_id', $item->app_id)->first();
-			return $item;
-		});
+		// $result->map(function ($item) {
+		// 	$item->label = explode(',', $item->label);
+		// 	$item->appInfo = DB::table('app')->where('app_id', $item->app_id)->first();
+		// 	return $item;
+		// });
 
 		return [
 			'code' => $result ? 1 : -1,
@@ -79,8 +79,6 @@ class StoreController extends Controller
 					$data['label'] = implode(',', $data['label']);
 				}
 			}
-
-
 
 			$result = DB::table('store')
 				->where('store_id', $request->input('store_id'))
