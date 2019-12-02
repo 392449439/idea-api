@@ -37,6 +37,13 @@ class TestController extends Controller
             $appid = $random->getRandom(32);
             echo ("<div class='item'>($i). 16位appid: <b>$appid</b></div>");
         }
+
+
+
+        $pwd = md5($_ENV['APP_KEY'] . '123');
+
+        echo ('<h1>PWD</h1>');
+        echo ("<div class='item'>$pwd</b></div>");
     }
 
     public function out(Request $request)
