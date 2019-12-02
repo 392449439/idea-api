@@ -10,7 +10,7 @@ class Printer
 
     private $user = "1173197065@qq.com";
     private $ukey = "6KcZwgp6D5VfEvIz";
-    private $sn = "6KcZwgp6D5VfEvIz";
+    private $sn = "";
 
     public function printData($header, $body, $footer, $sn)
     {

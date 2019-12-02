@@ -50,9 +50,9 @@ class TestController extends Controller
         $store_id = 'STORE_' . Carbon::now()->format('YmdHis') . rand(10000, 99999);
         $order_id = 'ORDER_' . Carbon::now()->format('YmdHis') . rand(10000, 99999);
 
-        // $dada->http('/api/balance/query', [
-        //     "category" => 1,
-        // ]);
+        $dada->http('/api/balance/query', [
+            "category" => 1,
+        ]);
 
         $dada->order([
             "shop_no" => "11047059",         //	门店编号，门店创建后可在门店列表和单页查看
@@ -82,18 +82,18 @@ class TestController extends Controller
         // ]);
         // $dada->store([
         //     [
-        //         "station_name" => '怪兽炒饭（上海松江2店）',                             //	门店名称
-        //         "business" => 1,                                 //	业务类型(食品小吃-1,饮料-2,鲜花-3,文印票务-8,便利店-9,水果生鲜-13,同城电商-19, 医药-20,蛋糕-21,酒品-24,小商品市场-25,服装-26,汽修零配-27,数码-28,小龙虾-29, 其他-5)
+        //         "station_name" => '怪兽炒饭（上海松江2店）',          //	门店名称
+        //         "business" => 1,                                      //	业务类型(食品小吃-1,饮料-2,鲜花-3,文印票务-8,便利店-9,水果生鲜-13,同城电商-19, 医药-20,蛋糕-21,酒品-24,小商品市场-25,服装-26,汽修零配-27,数码-28,小龙虾-29, 其他-5)
         //         "city_name" => '上海',                                //	城市名称(如,上海)
-        //         "area_name" => '松江区',                                //	区域名称(如,浦东新区)
-        //         "station_address" => '测试地址',                          //	门店地址
-        //         "lng" => 121.235258,                                      //	门店经度
-        //         "lat" => 31.006555,                                      //	门店纬度
-        //         "contact_name" => '李传浩',                             //	联系人姓名
-        //         "phone" => '17621643903',                                    //	联系人电话
-        //         "origin_shop_id" => $store_id,                           //	门店编码,可自定义,但必须唯一;若不填写,则系统自动生成
-        //         // "username" => '',                                 //	达达商家app账号(若不需要登陆app,则不用设置)
-        //         // "password" => '',                                 //	达达商家app密码(若不需要登陆app,则不用设置)
+        //         "area_name" => '松江区',                              //	区域名称(如,浦东新区)
+        //         "station_address" => '测试地址',                      //	门店地址
+        //         "lng" => 121.235258,                                  //	门店经度
+        //         "lat" => 31.006555,                                   //	门店纬度
+        //         "contact_name" => '李传浩',                           //	联系人姓名
+        //         "phone" => '17621643903',                             //	联系人电话
+        //         "origin_shop_id" => $store_id,                        //	门店编码,可自定义,但必须唯一;若不填写,则系统自动生成
+        //         // "username" => '',                                  //	达达商家app账号(若不需要登陆app,则不用设置)
+        //         // "password" => '',                                  //	达达商家app密码(若不需要登陆app,则不用设置)
         //     ],
         // ]);
 
