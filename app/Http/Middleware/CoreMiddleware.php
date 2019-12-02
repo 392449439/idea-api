@@ -22,37 +22,7 @@ class CoreMiddleware
         });
 
         $request->config = $config;
-
-        if (!$request->config['app_id']) {
-            return response()->json([
-                "code" => -9000,
-                "msg" => '没有提供app_id',
-                "data" => null
-            ], 401);
-        }
-
-        $App = DB::table('app');
-        $appInfo = $App->where('app_id', $request->config['app_id'])->first();
-        if (!$appInfo) {
-            return response()->json([
-                "code" => -9001,
-                "msg" => '无效的app_id',
-                "data" => null
-            ], 401);
-        }
-
-        $request->appInfo = $appInfo;
-
-        $openInfo = null;
-
-        if ($appInfo->open_id) {
-            $openInfo = DB::table('open')->where('open_id', $appInfo->open_id)->first();
-            $openInfo->apps = DB::table('app')->where('open_id', $appInfo->open_id)->pluck('app_id');
-        }
-
-        $request->openInfo = $openInfo;
-
-
+        $request->domain_id = $config['domain_id'];
 
         try {
             $request->jwt = json_decode(decrypt($request->config['jwt']));
