@@ -104,6 +104,7 @@ class AuthController extends Controller
 		$DB = DB::table('user');
 
 		$result = $DB
+			->where('domain_id', $request->domain_id)
 			->where('openid', $openid)
 			->first();
 
@@ -111,6 +112,7 @@ class AuthController extends Controller
 			// 没有，创建
 			$DB->insert([
 				"openid" => $openid,
+				"domain_id" =>  $request->domain_id,
 				"unionId" => $unionId,
 				"wx_info" => json_encode($decryptedData),
 				"name" => $decryptedData['nickName'],

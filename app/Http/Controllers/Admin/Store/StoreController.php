@@ -16,7 +16,7 @@ class StoreController extends Controller
 	{
 
 		$DB = DB::table('store') //定义表
-			->where('domain_id',$request->domain_id)
+			->where('domain_id', $request->domain_id)
 			->orderBy('add_time', 'desc'); //排序
 
 		$total = $DB->count() + 0;
@@ -71,6 +71,7 @@ class StoreController extends Controller
 	{
 
 		$data = $request->toArray();
+		$data['domain_id'] = $request->domain_id;
 
 		if ($request->filled('store_id')) {
 

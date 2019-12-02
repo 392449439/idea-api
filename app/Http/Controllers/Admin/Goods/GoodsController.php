@@ -16,7 +16,7 @@ class GoodsController extends Controller
 	{
 
 		$DB = DB::table('goods') //定义表
-			->where('domain_id',$request->domain_id)
+			->where('domain_id', $request->domain_id)
 			->orderBy('add_time', 'desc'); //排序
 
 		$total = $DB->count() + 0;
@@ -63,11 +63,14 @@ class GoodsController extends Controller
 	public function save(Request $request)
 	{
 
+		$data = $request->toArray();
+		$data['domain_id'] = $request->domain_id;
+
 		if ($request->filled('id')) {
 
 			$result = DB::table('goods')
 				->where('id', $request->input('id'))
-				->update($request->all());
+				->update($data);
 
 			return response()->json([
 				'code' => $result >= 0 ? 1 : -1,
@@ -76,7 +79,7 @@ class GoodsController extends Controller
 			]);
 		} else {
 
-			$result = DB::table('goods')->insert($request->all());
+			$result = DB::table('goods')->insert($data);
 
 			return response()->json([
 				'code' => $result ? 1 : -1,

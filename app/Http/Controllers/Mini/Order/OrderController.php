@@ -131,7 +131,7 @@ class OrderController extends Controller
 		$DB = DB::table('order')->orderBy('add_time', 'desc');
 
 		$DB->where('user_id', $request->jwt->id);
-		$DB->whereIn('domain_id', $request->domainInfo->domain_id);
+		$DB->where('domain_id', $request->domainInfo->domain_id);
 
 		$total = $DB->count();
 

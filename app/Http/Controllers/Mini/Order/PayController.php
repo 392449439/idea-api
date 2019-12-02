@@ -33,7 +33,7 @@ class PayController extends Controller
 
 		$payInfo = DB::table('pay')->where('pay_id', $request->input('pay_id'))->first();
 		$result = $app->order->unify([
-			'body' => '益火吃货-下单',
+			'body' => $request->domainInfo->name,
 			'out_trade_no' => $payInfo->pay_id,
 			'total_fee' => $payInfo->price * 100,
 			'trade_type' => 'JSAPI', // 请对应换成你的支付方式对应的值类型
