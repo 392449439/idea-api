@@ -27,8 +27,6 @@ class ClassiController extends Controller
 
 		if ($request->filled('store_id')) {
 			$DB->where('store_id', $request->input('store_id'));
-		} else {
-			$DB->where('store_id', $request->appInfo->store_id);
 		}
 
 		$result = $DB->get();

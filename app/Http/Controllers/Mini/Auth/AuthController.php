@@ -77,8 +77,8 @@ class AuthController extends Controller
 	{
 
 		$app = Factory::miniProgram([
-			'app_id' => $request->appInfo->wx_appid,
-			'secret' =>  $request->appInfo->wx_secret,
+			'app_id' => $request->domainInfo->wx_appid,
+			'secret' =>  $request->domainInfo->wx_secret,
 			'response_type' => 'array',
 		]);
 
