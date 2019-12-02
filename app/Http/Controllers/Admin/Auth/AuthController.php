@@ -47,7 +47,7 @@ class AuthController extends Controller
 				->where('phone', $request->input('phone'))
 				->first([
 					'id',
-					// 'company_id',
+					'domain_id',
 					'user_type',
 					'phone',
 					'name',
