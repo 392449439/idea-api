@@ -116,6 +116,8 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'co
         $router->post('list', 'DomainController@list');
         $router->post('info', 'DomainController@info');
         $router->post('del', 'DomainController@del');
+        //哒哒注册商户
+        $router->post('addDada', 'DomainController@addDada');
     });
     $router->group(['namespace' => 'Goods', 'prefix' => 'goods'], function () use ($router) {
         $router->post('save', 'GoodsController@save');
@@ -146,6 +148,15 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'co
     $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($router) {
         $router->post('login', 'AuthController@login');
     });
+
+    //打印机
+    $router->group(['namespace' => 'Printer', 'prefix' => 'printer'],function () use ($router){
+        $router->post('save', 'PrinterController@save');
+        $router->post('info', 'PrinterController@info');
+        $router->post('list', 'PrinterController@list');
+        $router->post('del', 'PrinterController@del');
+    });
+
 });
 
 
