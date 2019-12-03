@@ -89,7 +89,7 @@ class PayController extends Controller
                 //哒哒下单
                 $orderInfo = DB::table('order')
                     ->where([
-                        ['order_id', '=', $out_trade_no],
+                        ['pay_id', '=', $out_trade_no],
                     ])
                     ->first();
 
