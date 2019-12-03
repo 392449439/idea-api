@@ -16,7 +16,7 @@ class OrderController extends Controller
 	{
 
 		$DB = DB::table('order')
-			->where('store_id', $request->input('store_id'))
+			// ->where('store_id', $request->input('store_id'))
 			->where('domain_id', $request->domain_id)
 			->orderBy('add_time', 'desc');
 
@@ -25,6 +25,9 @@ class OrderController extends Controller
 			$DB->where('state', $request->input('state'));
 		}
 
+		if($request->filled('store_id')) {
+			$DB->where('store_id',$request->input('store_id'));
+		}
 
 		// return  $request->jwt->id;
 		$total = $DB->count();
