@@ -158,69 +158,17 @@ class TestController extends Controller
 
     public function print()
     {
-
-        $pay_id = 'PAY2019120320014660010';
-        $pay = DB::table('pay')
-            ->where('pay_id', $pay_id)
-            ->first();
-
-        $order = DB::table('order')
-            ->where('pay_id', $pay_id)
-            ->first();
-
-        $store = DB::table('store')
-            ->where('store_id', $order->store_id)
-            ->first();
-
-        $printerInfo = DB::table('printer')
-            ->orderBy('add_time', 'desc')
-            // ->where('store_id', )
-            ->first();
-
-        return [$order];
-
-        $orderAddress = DB::table('order_address')
-            ->where('id', $order->address_id)
-            ->first();
-
-        $snapshotInfo = DB::table('snapshot')
-            ->where('order_id', $order->order_id)
-            ->get();
-
-        $data = $snapshotInfo->map(function ($item) {
-            $item->data = json_decode($item->data, true);
-            $newItem = [
-                'title' => $item->data['title'],
-                'price' => $item->data['price'],
-                'num' => $item->data['quantity'],
-            ];
-            return $newItem;
-        });
-
-        $printer = new Printer(env('FEIE_USER'), env('FEIE_KEY'));
-
-        $header = [
-            "<CB>" . $store->name . "</CB><BR>",
-            '名称           单价  数量 金额<BR>',
-            '--------------------------------<BR>',
-        ];
-
-        $footer = [
-            '--------------------------------<BR>',
-            '订单号：' . $order->order_id,
-            '支付号：' . $pay->pay_id,
-            '合计：' . number_format($pay->price, 2) . '元<BR>',
-            '送货地点：' . $orderAddress->address . '<BR>',
-            '联系电话：' . $orderAddress->phone,
-            '联系人：' . $orderAddress->contacts,
-            '订餐时间：' . $order->add_time,
-            '备注：' . ($order->remarks ? $order->remarks : '无') . '<BR><BR>',
-            '<QR>https://www.yihuo-cloud.com/</QR>',
-        ];
-
-        Log::info('打印机:' . json_encode($printerInfo));
-
-        $res = $printer->printData($header, $data, $footer, $printerInfo->item_sn);
-        return ["data" => $res];
+        $dada_http = new Dada([
+            "app_key" => env('DADA_APP_KEY'),
+            "app_secret" => env('DADA_APP_SECRET'),
+            "sandbox" => env('DADA_SANDBOX'),
+            "source_id" => '73753',
+        ]);
+        //查询订单运费接口
+        $dada_http->http('/api/order/status/query', [
+            "order_id" => 'ORDER2019120320142353901',
+        ]);
+        $result = $dada_http->request();
+        return $result;
     }
 }
