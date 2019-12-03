@@ -35,12 +35,12 @@ class PrinterController extends Controller
             // 添加
 
             /**检查是否重复 */
-            $has_printer = DB::table('printer')
-                ->where([
-                    ['store_id', '=', $request->input('store_id')],
-                    ['item_sn', '=', $request->input('item_sn')],
-                ])
-                ->first();
+//            $has_printer = DB::table('printer')
+//                ->where([
+//                    ['store_id', '=', $request->input('store_id')],
+//                    ['item_sn', '=', $request->input('item_sn')],
+//                ])
+//                ->first();
 
             //飞蛾添加打印机
             $is_printer = (new Printer(env('FEIE_USER'),env('FEIE_KEY')))
@@ -59,7 +59,7 @@ class PrinterController extends Controller
             $data['item_sn'] = $request->input('item_sn');
             $data['item_key'] = $request->input('item_key');
 
-            if (!$has_printer) {
+//            if (!$has_printer) {
                 $result = DB::table('printer')->insert($data);
                 if(!$result){
                     return [
@@ -68,7 +68,7 @@ class PrinterController extends Controller
                         'data' => '',
                     ];
                 }
-            }
+//            }
 
             return response()->json([
                 'code' => 1,
