@@ -3,10 +3,12 @@
 namespace  App\Http\Controllers\Admin\Domain; // @todo: 这里是要生成类的命名空间
 
 use App\Http\Controllers\Controller;
+use App\Lib\Dada\Dada;
 use Illuminate\Http\Request;
 use App\Listeners\Random;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DomainController extends Controller
 {
@@ -100,4 +102,55 @@ class DomainController extends Controller
 		];
 	}
 
+	//注册商户
+	public function addDada(Request $request){
+	    $domain_id = $request->input('domain_id','');
+	    if(!$domain_id){
+            return [
+                'code' => -1,
+                'msg' => 'domain_id不存在!',
+                'data' => '',
+            ];
+        }
+
+	    $data = [];
+	    $data['mobile'] = $request->input('mobile');
+	    $data['city_name'] = $request->input('city_name');
+	    $data['enterprise_name'] = $request->input('enterprise_name');
+	    $data['enterprise_address'] = $request->input('enterprise_address');
+	    $data['contact_name'] = $request->input('contact_name');
+	    $data['contact_phone'] = $request->input('contact_phone');
+	    $data['email'] = $request->input('email');
+
+	    $dada_http = new Dada([
+            "app_key" => env('DADA_APP_KEY'),
+            "app_secret" => env('DADA_APP_SECRET'),
+            "sandbox" => env('DADA_SANDBOX'),
+            "source_id" => '',
+        ]);
+	    $dada_http->http('/merchantApi/merchant/add',$data);
+	    $res = $dada_http->request();
+
+	    //哒哒创建商铺成功，入库
+	    if($res['code'] === 0){
+	        $update = [];
+	        $update['is_dada'] = 1;
+	        $update['dada_source_id'] = $res['result'];
+            $result = DB::table('domain')
+                ->where([
+                    ['domain_id','=',$domain_id],
+                ])
+                ->update($update);
+
+            if(!$result){
+                Log::info('商户入库失败：'.json_encode($res).'--domain_id--'.$domain_id);
+            }
+        }
+
+        return [
+            'code' => $res['code'] === 0 ? 1 : -1,
+            'msg' => $res['code'] === 0 ? 'success' : 'error',
+            'data' => $res['msg'],
+        ];
+    }
 }

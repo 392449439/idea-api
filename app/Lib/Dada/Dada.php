@@ -55,7 +55,7 @@ class Dada
     {
         if (!$config) return;
         if ($config['sandbox']) {
-            $this->source_id = "73753";
+            $this->source_id = '73753';
             $this->host = "http://newopen.qa.imdada.cn";
         } else {
             $this->source_id = $config['source_id'];
