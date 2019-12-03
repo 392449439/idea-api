@@ -19,13 +19,13 @@ class PayController extends Controller
 	public function getMini(Request $request)
 	{
 
-		$app_id = $request->appInfo->app_id;
+		$domain_id = $request->domainInfo->domain_id;
 		$config = [
 			// 必要配置
-			'app_id'             => $request->appInfo->wx_appid,
-			'mch_id'             => $request->appInfo->wx_mch_id,
-			'key'                => $request->appInfo->wx_mch_secret,   // API 密钥
-			'notify_url'         => url("pay/wx_notify_url/{$app_id}"),     // 你也可以在下单时单独设置来想覆盖它
+			'app_id'             => $request->domainInfo->wx_appid,
+			'mch_id'             => $request->domainInfo->wx_mch_id,
+			'key'                => $request->domainInfo->wx_mch_secret,   // API 密钥
+			'notify_url'         => url("pay/wx_notify_url/{$domain_id}"),     // 你也可以在下单时单独设置来想覆盖它
 		];
 
 		$app = Factory::payment($config);
@@ -33,7 +33,7 @@ class PayController extends Controller
 
 		$payInfo = DB::table('pay')->where('pay_id', $request->input('pay_id'))->first();
 		$result = $app->order->unify([
-			'body' => '益火吃货-下单',
+			'body' => $request->domainInfo->name,
 			'out_trade_no' => $payInfo->pay_id,
 			'total_fee' => $payInfo->price * 100,
 			'trade_type' => 'JSAPI', // 请对应换成你的支付方式对应的值类型
@@ -54,15 +54,15 @@ class PayController extends Controller
 		];
 	}
 
-	public function notify_url(String $app_id)
+	public function notify_url(String $domain_id)
 	{
 
-		$App = DB::table('app')->where('app_id', $app_id)->first();
+		$Domain = DB::table('domain')->where('domain_id', $domain_id)->first();
 
 		$config = [
-			'app_id'             => $App->wx_appid,
-			'mch_id'             => $App->wx_mch_id,
-			'key'                => $App->wx_mch_secret,
+			'app_id'             => $Domain->wx_appid,
+			'mch_id'             => $Domain->wx_mch_id,
+			'key'                => $Domain->wx_mch_secret,
 		];
 
 		$app = Factory::payment($config);

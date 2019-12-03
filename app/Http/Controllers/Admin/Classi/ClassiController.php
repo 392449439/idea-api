@@ -22,10 +22,11 @@ class ClassiController extends Controller
 
 
 		$DB = DB::table('class')
-				->where('data_state',1)
-				->orderBy('add_time', 'desc');
+			->where('domain_id', $request->domain_id)
+			->where('data_state', 1)
+			->orderBy('add_time', 'desc');
 
-		$DB->where('store_id', $request->input('store_id',''));
+		$DB->where('store_id', $request->input('store_id', ''));
 
 		$result = $DB->get();
 
@@ -34,9 +35,9 @@ class ClassiController extends Controller
 			'msg' => 'success',
 			'data' => $result,
 		]);
-    }
+	}
 
-    public function info(Request $request)
+	public function info(Request $request)
 	{
 
 		$result = DB::table('class') //定义表
@@ -50,38 +51,39 @@ class ClassiController extends Controller
 			'data' => $result,
 		];
 	}
-    
-    // 保存或者新增
+
+	// 保存或者新增
 	public function save(Request $request)
 	{
 
+		$data = $request->toArray();
+		$data['domain_id'] = $request->domain_id;
+
 		if ($request->filled('id')) {
-			
-            $result = DB::table('class')
+
+			$result = DB::table('class')
 				->where('id', $request->input('id'))
-				->update($request->all());
+				->update($data);
 
 			return response()->json([
 				'code' => $result >= 0 ? 1 : -1,
 				'msg' =>  $result >= 0 ? 'success' : 'error',
 				'data' => $result,
 			]);
-
 		} else {
-			
-			$result = DB::table('class')->insert($request->all());
+
+
+			$result = DB::table('class')->insert($data);
 
 			return response()->json([
 				'code' => $result ? 1 : -1,
 				'msg' => $result ? 'success' : 'error',
 				'data' => $result,
 			]);
-
 		}
+	}
 
-    }
-    
-    public function del(Request $request)
+	public function del(Request $request)
 	{
 
 		$result = DB::table('class') //定义表

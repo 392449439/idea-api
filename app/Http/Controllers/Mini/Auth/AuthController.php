@@ -77,8 +77,8 @@ class AuthController extends Controller
 	{
 
 		$app = Factory::miniProgram([
-			'app_id' => $request->appInfo->wx_appid,
-			'secret' =>  $request->appInfo->wx_secret,
+			'app_id' => $request->domainInfo->wx_appid,
+			'secret' =>  $request->domainInfo->wx_secret,
 			'response_type' => 'array',
 		]);
 
@@ -104,7 +104,7 @@ class AuthController extends Controller
 		$DB = DB::table('user');
 
 		$result = $DB
-			->where('app_id', $request->appInfo->app_id)
+			->where('domain_id', $request->domain_id)
 			->where('openid', $openid)
 			->first();
 
@@ -112,8 +112,8 @@ class AuthController extends Controller
 			// 没有，创建
 			$DB->insert([
 				"openid" => $openid,
+				"domain_id" =>  $request->domain_id,
 				"unionId" => $unionId,
-				"app_id" =>  $request->appInfo->app_id,
 				"wx_info" => json_encode($decryptedData),
 				"name" => $decryptedData['nickName'],
 				"head_img" =>  $decryptedData['avatarUrl'],
@@ -121,7 +121,6 @@ class AuthController extends Controller
 			]);
 
 			$result = $DB
-				->where('app_id', $request->appInfo->app_id)
 				->where('openid', $openid)
 				->first();
 		}

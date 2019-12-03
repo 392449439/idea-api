@@ -15,13 +15,9 @@ class StoreController extends Controller
 	{
 
 		$DB = DB::table('store')
+			->where('domain_id', $request->domain_id)
 			->orderBy('add_time', 'desc');
 
-		if ($request->filled('app_id')) {
-			$DB->where('app_id', $request->input('app_id'));
-		} else {
-			$DB->where('app_id', $request->appInfo->app_id);
-		}
 
 		$result = $DB->get();
 		$result->map(function ($item) {
@@ -44,7 +40,7 @@ class StoreController extends Controller
 			->where('data_state', 1)
 			->where('store_id', $request->input('store_id'))
 			->first();
-			
+
 		$result->label = explode(',', $result->label);
 
 		return [

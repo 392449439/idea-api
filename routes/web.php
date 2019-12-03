@@ -205,20 +205,9 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
     $router->group(['namespace' => 'Article', 'prefix' => 'article', "middleware" => 'auth'], function () use ($router) {
         $router->post('save', 'ArticleController@save');
         $router->post('del', 'ArticleController@del');
-        $router->post('getPhone', 'ArticleController@getPhone');
     });
-    $router->post('article/info', 'Article\ArticleController@info');
-    $router->post('article/list', 'Article\ArticleController@list');
-    $router->post('article/vip/list', 'Article\ArticleController@vipList');
-    $router->post('article/my/list', 'Article\ArticleController@myList');
 });
 
 
-$router->get('pay/wx_notify_url/{app_id}', 'Mini\Order\PayController@notify_url');
-$router->post('pay/wx_notify_url/{app_id}', 'Mini\Order\PayController@notify_url');
-
-$router->get('vip/pay_time_notify', 'Mini\Vip\VipController@payTimeNotify');
-$router->post('vip/pay_time_notify', 'Mini\Vip\VipController@payTimeNotify');
-
-$router->get('vip/pay_count_notify', 'Mini\Vip\VipController@payCountNotify');
-$router->post('vip/pay_count_notify', 'Mini\Vip\VipController@payCountNotify');
+$router->get('pay/wx_notify_url/{domain_id}', 'Mini\Order\PayController@notify_url');
+$router->post('pay/wx_notify_url/{domain_id}', 'Mini\Order\PayController@notify_url');
