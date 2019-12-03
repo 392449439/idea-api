@@ -136,6 +136,7 @@ class PayController extends Controller
 			->first();
 
 		$printerInfo = DB::table('printer')
+			->orderBy('add_time', 'desc')
 			->where('store_id', $order->store_id)
 			->first();
 
