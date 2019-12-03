@@ -12,7 +12,7 @@ class Printer
     private $ukey = "";
     private $sn = "";
 
-    public function __construct($user,$ukey,$sn = '')
+    public function __construct($user, $ukey, $sn = '')
     {
         $this->user = $user;
         $this->ukey = $ukey;
