@@ -151,6 +151,24 @@ class UserController extends Controller
 		]);
 	}
 
+	public function setpwd(Request $request) {
+		
+		// if ($request->filled('id')) {
+			$data = [];
+			if ($request->filled('pwd1')) {
+				$data['pwd'] = md5($_ENV['APP_KEY'] .  $request->input('pwd1'));
+			}
+			$result = DB::table('user')
+				->where('id', $request->jwt->id)
+				->update($data);
+			return response()->json([
+				'code' => $result >= 0 ? 1 : -1,
+				'msg' =>  $result >= 0 ? 'success' : 'error',
+				'data' => $result,
+			]);
+		// } 
+	}
+
 
 	// 
 }
