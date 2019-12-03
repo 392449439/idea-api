@@ -179,6 +179,7 @@ class PayController extends Controller
 			'<QR>https://www.yihuo-cloud.com/</QR>',
 		];
 
+		Log::info('打印机:' . json_encode($printerInfo));
 
 		$res = $printer->printData($header, $data, $footer, $printerInfo->item_sn);
 		return ["data" => $res];
