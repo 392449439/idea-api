@@ -112,6 +112,10 @@ class PayController extends Controller
 			->where('store_id', $order->store_id)
 			->first();
 
+        $printer = DB::table('printer')
+            ->where('store_id', $order->store_id)
+            ->first();
+
 		$orderAddress = DB::table('order_address')
 			->where('id',  $order->address_id)
 			->first();
@@ -152,7 +156,7 @@ class PayController extends Controller
 		];
 
 
-		$res = $printer->printData($header, $data, $footer, '921510805');
+		$res = $printer->printData($header, $data, $footer, $printer['item_sn']);
 		return ["data" => $res];
 
 		// if ($res) {

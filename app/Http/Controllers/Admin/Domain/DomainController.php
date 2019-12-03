@@ -104,14 +104,7 @@ class DomainController extends Controller
 
 	//注册商户
 	public function addDada(Request $request){
-	    $domain_id = $request->input('domain_id','');
-	    if(!$domain_id){
-            return [
-                'code' => -1,
-                'msg' => 'domain_id不存在!',
-                'data' => '',
-            ];
-        }
+	    $domain_id = $request->domain_id;
 
 	    $data = [];
 	    $data['mobile'] = $request->input('mobile');
@@ -152,5 +145,62 @@ class DomainController extends Controller
             'msg' => $res['code'] === 0 ? 'success' : 'error',
             'data' => $res['msg'],
         ];
+    }
+
+    //哒哒余额
+    public function dadaBalance(Request $request){
+        $dada_http = new Dada([
+            "app_key" => env('DADA_APP_KEY'),
+            "app_secret" => env('DADA_APP_SECRET'),
+            "sandbox" => env('DADA_SANDBOX'),
+        ]);
+        $data['category'] = 3;
+        $dada_http->http('/api/balance/query',$data);
+        $res = $dada_http->request();
+        if($res['code'] == 0){
+            return [
+                'code' => 1,
+                'msg' => 'success',
+                'data' => $res['result'],
+            ];
+        }else{
+            return [
+                'code' => -1,
+                'msg' => $res['msg'],
+                'data' => '',
+            ];
+        }
+    }
+
+    //哒哒支付
+    public function dadaPay(Request $request){
+        $dada_http = new Dada([
+            "app_key" => env('DADA_APP_KEY'),
+            "app_secret" => env('DADA_APP_SECRET'),
+            "sandbox" => env('DADA_SANDBOX'),
+        ]);
+
+        $data['amount'] = $request->input('money');
+        $data['category'] = 'PC';
+        $data['notify_url'] = $request->input('notify_url','');
+
+        $dada_http->http('/api/recharge',$data);
+        $res = $dada_http->request();
+        if($res['code'] === 0){
+            return [
+                'code' => 1,
+                'msg' => $res['msg'],
+                'data' => [
+                    'result' => $res['result']
+                ],
+            ];
+        }else{
+            return [
+                'code' => -1,
+                'msg' => $res['msg'],
+                'data' => '',
+            ];
+        }
+
     }
 }

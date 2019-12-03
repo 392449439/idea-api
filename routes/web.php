@@ -118,6 +118,10 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'co
         $router->post('del', 'DomainController@del');
         //哒哒注册商户
         $router->post('addDada', 'DomainController@addDada');
+        //哒哒余额查询
+        $router->post('dadaBalance', 'DomainController@dadaBalance');
+        //哒哒生成支付
+        $router->post('dadaPay', 'DomainController@dadaPay');
     });
     $router->group(['namespace' => 'Goods', 'prefix' => 'goods'], function () use ($router) {
         $router->post('save', 'GoodsController@save');

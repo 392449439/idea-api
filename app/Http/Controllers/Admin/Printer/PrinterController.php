@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Printer;
 // @todo: 这里是要生成类的命名空间
 
 use App\Http\Controllers\Controller;
+use App\Lib\Printer\Printer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,7 +15,7 @@ class PrinterController extends Controller
     //打印机添加和修改
     public function save(Request $request)
     {
-        echo 1;return;
+//        echo 1;return;
         if ($request->filled('id')) {
             $data = [];
             $data['store_id'] = $request->input('store_id');
@@ -34,31 +35,48 @@ class PrinterController extends Controller
             // 添加
 
             /**检查是否重复 */
-
-            if (DB::table('printer')
+            $has_printer = DB::table('printer')
                 ->where([
                     ['store_id', '=', $request->input('store_id')],
                     ['item_sn', '=', $request->input('item_sn')],
                 ])
-                ->first()) {
-                return response()->json([
-                    'code' => -1,
-                    'msg' => '打印机已存在！',
-                    'data' => null,
-                ]);
-            } else {
-                $data = [];
-                $data['store_id'] = $request->input('store_id');
-                $data['item_sn'] = $request->input('item_sn');
-                $data['item_key'] = $request->input('item_key');
+                ->first();
 
-                $result = DB::table('printer')->insert($data);
-                return response()->json([
-                    'code' => $result ? 1 : -1,
-                    'msg' => $result ? 'success' : 'error',
-                    'data' => $result,
-                ]);
+            //飞蛾添加打印机
+            $is_printer = (new Printer(env('FEIE_USER'),env('FEIE_KEY')))
+                ->add($request->input('item_sn') .' # '.$request->input('item_key'));
+//            echo count(json_decode($is_printer)->data->ok);exit;
+            if(count(json_decode($is_printer)->data->ok) <= 0){
+                return [
+                    'code' => -1,
+                    'msg' => json_decode($is_printer)->data,
+                    'data' => '',
+                ];
             }
+
+            $data = [];
+            $data['store_id'] = $request->input('store_id');
+            $data['item_sn'] = $request->input('item_sn');
+            $data['item_key'] = $request->input('item_key');
+
+            if (!$has_printer) {
+                $result = DB::table('printer')->insert($data);
+                if(!$result){
+                    return [
+                        'code' => -1,
+                        'msg' => '入库失败',
+                        'data' => '',
+                    ];
+                }
+            }
+
+            return response()->json([
+                'code' => 1,
+                'msg' => 'success',
+                'data' => '',
+            ]);
+
+
         }
     }
 
@@ -140,5 +158,6 @@ class PrinterController extends Controller
             'data' => $result,
         ]);
     }
+
 
 }

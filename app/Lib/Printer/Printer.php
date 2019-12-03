@@ -8,9 +8,16 @@ use App\Lib\Feieyun\HttpClient;
 class Printer
 {  // @todo AuthController 这里是要生成的类名字
 
-    private $user = "1173197065@qq.com";
-    private $ukey = "6KcZwgp6D5VfEvIz";
+    private $user = "";
+    private $ukey = "";
     private $sn = "";
+
+    public function __construct($user,$ukey,$sn = '')
+    {
+        $this->user = $user;
+        $this->ukey = $ukey;
+        $this->sn = $sn;
+    }
 
     public function printData($header, $body, $footer, $sn)
     {
@@ -31,7 +38,7 @@ class Printer
         return $this->print($data);
     }
 
-    private function add($snlist)
+    public function add($snlist)
     {
         $time = time();                //请求时间
         $content = array(
@@ -39,26 +46,35 @@ class Printer
             'stime' => $time,
             'sig' => $this->signature($time),
             'apiname' => 'Open_printerAddlist',
-
             'printerContent' => $snlist
         );
 
         $client = new HttpClient('api.feieyun.cn', 80);
         if (!$client->post('/Api/Open/', $content)) {
-            return response()->json([
-                'code' => -1,
-                'msg' => 'error',
-                'data' => null,
-            ]);
+            return 'error';
         } else {
-            return response()->json([
-                'code' => 1,
-                'msg' => 'success',
-                'data' => json_decode($client->getContent()),
-            ]);
+            return $client->getContent();
         }
     }
 
+    public function del($snlist)
+    {
+        $time = time();                //请求时间
+        $content = array(
+            'user' => $this->user,
+            'stime' => $time,
+            'sig' => $this->signature($time),
+            'apiname' => 'Open_printerDelList',
+            'snlist' => $snlist
+        );
+
+        $client = new HttpClient('api.feieyun.cn', 80);
+        if (!$client->post('/Api/Open/', $content)) {
+            return 'error';
+        } else {
+            return $client->getContent();
+        }
+    }
 
     private function print($data)
     {
