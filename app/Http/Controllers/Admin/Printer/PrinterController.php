@@ -15,7 +15,7 @@ class PrinterController extends Controller
     //打印机添加和修改
     public function save(Request $request)
     {
-//        echo 1;return;
+        //        echo 1;return;
         if ($request->filled('id')) {
             $data = [];
             $data['store_id'] = $request->input('store_id');
@@ -34,19 +34,27 @@ class PrinterController extends Controller
         } else {
             // 添加
 
+
+            $data = [];
+            $data['store_id'] = $request->input('store_id');
+            $data['item_sn'] = $request->input('item_sn');
+            $data['item_key'] = $request->input('item_key');
+            $result = DB::table('printer')->insert($data);
+
+
             /**检查是否重复 */
-//            $has_printer = DB::table('printer')
-//                ->where([
-//                    ['store_id', '=', $request->input('store_id')],
-//                    ['item_sn', '=', $request->input('item_sn')],
-//                ])
-//                ->first();
+            //            $has_printer = DB::table('printer')
+            //                ->where([
+            //                    ['store_id', '=', $request->input('store_id')],
+            //                    ['item_sn', '=', $request->input('item_sn')],
+            //                ])
+            //                ->first();
 
             //飞蛾添加打印机
-            $is_printer = (new Printer(env('FEIE_USER'),env('FEIE_KEY')))
-                ->add($request->input('item_sn') .' # '.$request->input('item_key'));
-//            echo count(json_decode($is_printer)->data->ok);exit;
-            if(count(json_decode($is_printer)->data->ok) <= 0){
+            $is_printer = (new Printer(env('FEIE_USER'), env('FEIE_KEY')))
+                ->add($request->input('item_sn') . ' # ' . $request->input('item_key'));
+            //            echo count(json_decode($is_printer)->data->ok);exit;
+            if (count(json_decode($is_printer)->data->ok) <= 0) {
                 return [
                     'code' => -1,
                     'msg' => json_decode($is_printer)->data,
@@ -54,31 +62,25 @@ class PrinterController extends Controller
                 ];
             }
 
-            $data = [];
-            $data['store_id'] = $request->input('store_id');
-            $data['item_sn'] = $request->input('item_sn');
-            $data['item_key'] = $request->input('item_key');
-
-//            if (!$has_printer) {
-                $result = DB::table('printer')->insert($data);
-                if(!$result){
-                    return [
-                        'code' => -1,
-                        'msg' => '入库失败',
-                        'data' => '',
-                    ];
-                }
-//            }
+            //            if (!$has_printer) {
+            if (!$result) {
+                return [
+                    'code' => -1,
+                    'msg' => '入库失败',
+                    'data' => '',
+                ];
+            }
+            //            }
 
             return response()->json([
                 'code' => 1,
                 'msg' => 'success',
                 'data' => '',
             ]);
-
-
         }
     }
+
+
 
     //打印机详情
     public function info(Request $request)
@@ -110,24 +112,24 @@ class PrinterController extends Controller
             $DB->where('id', $request->input('id'));
         }
 
-//        if ($request->filled('company_ids')) {
-//            $DB->where('company_id', $request->input('company_ids'));
-//        }
-//
-//        if ($request->filled('phone')) {
-//            $DB->where('phone', 'like', '%' . $request->input('phone') . '%');
-//        }
-//        if ($request->filled('name')) {
-//            $DB->where('name', 'like', '%' . $request->input('name') . '%');
-//        }
-//
-//        if ($request->filled('state')) {
-//            $DB->where('state', $request->input('state'));
-//        }
-//
-//        if ($request->filled('user_type')) {
-//            $DB->where('user_type', $request->input('user_type'));
-//        }
+        //        if ($request->filled('company_ids')) {
+        //            $DB->where('company_id', $request->input('company_ids'));
+        //        }
+        //
+        //        if ($request->filled('phone')) {
+        //            $DB->where('phone', 'like', '%' . $request->input('phone') . '%');
+        //        }
+        //        if ($request->filled('name')) {
+        //            $DB->where('name', 'like', '%' . $request->input('name') . '%');
+        //        }
+        //
+        //        if ($request->filled('state')) {
+        //            $DB->where('state', $request->input('state'));
+        //        }
+        //
+        //        if ($request->filled('user_type')) {
+        //            $DB->where('user_type', $request->input('user_type'));
+        //        }
 
 
         $total = $DB->count() + 0;
@@ -158,6 +160,4 @@ class PrinterController extends Controller
             'data' => $result,
         ]);
     }
-
-
 }

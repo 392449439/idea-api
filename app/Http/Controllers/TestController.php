@@ -5,11 +5,13 @@ namespace  App\Http\Controllers; // @todo: 这里是要生成类的命名空间
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\User;
 use App\Lib\Dada\Dada;
+use App\Lib\Printer\Printer;
 use App\Listeners\Random;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use EasyWeChat\Factory;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class TestController extends Controller
 {  // @todo AuthController 这里是要生成的类名字
@@ -151,5 +153,74 @@ class TestController extends Controller
         $dada_client = new DadaRequestClient($config, $shopAddApi);
         $resp = $dada_client->makeRequest();
         echo json_encode($resp);
+    }
+
+
+    public function print()
+    {
+
+        $pay_id = 'PAY2019120320014660010';
+        $pay = DB::table('pay')
+            ->where('pay_id', $pay_id)
+            ->first();
+
+        $order = DB::table('order')
+            ->where('pay_id', $pay_id)
+            ->first();
+
+        $store = DB::table('store')
+            ->where('store_id', $order->store_id)
+            ->first();
+
+        $printerInfo = DB::table('printer')
+            ->orderBy('add_time', 'desc')
+            // ->where('store_id', )
+            ->first();
+
+        return [$order];
+
+        $orderAddress = DB::table('order_address')
+            ->where('id', $order->address_id)
+            ->first();
+
+        $snapshotInfo = DB::table('snapshot')
+            ->where('order_id', $order->order_id)
+            ->get();
+
+        $data = $snapshotInfo->map(function ($item) {
+            $item->data = json_decode($item->data, true);
+            $newItem = [
+                'title' => $item->data['title'],
+                'price' => $item->data['price'],
+                'num' => $item->data['quantity'],
+            ];
+            return $newItem;
+        });
+
+        $printer = new Printer(env('FEIE_USER'), env('FEIE_KEY'));
+
+        $header = [
+            "<CB>" . $store->name . "</CB><BR>",
+            '名称           单价  数量 金额<BR>',
+            '--------------------------------<BR>',
+        ];
+
+        $footer = [
+            '--------------------------------<BR>',
+            '订单号：' . $order->order_id,
+            '支付号：' . $pay->pay_id,
+            '合计：' . number_format($pay->price, 2) . '元<BR>',
+            '送货地点：' . $orderAddress->address . '<BR>',
+            '联系电话：' . $orderAddress->phone,
+            '联系人：' . $orderAddress->contacts,
+            '订餐时间：' . $order->add_time,
+            '备注：' . ($order->remarks ? $order->remarks : '无') . '<BR><BR>',
+            '<QR>https://www.yihuo-cloud.com/</QR>',
+        ];
+
+        Log::info('打印机:' . json_encode($printerInfo));
+
+        $res = $printer->printData($header, $data, $footer, $printerInfo->item_sn);
+        return ["data" => $res];
     }
 }

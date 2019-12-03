@@ -22,6 +22,7 @@ $router->group([], function () use ($router) {
     $router->get('out', 'TestController@out');
     $router->get('outStoreList', 'TestController@outStoreList');
     $router->get('test2', 'Test2Controller@test');
+    $router->get('test/print', 'TestController@print');
 });
 
 $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($router) {
@@ -147,7 +148,7 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'co
         $router->post('info', 'UserController@info');
         $router->post('list', 'UserController@list');
         $router->post('del', 'UserController@del');
-        $router->post('setpwd','UserCOntroller@setpwd');
+        $router->post('setpwd', 'UserCOntroller@setpwd');
     });
 
     $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($router) {
@@ -155,13 +156,12 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'co
     });
 
     //打印机
-    $router->group(['namespace' => 'Printer', 'prefix' => 'printer'],function () use ($router){
+    $router->group(['namespace' => 'Printer', 'prefix' => 'printer'], function () use ($router) {
         $router->post('save', 'PrinterController@save');
         $router->post('info', 'PrinterController@info');
         $router->post('list', 'PrinterController@list');
         $router->post('del', 'PrinterController@del');
     });
-
 });
 
 
