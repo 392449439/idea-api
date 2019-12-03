@@ -45,6 +45,11 @@ class Dada
     public $source_id;
 
     /**
+     * 是否是沙盒
+     */
+    public $sandbox;
+
+    /**
      * host
      */
     public $host;
@@ -54,6 +59,9 @@ class Dada
     public function __construct($config)
     {
         if (!$config) return;
+
+        $this->sandbox = $config['sandbox'];
+
         if ($config['sandbox']) {
             $this->source_id = '73753';
             $this->host = "http://newopen.qa.imdada.cn";
@@ -96,6 +104,12 @@ class Dada
     public function http($url, $data)
     {
         $this->url = $url;
+        if ($this->sandbox) {
+            if (isset($data['shop_no'])) {
+                $data['shop_no'] = '11047059';
+            }
+        }
+
         $this->bodyConfig = $data;
     }
 
