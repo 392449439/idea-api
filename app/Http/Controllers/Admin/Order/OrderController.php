@@ -100,7 +100,6 @@ class OrderController extends Controller
 			"app_key" => env('DADA_APP_KEY'),
 			"app_secret" => env('DADA_APP_SECRET'),
 			"sandbox" => env('DADA_SANDBOX'),
-			"source_id" => '73753',
 		]);
 
 		$address_id = $request->input('address_id', '1');
@@ -161,7 +160,6 @@ class OrderController extends Controller
 			"app_key" => env('DADA_APP_KEY'),
 			"app_secret" => env('DADA_APP_SECRET'),
 			"sandbox" => env('DADA_SANDBOX'),
-			"source_id" => '73753',
 		]);
 
 		$dada_http->http($data_url, [
@@ -180,7 +178,6 @@ class OrderController extends Controller
 			"app_key" => env('DADA_APP_KEY'),
 			"app_secret" => env('DADA_APP_SECRET'),
 			"sandbox" => env('DADA_SANDBOX'),
-			"source_id" => '73753',
 		]);
 
 		$dada_http->http('/api/order/status/query', [
@@ -209,7 +206,6 @@ class OrderController extends Controller
 			"app_key" => env('DADA_APP_KEY'),
 			"app_secret" => env('DADA_APP_SECRET'),
 			"sandbox" => env('DADA_SANDBOX'),
-			"source_id" => '73753',
 		]);
 
 		$order_id = 'ORDER' . Carbon::now()->format('YmdHis') . rand(10000, 99999);

@@ -24,7 +24,7 @@ class DomainController extends Controller
 
 		$DB->offset(($request->input('page', 1) - 1) * $request->input('page_size', 10))
 			->limit($request->input('page_size', 10));
-		
+
 		$result = $DB->get();
 
 		return [
@@ -48,7 +48,6 @@ class DomainController extends Controller
 			'msg' => $result ? 'success' : 'error',
 			'data' => $result,
 		];
-
 	}
 
 	// 保存或者新增
@@ -56,7 +55,7 @@ class DomainController extends Controller
 	{
 
 		if ($request->filled('domain_id')) {
-			
+
 			$result = DB::table('domain')
 				->where('domain_id', $request->input('domain_id'))
 				->update($request->all());
@@ -66,15 +65,14 @@ class DomainController extends Controller
 				'msg' =>  $result >= 0 ? 'success' : 'error',
 				'data' => $result,
 			]);
-
 		} else {
-			
+
 			$data = $request->toArray();
 
 			$random = new Random();
 
 			$data['domain_id'] = $random->getRandom(16, 'D_');
-			
+
 			$result = DB::table('domain')->insert($data);
 
 			return response()->json([
@@ -82,9 +80,7 @@ class DomainController extends Controller
 				'msg' => $result ? 'success' : 'error',
 				'data' => $result,
 			]);
-
 		}
-
 	}
 
 	// 删除门店接口
@@ -103,104 +99,108 @@ class DomainController extends Controller
 	}
 
 	//注册商户
-	public function addDada(Request $request){
-	    $domain_id = $request->domain_id;
+	public function addDada(Request $request)
+	{
+		$domain_id = $request->domain_id;
 
-	    $data = [];
-	    $data['mobile'] = $request->input('mobile');
-	    $data['city_name'] = $request->input('city_name');
-	    $data['enterprise_name'] = $request->input('enterprise_name');
-	    $data['enterprise_address'] = $request->input('enterprise_address');
-	    $data['contact_name'] = $request->input('contact_name');
-	    $data['contact_phone'] = $request->input('contact_phone');
-	    $data['email'] = $request->input('email');
+		$data = [];
+		$data['mobile'] = $request->input('mobile');
+		$data['city_name'] = $request->input('city_name');
+		$data['enterprise_name'] = $request->input('enterprise_name');
+		$data['enterprise_address'] = $request->input('enterprise_address');
+		$data['contact_name'] = $request->input('contact_name');
+		$data['contact_phone'] = $request->input('contact_phone');
+		$data['email'] = $request->input('email');
 
-	    $dada_http = new Dada([
-            "app_key" => env('DADA_APP_KEY'),
-            "app_secret" => env('DADA_APP_SECRET'),
-            "sandbox" => env('DADA_SANDBOX'),
-            "source_id" => '',
-        ]);
-	    $dada_http->http('/merchantApi/merchant/add',$data);
-	    $res = $dada_http->request();
+		$dada_http = new Dada([
+			"app_key" => env('DADA_APP_KEY'),
+			"app_secret" => env('DADA_APP_SECRET'),
+			"sandbox" => env('DADA_SANDBOX'),
+			"source_id" => '',
+		]);
+		$dada_http->http('/merchantApi/merchant/add', $data);
 
-	    //哒哒创建商铺成功，入库
-	    if($res['code'] === 0){
-	        $update = [];
-	        $update['is_dada'] = 1;
-	        $update['dada_source_id'] = $res['result'];
-            $result = DB::table('domain')
-                ->where([
-                    ['domain_id','=',$domain_id],
-                ])
-                ->update($update);
+		$res = $dada_http->request();
 
-            if(!$result){
-                Log::info('商户入库失败：'.json_encode($res).'--domain_id--'.$domain_id);
-            }
-        }
+		Log::info('达达注册商户返回：' . json_encode($res));
+		//哒哒创建商铺成功，入库
+		if ($res['code'] === 0) {
+			$update = [];
+			$update['is_dada'] = 1;
+			$update['dada_source_id'] = $res['result'];
+			$result = DB::table('domain')
+				->where([
+					['domain_id', '=', $domain_id],
+				])
+				->update($update);
 
-        return [
-            'code' => $res['code'] === 0 ? 1 : -1,
-            'msg' => $res['code'] === 0 ? 'success' : 'error',
-            'data' => $res['msg'],
-        ];
-    }
+			if (!$result) {
+				Log::info('商户入库失败：' . json_encode($res) . '--domain_id--' . $domain_id);
+			}
+		}
 
-    //哒哒余额
-    public function dadaBalance(Request $request){
-        $dada_http = new Dada([
-            "app_key" => env('DADA_APP_KEY'),
-            "app_secret" => env('DADA_APP_SECRET'),
-            "sandbox" => env('DADA_SANDBOX'),
-        ]);
-        $data['category'] = 3;
-        $dada_http->http('/api/balance/query',$data);
-        $res = $dada_http->request();
-        if($res['code'] == 0){
-            return [
-                'code' => 1,
-                'msg' => 'success',
-                'data' => $res['result'],
-            ];
-        }else{
-            return [
-                'code' => -1,
-                'msg' => $res['msg'],
-                'data' => '',
-            ];
-        }
-    }
+		return [
+			'code' => $res['code'] === 0 ? 1 : -1,
+			'msg' => $res['code'] === 0 ? 'success' : 'error',
+			'data' => $res['msg'],
+		];
+	}
 
-    //哒哒支付
-    public function dadaPay(Request $request){
-        $dada_http = new Dada([
-            "app_key" => env('DADA_APP_KEY'),
-            "app_secret" => env('DADA_APP_SECRET'),
-            "sandbox" => env('DADA_SANDBOX'),
-        ]);
+	//哒哒余额
+	public function dadaBalance(Request $request)
+	{
+		$dada_http = new Dada([
+			"app_key" => env('DADA_APP_KEY'),
+			"app_secret" => env('DADA_APP_SECRET'),
+			"sandbox" => env('DADA_SANDBOX'),
+		]);
+		$data['category'] = 3;
+		$dada_http->http('/api/balance/query', $data);
+		$res = $dada_http->request();
+		if ($res['code'] == 0) {
+			return [
+				'code' => 1,
+				'msg' => 'success',
+				'data' => $res['result'],
+			];
+		} else {
+			return [
+				'code' => -1,
+				'msg' => $res['msg'],
+				'data' => '',
+			];
+		}
+	}
 
-        $data['amount'] = $request->input('money');
-        $data['category'] = 'PC';
-        $data['notify_url'] = $request->input('notify_url','');
+	//哒哒支付
+	public function dadaPay(Request $request)
+	{
+		$dada_http = new Dada([
+			"app_key" => env('DADA_APP_KEY'),
+			"app_secret" => env('DADA_APP_SECRET'),
+			"sandbox" => env('DADA_SANDBOX'),
+		]);
 
-        $dada_http->http('/api/recharge',$data);
-        $res = $dada_http->request();
-        if($res['code'] === 0){
-            return [
-                'code' => 1,
-                'msg' => $res['msg'],
-                'data' => [
-                    'result' => $res['result']
-                ],
-            ];
-        }else{
-            return [
-                'code' => -1,
-                'msg' => $res['msg'],
-                'data' => '',
-            ];
-        }
+		$data['amount'] = $request->input('money');
+		$data['category'] = 'PC';
+		$data['notify_url'] = $request->input('notify_url', '');
 
-    }
+		$dada_http->http('/api/recharge', $data);
+		$res = $dada_http->request();
+		if ($res['code'] === 0) {
+			return [
+				'code' => 1,
+				'msg' => $res['msg'],
+				'data' => [
+					'result' => $res['result']
+				],
+			];
+		} else {
+			return [
+				'code' => -1,
+				'msg' => $res['msg'],
+				'data' => '',
+			];
+		}
+	}
 }

@@ -229,7 +229,6 @@ class StoreController extends Controller
             "app_key" => env('DADA_APP_KEY'),
             "app_secret" => env('DADA_APP_SECRET'),
             "sandbox" => env('DADA_SANDBOX'),
-            "source_id" => '73753',
         ]);
 
         $dada_http->http('/api/shop/detail',['origin_shop_id' => $origin_shop_id]);
@@ -243,7 +242,6 @@ class StoreController extends Controller
             "app_key" => env('DADA_APP_KEY'),
             "app_secret" => env('DADA_APP_SECRET'),
             "sandbox" => env('DADA_SANDBOX'),
-            "source_id" => '73753',
         ]);
 
         $dada_http->http('/api/shop/add',$store_info);
@@ -256,7 +254,6 @@ class StoreController extends Controller
             "app_key" => env('DADA_APP_KEY'),
             "app_secret" => env('DADA_APP_SECRET'),
             "sandbox" => env('DADA_SANDBOX'),
-            "source_id" => '73753',
         ]);
 
         $dada_http->http('/api/shop/update',$store_info);

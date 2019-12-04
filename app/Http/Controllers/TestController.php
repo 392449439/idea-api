@@ -54,7 +54,6 @@ class TestController extends Controller
             "app_key" => 'dadaa3ce8c08a223835',
             "app_secret" => 'd62c2d9a787ecbad5e6bfc27986c3ede',
             "sandbox" => true,
-            "source_id" => '73753',
         ]);
         $store_id = 'STORE_' . Carbon::now()->format('YmdHis') . rand(10000, 99999);
         $order_id = 'ORDER_' . Carbon::now()->format('YmdHis') . rand(10000, 99999);
@@ -162,7 +161,6 @@ class TestController extends Controller
             "app_key" => env('DADA_APP_KEY'),
             "app_secret" => env('DADA_APP_SECRET'),
             "sandbox" => env('DADA_SANDBOX'),
-            "source_id" => '73753',
         ]);
         //查询订单运费接口
         $dada_http->http('/api/order/status/query', [
