@@ -266,4 +266,39 @@ class StoreController extends Controller
         $dada_http->http('/api/shop/update', $store_info);
         return $dada_http->request();
     }
+
+    public function dataTotal(Request $request) {
+
+		if($request->filled('store_id')) {
+
+			$price = DB::table('pay')
+						->where('store_id', $request->input('store_id'))
+						->sum('price');
+			
+			$order = DB::table('order')
+						->where('store_id',$request->input('store_id'))
+						->count();
+			
+			// $user = DB::table('user')
+			// 			->where('store_id',$request->input('store_id'))
+            // 			->count();
+            
+            $volume = DB::table('store')
+                        ->where('store_id',$request->input('store_id'))
+                        ->value('volume');
+
+			return [
+				'code' => 1,
+				'msg' => 'success',
+				'data' => [
+					'price' => $price,
+                    'order'=>$order,
+                    'volume'=>$volume,
+				],
+				
+			];
+
+		}
+
+	}
 }

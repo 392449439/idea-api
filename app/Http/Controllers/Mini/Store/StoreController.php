@@ -18,7 +18,6 @@ class StoreController extends Controller
 			->where('domain_id', $request->domain_id)
 			->orderBy('add_time', 'desc');
 
-
 		$result = $DB->get();
 		$result->map(function ($item) {
 			$item->label = explode(',', $item->label);
@@ -40,6 +39,8 @@ class StoreController extends Controller
 			->where('data_state', 1)
 			->where('store_id', $request->input('store_id'))
 			->first();
+		
+		$result = DB::table('store')->increment('volume');
 
 		$result->label = explode(',', $result->label);
 
