@@ -18,10 +18,10 @@ class CorsMiddleware
 
     public function handle(Request $request, \Closure $next)
     {
-        // $this->headers = [
-        //     "Access-Control-Allow-Methods" => "GET, POST, PATCH, PUT, OPTIONS",
-        //     'Access-Control-Allow-Headers' => $request->header('Access-Control-Request-Headers'),
-        // ];
+        $this->headers = [
+            "Access-Control-Allow-Methods" => "GET, POST, PATCH, PUT, OPTIONS",
+            'Access-Control-Allow-Headers' => $request->header('Access-Control-Request-Headers'),
+        ];
         if ($request->isMethod('options')) {
             return $this->setCorsHeaders(new Response('OK', 200));
         }
@@ -35,9 +35,9 @@ class CorsMiddleware
     public function setCorsHeaders($response)
     {
 
-        // foreach ($this->headers as $key => $value) {
-        //     $response->header($key, $value);
-        // }
+        foreach ($this->headers as $key => $value) {
+            $response->header($key, $value);
+        }
         $response->header('Access-Control-Allow-Origin', '*');
 
         return $response;
