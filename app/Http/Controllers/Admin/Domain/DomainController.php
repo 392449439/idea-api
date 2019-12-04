@@ -219,6 +219,7 @@ class DomainController extends Controller
 					->count();
 		
 		$user = DB::table('user')
+					->where('user_type','2')
 					->where('domain_id',$request->domain_id)
 					->count();
 
