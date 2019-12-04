@@ -121,13 +121,10 @@ class PrinterController extends Controller
 
     public function del(Request $request)
     {
-        return [1];
         $result = DB::table('printer')
-            ->whereIn('id', $request->input('ids'))
+            ->where('item_sn', $request->input('item_sn'))
+            ->where('store_id', $request->input('store_id'))
             ->delete();
-
-
-
 
         return response()->json([
             'code' => $result >= 0 ? 1 : -1,
