@@ -15,6 +15,7 @@ class OrderController extends Controller
 	public function create(Request $request)
 	{
 
+		$source_id = $request->domainInfo->dada_source_id;
 		/**
 		 * 组成模型
 		 */
@@ -89,6 +90,7 @@ class OrderController extends Controller
 			"app_key" => env('DADA_APP_KEY'),
 			"app_secret" => env('DADA_APP_SECRET'),
 			"sandbox" => env('DADA_SANDBOX'),
+			"source_id" => $source_id,
 		]);
 
 		$order_info = [];

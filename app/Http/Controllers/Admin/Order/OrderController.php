@@ -96,10 +96,12 @@ class OrderController extends Controller
 	//哒哒下单
 	public function pay_order(Request $request)
 	{
+		$source_id = $request->domainInfo->dada_source_id;
 		$dada_http = new Dada([
 			"app_key" => env('DADA_APP_KEY'),
 			"app_secret" => env('DADA_APP_SECRET'),
 			"sandbox" => env('DADA_SANDBOX'),
+			"source_id" => $source_id,
 		]);
 
 		$address_id = $request->input('address_id', '1');
@@ -156,10 +158,12 @@ class OrderController extends Controller
 		$order_id = $request->input('order_id');
 		$data_url = $request->input('data_url');
 
+		$source_id = $request->domainInfo->dada_source_id;
 		$dada_http = new Dada([
 			"app_key" => env('DADA_APP_KEY'),
 			"app_secret" => env('DADA_APP_SECRET'),
 			"sandbox" => env('DADA_SANDBOX'),
+			"source_id" => $source_id,
 		]);
 
 		$dada_http->http($data_url, [
@@ -174,10 +178,12 @@ class OrderController extends Controller
 	{
 		$order_id = $request->input('order_id');
 
+		$source_id = $request->domainInfo->dada_source_id;
 		$dada_http = new Dada([
 			"app_key" => env('DADA_APP_KEY'),
 			"app_secret" => env('DADA_APP_SECRET'),
 			"sandbox" => env('DADA_SANDBOX'),
+			"source_id" => $source_id,
 		]);
 
 		$dada_http->http('/api/order/status/query', [
@@ -202,10 +208,12 @@ class OrderController extends Controller
 	public function dadaOrderTest(Request $request)
 	{
 		//哒哒
+		$source_id = $request->domainInfo->dada_source_id;
 		$dada_http = new Dada([
 			"app_key" => env('DADA_APP_KEY'),
 			"app_secret" => env('DADA_APP_SECRET'),
 			"sandbox" => env('DADA_SANDBOX'),
+			"source_id" => $source_id,
 		]);
 
 		$order_id = 'ORDER' . Carbon::now()->format('YmdHis') . rand(10000, 99999);

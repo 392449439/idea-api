@@ -68,7 +68,7 @@ class PayController extends Controller
 		];
 
 		$app = Factory::payment($config);
-		$response = $app->handlePaidNotify(function ($message, $fail) {
+		$response = $app->handlePaidNotify(function ($message, $fail) use (&$Domain) {
 			$out_trade_no = $message['out_trade_no'];
 
 			$pay = DB::table('pay')
@@ -92,11 +92,13 @@ class PayController extends Controller
 						['pay_id', '=', $out_trade_no],
 					])
 					->first();
+				$source_id = $Domain->dada_source_id;
 
 				$dada_http = new Dada([
 					"app_key" => env('DADA_APP_KEY'),
 					"app_secret" => env('DADA_APP_SECRET'),
 					"sandbox" => env('DADA_SANDBOX'),
+					"source_id" => $source_id,
 				]);
 				$data = [];
 				$data['deliveryNo'] = $orderInfo->delivery_no;

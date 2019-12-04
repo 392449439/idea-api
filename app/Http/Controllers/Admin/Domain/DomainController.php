@@ -149,10 +149,12 @@ class DomainController extends Controller
 	//哒哒余额
 	public function dadaBalance(Request $request)
 	{
+		$source_id = $request->domainInfo->dada_source_id;
 		$dada_http = new Dada([
 			"app_key" => env('DADA_APP_KEY'),
 			"app_secret" => env('DADA_APP_SECRET'),
 			"sandbox" => env('DADA_SANDBOX'),
+			"source_id" => $source_id,
 		]);
 		$data['category'] = 3;
 		$dada_http->http('/api/balance/query', $data);
@@ -175,10 +177,12 @@ class DomainController extends Controller
 	//哒哒支付
 	public function dadaPay(Request $request)
 	{
+		$source_id = $request->domainInfo->dada_source_id;
 		$dada_http = new Dada([
 			"app_key" => env('DADA_APP_KEY'),
 			"app_secret" => env('DADA_APP_SECRET'),
 			"sandbox" => env('DADA_SANDBOX'),
+			"source_id" => $source_id,
 		]);
 
 		$data['amount'] = $request->input('money');
