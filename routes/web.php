@@ -101,6 +101,7 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'co
         $router->post('list', 'StoreController@list');
         $router->post('info', 'StoreController@info');
         $router->post('del', 'StoreController@del');
+        $router->post('data/total', 'StoreController@dataTotal');
         $router->post('app/list', 'StoreController@appList');
         $router->post('app/link', 'StoreController@linkApp');
         $router->post('app/unlink', 'StoreController@unlinkApp');
