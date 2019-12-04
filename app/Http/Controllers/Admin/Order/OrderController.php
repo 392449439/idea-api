@@ -211,12 +211,13 @@ class OrderController extends Controller
 		$order_info['is_prepay'] = 0;    //是否需要垫付 1:是 0:否 (垫付订单金额，非运费)
 		$order_info['receiver_name'] = '孙辉';    //收货人姓名
 		$order_info['receiver_address'] = '平高世贸中心商务楼,17楼1711室'; //收货人地址
-		$order_info['callback'] ='https://api.yihuo-cloud.com/dada/notify'; //回调地址
+		$order_info['callback'] = 'https://api.yihuo-cloud.com/dada/notify'; //回调地址
 		$order_info['receiver_lat'] = '31.006257'; //维度
 		$order_info['receiver_lng'] = '121.235638'; //经度
 		$order_info['receiver_phone'] = '18964045539'; //收货人手机号
 		$order_info['info'] = 'test'; //备注
 		$order_info['cargo_type'] = 5;
+		$order_info['shop_no'] = '11047059';
 
 		$dada_http->http('/api/order/queryDeliverFee', $order_info);
 		$result = $dada_http->request();
