@@ -212,7 +212,7 @@ class OrderController extends Controller
 			"source_id" => '73753',
 		]);
 
-		$order_id = 'ORDER' . Carbon::now()->format('YmdHis') . rand(10000, 99999);
+		$order_id =  Carbon::now()->format('His') . rand(10, 99);
 
 		$order_info = [];
 		$order_info['origin_id'] = $order_id;    //第三方订单ID
