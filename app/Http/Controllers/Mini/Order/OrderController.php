@@ -156,6 +156,7 @@ class OrderController extends Controller
 
 		$payInfo = [];
 		$payInfo['pay_id'] = $pay_id;
+		$payInfo['store_id'] = $store_id;
 		//		$payInfo['price'] = $price+$queryDeliverFee['result']['fee'];
 		$payInfo['price'] = 0.01;
 		$payInfo['domain_id'] = $request->domainInfo->domain_id;
