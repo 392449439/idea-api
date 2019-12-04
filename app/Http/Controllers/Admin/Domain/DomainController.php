@@ -227,9 +227,12 @@ class DomainController extends Controller
 			return [
 				'code' => 1,
 				'msg' => 'success',
-				'price' => $price,
-				'order'=>$order,
-				'user'=>$user,
+				'data' => [
+					'price' => $price,
+					'order'=>$order,
+					'user'=>$user,
+				],
+				
 			];
 
 		}
