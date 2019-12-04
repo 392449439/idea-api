@@ -169,7 +169,7 @@ class OrderController extends Controller
 		]);
 		$result = $dada_http->request();
 
-		return [$result];
+		return [$result, $request->all()];
 	}
 
 	public function dadaOrderInfo(Request $request)
@@ -212,7 +212,7 @@ class OrderController extends Controller
 			"source_id" => '73753',
 		]);
 
-		$order_id =  Carbon::now()->format('His') . rand(10, 99);
+		$order_id = 'ORDER' . Carbon::now()->format('YmdHis') . rand(10000, 99999);
 
 		$order_info = [];
 		$order_info['origin_id'] = $order_id;    //第三方订单ID
@@ -221,7 +221,7 @@ class OrderController extends Controller
 		$order_info['is_prepay'] = 0;    //是否需要垫付 1:是 0:否 (垫付订单金额，非运费)
 		$order_info['receiver_name'] = '孙辉';    //收货人姓名
 		$order_info['receiver_address'] = '平高世贸中心商务楼,17楼1711室'; //收货人地址
-		$order_info['callback'] = 'https://api.yihuo-cloud.com/dada/notify'; //回调地址
+		$order_info['callback'] = 'http://api.yihuo-cloud.com/dada/notify'; //回调地址
 		$order_info['receiver_lat'] = '31.006257'; //维度
 		$order_info['receiver_lng'] = '121.235638'; //经度
 		$order_info['receiver_phone'] = '18964045539'; //收货人手机号
@@ -229,23 +229,23 @@ class OrderController extends Controller
 		$order_info['cargo_type'] = 5;
 		$order_info['shop_no'] = '11047059';
 
-		$dada_http->http('/api/order/queryDeliverFee', $order_info);
+		$dada_http->http('/api/order/addOrder', $order_info);
 		$result = $dada_http->request();
 
-		$result2 = null;
-		if ($result['code'] == 0) {
-			$dada_http->http('/api/order/addAfterQuery', [
-				'deliveryNo' => $result['result']['deliveryNo'],
-			]);
-			$result2 = $dada_http->request();
-		}
+		// $result2 = null;
+		// if ($result['code'] == 0) {
+		// 	$dada_http->http('/api/order/addAfterQuery', [
+		// 		'deliveryNo' => $result['result']['deliveryNo'],
+		// 	]);
+		// 	$result2 = $dada_http->request();
+		// }
 
 
 
 		return [
 			'order_id' => $order_id,
 			'result' => $result,
-			'result2' => $result2,
+			// 'result2' => $result2,
 		];
 	}
 
