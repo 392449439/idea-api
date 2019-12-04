@@ -19,6 +19,7 @@ class PrinterController extends Controller
         $Feieyun = new Printer();
 
 
+        $store_id = $request->input('store_id');
         $sn = $request->input('item_sn');
         $key = $request->input('item_key');
 
@@ -31,13 +32,25 @@ class PrinterController extends Controller
             // 已绑定，不加入到飞鹅
         }
 
-        $result = DB::table('printer')->insert($request->all());
+        $isPrinter = DB::table('printer')
+            ->where('store_id', $store_id)
+            ->where('item_sn', $sn)
+            ->exists();
 
-        return response()->json([
-            'code' => $result >= 0 ? 1 : -1,
-            'msg' => $result >= 0 ? 'success' : 'error',
-            'data' => $result,
-        ]);
+        if ($isPrinter) {
+            return response()->json([
+                'code' => -1,
+                'msg' => '已存在，请勿重复添加！',
+                'data' => null,
+            ]);
+        } else {
+            $result = DB::table('printer')->insert($request->all());
+            return response()->json([
+                'code' => $result >= 0 ? 1 : -1,
+                'msg' => $result >= 0 ? 'success' : 'error',
+                'data' => $result,
+            ]);
+        }
     }
 
 
@@ -68,9 +81,7 @@ class PrinterController extends Controller
     {
         $DB = DB::table('printer')->orderBy('add_time', 'desc');
 
-        if ($request->filled('id')) {
-            $DB->where('id', $request->input('id'));
-        }
+        $DB->where('store_id', $request->input('store_id', ''));
 
         //        if ($request->filled('company_ids')) {
         //            $DB->where('company_id', $request->input('company_ids'));
@@ -110,9 +121,13 @@ class PrinterController extends Controller
 
     public function del(Request $request)
     {
+        return [1];
         $result = DB::table('printer')
             ->whereIn('id', $request->input('ids'))
             ->delete();
+
+
+
 
         return response()->json([
             'code' => $result >= 0 ? 1 : -1,
