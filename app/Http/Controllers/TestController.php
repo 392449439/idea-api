@@ -157,16 +157,6 @@ class TestController extends Controller
 
     public function print()
     {
-        $dada_http = new Dada([
-            "app_key" => env('DADA_APP_KEY'),
-            "app_secret" => env('DADA_APP_SECRET'),
-            "sandbox" => env('DADA_SANDBOX'),
-        ]);
-        //查询订单运费接口
-        $dada_http->http('/api/order/status/query', [
-            "order_id" => 'ORDER2019120320142353901',
-        ]);
-        $result = $dada_http->request();
-        return $result;
+        return [];
     }
 }
