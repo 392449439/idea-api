@@ -77,6 +77,8 @@ class StoreController extends Controller
     {
 
         $data = $request->toArray();
+
+        unset($data['dada_info']);
         $data['domain_id'] = $request->domain_id;
         $source_id = $request->domainInfo->dada_source_id;
 
