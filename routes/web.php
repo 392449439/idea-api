@@ -158,11 +158,13 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'co
     //打印机
     $router->group(['namespace' => 'Printer', 'prefix' => 'printer'], function () use ($router) {
         $router->post('save', 'PrinterController@save');
+        $router->get('save', 'PrinterController@save');
         $router->post('info', 'PrinterController@info');
         $router->post('list', 'PrinterController@list');
         $router->post('del', 'PrinterController@del');
     });
 });
+
 
 
 $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core'], function () use ($router) {

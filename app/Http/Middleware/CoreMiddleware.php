@@ -12,6 +12,10 @@ class CoreMiddleware
     public function handle(Request $request, \Closure $next)
     {
 
+        if ($request->getMethod() == "GET") {
+            return $next($request);
+        }
+
         /**拿到domain */
         $heads = $request->header('Authorization');
         $heads  = explode(";", $heads);

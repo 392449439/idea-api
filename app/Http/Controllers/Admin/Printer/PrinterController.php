@@ -15,69 +15,29 @@ class PrinterController extends Controller
     //打印机添加和修改
     public function save(Request $request)
     {
-        //        echo 1;return;
-        if ($request->filled('id')) {
-            $data = [];
-            $data['store_id'] = $request->input('store_id');
-            $data['item_sn'] = $request->input('item_sn');
-            $data['item_key'] = $request->input('item_key');
 
-            $result = DB::table('printer')
-                ->where('id', $request->input('id'))
-                ->update($data);
+        $Feieyun = new Printer();
 
-            return response()->json([
-                'code' => $result >= 0 ? 1 : -1,
-                'msg' => $result >= 0 ? 'success' : 'error',
-                'data' => $result,
-            ]);
+
+        $sn = $request->input('item_sn');
+        $key = $request->input('item_key');
+
+        $status =  $Feieyun->status($sn);
+
+        if ($status['ret'] == '1002') {
+            // 未绑定，加入到飞鹅
+            $result =  $Feieyun->add("$sn#$key");
         } else {
-            // 添加
-
-
-            $data = [];
-            $data['store_id'] = $request->input('store_id');
-            $data['item_sn'] = $request->input('item_sn');
-            $data['item_key'] = $request->input('item_key');
-            $result = DB::table('printer')->insert($data);
-
-
-            /**检查是否重复 */
-            //            $has_printer = DB::table('printer')
-            //                ->where([
-            //                    ['store_id', '=', $request->input('store_id')],
-            //                    ['item_sn', '=', $request->input('item_sn')],
-            //                ])
-            //                ->first();
-
-            //飞蛾添加打印机
-            $is_printer = (new Printer(env('FEIE_USER'), env('FEIE_KEY')))
-                ->add($request->input('item_sn') . ' # ' . $request->input('item_key'));
-            //            echo count(json_decode($is_printer)->data->ok);exit;
-            if (count(json_decode($is_printer)->data->ok) <= 0) {
-                return [
-                    'code' => -1,
-                    'msg' => json_decode($is_printer)->data,
-                    'data' => '',
-                ];
-            }
-
-            //            if (!$has_printer) {
-            if (!$result) {
-                return [
-                    'code' => -1,
-                    'msg' => '入库失败',
-                    'data' => '',
-                ];
-            }
-            //            }
-
-            return response()->json([
-                'code' => 1,
-                'msg' => 'success',
-                'data' => '',
-            ]);
+            // 已绑定，不加入到飞鹅
         }
+
+        $result = DB::table('printer')->insert($request->all());
+
+        return response()->json([
+            'code' => $result >= 0 ? 1 : -1,
+            'msg' => $result >= 0 ? 'success' : 'error',
+            'data' => $result,
+        ]);
     }
 
 

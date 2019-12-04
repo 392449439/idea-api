@@ -158,7 +158,7 @@ class PayController extends Controller
 			return $newItem;
 		});
 
-		$printer = new Printer(env('FEIE_USER'), env('FEIE_KEY'));
+		$printer = new Printer();
 
 		$header = [
 			"<CB>" . $store->name . "</CB><BR>",

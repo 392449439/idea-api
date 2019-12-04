@@ -12,10 +12,10 @@ class Printer
     private $ukey = "";
     private $sn = "";
 
-    public function __construct($user, $ukey, $sn = '')
+    public function __construct($sn = '')
     {
-        $this->user = $user;
-        $this->ukey = $ukey;
+        $this->user = env('FEIE_USER');
+        $this->ukey = env('FEIE_KEY');
         $this->sn = $sn;
     }
 
@@ -53,7 +53,25 @@ class Printer
         if (!$client->post('/Api/Open/', $content)) {
             return 'error';
         } else {
-            return $client->getContent();
+            return json_decode($client->getContent(), true);
+        }
+    }
+    public function status($sn)
+    {
+        $time = time();                //请求时间
+        $content = array(
+            'user' => $this->user,
+            'stime' => $time,
+            'sig' => $this->signature($time),
+            'apiname' => 'Open_queryPrinterStatus',
+            'sn' => $sn
+        );
+
+        $client = new HttpClient('api.feieyun.cn', 80);
+        if (!$client->post('/Api/Open/', $content)) {
+            return 'error';
+        } else {
+            return json_decode($client->getContent(), true);
         }
     }
 
@@ -72,9 +90,10 @@ class Printer
         if (!$client->post('/Api/Open/', $content)) {
             return 'error';
         } else {
-            return $client->getContent();
+            return json_decode($client->getContent(), true);
         }
     }
+
 
     private function print($data)
     {
