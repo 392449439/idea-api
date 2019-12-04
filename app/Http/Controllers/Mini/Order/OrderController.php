@@ -101,7 +101,7 @@ class OrderController extends Controller
 		$order_info['is_prepay'] = 0;    //是否需要垫付 1:是 0:否 (垫付订单金额，非运费)
 		$order_info['receiver_name'] = $addressInfo['contacts'];    //收货人姓名
 		$order_info['receiver_address'] = $addressInfo['address']; //收货人地址
-		$order_info['callback'] = url(); //回调地址
+		$order_info['callback'] = url('dada/notify'); //回调地址
 		$order_info['receiver_lat'] = $addressInfo['x']; //维度
 		$order_info['receiver_lng'] = $addressInfo['y']; //经度
 		$order_info['receiver_phone'] = $addressInfo['phone']; //收货人手机号
