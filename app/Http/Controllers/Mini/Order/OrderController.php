@@ -248,7 +248,7 @@ class OrderController extends Controller
 
 	public function notify(Request $request)
 	{
-		DB::table('dada_notify')->insert($request->all());
+		DB::table('dada_notify')->insert(['info' => $request->all()]);
 		echo 'success';
 	}
 }
