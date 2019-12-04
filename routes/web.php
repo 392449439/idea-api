@@ -152,7 +152,7 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'co
         $router->post('info', 'UserController@info');
         $router->post('list', 'UserController@list');
         $router->post('del', 'UserController@del');
-        $router->post('setpwd', 'UserCOntroller@setpwd');
+        $router->post('setpwd', 'UserController@setpwd');
     });
 
     $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($router) {
