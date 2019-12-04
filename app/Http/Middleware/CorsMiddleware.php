@@ -10,6 +10,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class CorsMiddleware
 {
@@ -18,6 +19,9 @@ class CorsMiddleware
 
     public function handle(Request $request, \Closure $next)
     {
+
+        Log::info('接口进入:' . '-------------------'  . $request->fullUrl() . '-------------------' . json_encode($request->all()));
+
         $this->headers = [
             "Access-Control-Allow-Methods" => "GET, POST, PATCH, PUT, OPTIONS",
             'Access-Control-Allow-Headers' => $request->header('Access-Control-Request-Headers'),

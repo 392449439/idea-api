@@ -250,7 +250,7 @@ class OrderController extends Controller
 	{
 
 		Log::info('达达进入:' . json_encode($request->all()));
-		DB::table('dada_notify')->insert(['info' => $request->all()]);
+		DB::table('dada_notify')->insert(['info' => json_encode($request->all())]);
 		echo 'success';
 	}
 }
