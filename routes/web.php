@@ -77,6 +77,7 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'co
         $router->post('dada/test', 'OrderController@dadaTest');
         $router->post('dada/order/test', 'OrderController@dadaOrderTest');
         $router->post('dada/order/info', 'OrderController@dadaOrderInfo');
+        $router->post('dada/order/notify', 'OrderController@dadaDadaNotify');
     });
     $router->group(['namespace' => 'Classi', 'prefix' => 'class'], function () use ($router) {
         $router->post('list', 'ClassiController@list');

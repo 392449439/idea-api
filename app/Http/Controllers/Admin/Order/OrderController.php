@@ -191,6 +191,16 @@ class OrderController extends Controller
 		return [$result];
 	}
 
+	public function dadaDadaNotify(Request $request)
+	{
+		$result = DB::table('dada_notify')->orderBy('add_time', 'desc')->get();
+		$result->transform(function ($el) {
+			$el->info = json_decode($el->info, true);
+			return $el;
+		});
+		return $result;
+	}
+
 
 	public function dadaOrderTest(Request $request)
 	{
