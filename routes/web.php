@@ -220,4 +220,5 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
 $router->get('pay/wx_notify_url/{domain_id}', 'Mini\Order\PayController@notify_url');
 $router->post('pay/wx_notify_url/{domain_id}', 'Mini\Order\PayController@notify_url');
 
+$router->get('dada/notify', 'Mini\Order\OrderController@notify');
 $router->post('dada/notify', 'Mini\Order\OrderController@notify');
