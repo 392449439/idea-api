@@ -279,17 +279,21 @@ class StoreController extends Controller
 						->where('store_id',$request->input('store_id'))
 						->count();
 			
-			$user = DB::table('user')
-						->where('store_id',$request->input('store_id'))
-						->count();
+			// $user = DB::table('user')
+			// 			->where('store_id',$request->input('store_id'))
+            // 			->count();
+            
+            $volume = DB::table('store')
+                        ->where('store_id',$request->input('store_id'))
+                        ->value('volume');
 
 			return [
 				'code' => 1,
 				'msg' => 'success',
 				'data' => [
 					'price' => $price,
-					'order'=>$order,
-					'user'=>$user,
+                    'order'=>$order,
+                    'volume'=>$volume,
 				],
 				
 			];
