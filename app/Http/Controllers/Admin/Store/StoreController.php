@@ -188,9 +188,10 @@ class StoreController extends Controller
                     ]);
                 }else{
                     Log::info('门店创建失败:'.json_encode($res));
+                    // .$res['result']['failedList'][0]['msg']
                     return response()->json([
                         'code' => -1,
-                        'msg' => $res['msg'].$res['result']['failedList'][0]['msg'],
+                        'msg' => $res['msg'],
                         'data' => '',
                     ]);
                 }
