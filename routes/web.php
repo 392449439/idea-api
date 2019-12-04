@@ -119,6 +119,7 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'co
         $router->post('list', 'DomainController@list');
         $router->post('info', 'DomainController@info');
         $router->post('del', 'DomainController@del');
+        $router->post('data/total', 'DomainController@dataTotal');
         //哒哒注册商户
         $router->post('addDada', 'DomainController@addDada');
         //哒哒余额查询
