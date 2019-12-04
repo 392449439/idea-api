@@ -207,4 +207,36 @@ class DomainController extends Controller
 			];
 		}
 	}
+
+	public function dataTotal(Request $request) {
+
+		if($request->filled('domain_id')) {
+
+			$price = DB::table('pay')
+						->where('domain_id', $request->domain_id)
+						->sum('price');
+			
+			$order = DB::table('order')
+						->where('domain_id',$request->domain_id)
+						->count();
+			
+			$user = DB::table('user')
+						->where('domain_id',$request->domain_id)
+						->count();
+
+			return [
+				'code' => 1,
+				'msg' => 'success',
+				'data' => [
+					'price' => $price,
+					'order'=>$order,
+					'user'=>$user,
+				],
+				
+			];
+
+		}
+
+	}
+
 }
