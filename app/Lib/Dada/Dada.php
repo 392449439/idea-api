@@ -105,12 +105,11 @@ class Dada
     {
         $this->url = $url;
         if ($this->sandbox) {
-            if (isset($data['shop_no'])) {
-                $data['shop_no'] = '11047059';
-            }
+            $data['shop_no'] = '11047059';
         }
 
         $this->bodyConfig = $data;
+        return  $this->bodyConfig;
     }
 
     public function request()

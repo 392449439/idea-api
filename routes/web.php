@@ -72,10 +72,11 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'co
         $router->post('del', 'JobController@del');
     });
     $router->group(['namespace' => 'Order', 'prefix' => 'order'], function () use ($router) {
-        // $router->post('create', 'OrderController@create');
         $router->post('list', 'OrderController@list');
         $router->post('info', 'OrderController@info');
-        // $router->post('getMini', 'PayController@getMini');
+        $router->post('dada/test', 'OrderController@dadaTest');
+        $router->post('dada/order/test', 'OrderController@dadaOrderTest');
+        $router->post('dada/order/info', 'OrderController@dadaOrderInfo');
     });
     $router->group(['namespace' => 'Classi', 'prefix' => 'class'], function () use ($router) {
         $router->post('list', 'ClassiController@list');
@@ -218,3 +219,5 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
 
 $router->get('pay/wx_notify_url/{domain_id}', 'Mini\Order\PayController@notify_url');
 $router->post('pay/wx_notify_url/{domain_id}', 'Mini\Order\PayController@notify_url');
+
+$router->post('dada/notify', 'Mini\Order\OrderController@notify');
