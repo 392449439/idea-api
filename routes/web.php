@@ -30,7 +30,7 @@ $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($ro
 });
 
 // $router->group(['middleware' => 'core'], function () use ($router) {
-$router->group(['namespace' => 'File', 'prefix' => 'file', 'middleware' => 'auth'], function () use ($router) {
+$router->group(['namespace' => 'File', 'prefix' => 'file'], function () use ($router) {
     $router->post('upload', 'FileController@upload');
 });
 // });
