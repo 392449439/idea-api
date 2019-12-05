@@ -74,17 +74,17 @@ class PayController extends Controller
 			$pay = DB::table('pay')
 				->where('pay_id', $out_trade_no)
 				->first();
-			if ($pay->state != 2) {
+			if ($pay->state != 1) {
 				DB::table('pay')
 					->where('pay_id', $out_trade_no)
 					->update([
-						'state' => 2,
+						'state' => 1,
 						'info' => json_encode($message)
 					]);
 
 				DB::table('order')
 					->where('pay_id', $out_trade_no)
-					->update(['state' => 2]);
+					->update(['state' => 1]);
 
 				//哒哒下单
 				$orderInfo = DB::table('order')
