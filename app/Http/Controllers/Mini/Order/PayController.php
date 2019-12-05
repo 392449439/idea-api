@@ -92,23 +92,24 @@ class PayController extends Controller
 						['pay_id', '=', $out_trade_no],
 					])
 					->first();
-				$source_id = $Domain->dada_source_id;
 
-				$dada_http = new Dada([
-					"app_key" => env('DADA_APP_KEY'),
-					"app_secret" => env('DADA_APP_SECRET'),
-					"sandbox" => env('DADA_SANDBOX'),
-					"source_id" => $source_id,
-				]);
-				$data = [];
-				$data['deliveryNo'] = $orderInfo->delivery_no;
+				if ($Domain->is_dada) {
+					$source_id = $Domain->dada_source_id;
+					$dada_http = new Dada([
+						"app_key" => env('DADA_APP_KEY'),
+						"app_secret" => env('DADA_APP_SECRET'),
+						"sandbox" => env('DADA_SANDBOX'),
+						"source_id" => $source_id,
+					]);
+					$data = [];
+					$data['deliveryNo'] = $orderInfo->delivery_no;
 
-				//查询订单运费接口
-				$dada_http->http('/api/order/addAfterQuery', $data);
-				$addAfterQuery = $dada_http->request();
+					//查询订单运费接口
+					$dada_http->http('/api/order/addAfterQuery', $data);
+					$addAfterQuery = $dada_http->request();
 
-				Log::info('查询运费后发单接口:' . json_encode($addAfterQuery));
-
+					Log::info('查询运费后发单接口:' . json_encode($addAfterQuery));
+				}
 
 				/**
 				 * 支付成功后打印订单
