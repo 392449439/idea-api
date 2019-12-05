@@ -38,27 +38,52 @@ class DomainController extends Controller
 	// 组织详情
 	public function info(Request $request)
 	{	
+		if($request->filled('domain_id')) {
 
-		$domain_info = [];
+			$domain_info = [];
 
-		$domain_info= DB::table('domain')
-						->where('domain_id',$request->domain_id)
-						->first();
+			$domain_info= DB::table('domain')
+							->where('domain_id',$request->input('domain_id'))
+							->first();
+			
+			$user_info = [];
+
+			$user_info = DB::table('user')
+							->where('phone',$domain_info->root_user_id)
+							->first();
+
+			return [
+				'code' => 1,
+				'msg' => 'success',
+				'data' => [
+					'$domain_info' => $domain_info,
+					'$user_info' => $user_info
+				],
+			];
+		}else {
+			$domain_info = [];
+
+			$domain_info= DB::table('domain')
+							->where('domain_id',$request->domain_id)
+							->first();
+			
+			$user_info = [];
+
+			$user_info = DB::table('user')
+							->where('phone',$domain_info->root_user_id)
+							->first();
+
+			return [
+				'code' => 1,
+				'msg' => 'success',
+				'data' => [
+					'$domain_info' => $domain_info,
+					'$user_info' => $user_info
+				],
+			];
+		}
+
 		
-		$user_info = [];
-
-		$user_info = DB::table('user')
-						->where('phone',$domain_info->root_user_id)
-						->first();
-
-		return [
-			'code' => 1,
-			'msg' => 'success',
-			'data' => [
-				'$domain_info' => $domain_info,
-				'$user_info' => $user_info
-			],
-		];
 	}
 
 	// 保存或者新增
