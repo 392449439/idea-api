@@ -5,6 +5,7 @@ namespace  App\Http\Controllers; // @todo: 这里是要生成类的命名空间
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\User;
 use App\Lib\Dada\Dada;
+use App\Lib\Feieyun\HttpClient;
 use App\Lib\Printer\Printer;
 use App\Listeners\Random;
 use Illuminate\Http\Request;
@@ -157,6 +158,13 @@ class TestController extends Controller
 
     public function print()
     {
-        return [];
+
+        $Feieyun = new Printer();
+
+        $sn = '550500335';
+        $key = 'shh2wpsy';
+        $status =  $Feieyun->list($sn, date('Y-m-d', time()));
+
+        return [$status, date('Y-m-d', time())];
     }
 }

@@ -75,6 +75,26 @@ class Printer
         }
     }
 
+    public function list($sn, $date)
+    {
+        $time = time();                //请求时间
+        $content = array(
+            'user' => $this->user,
+            'stime' => $time,
+            'sig' => $this->signature($time),
+            'apiname' => 'Open_queryOrderInfoByDate',
+            'sn' => $sn,
+            'date' => $date,
+        );
+
+        $client = new HttpClient('api.feieyun.cn', 80);
+        if (!$client->post('/Api/Open/', $content)) {
+            return 'error';
+        } else {
+            return json_decode($client->getContent(), true);
+        }
+    }
+
     public function del($snlist)
     {
         $time = time();                //请求时间
@@ -120,7 +140,7 @@ class Printer
     }
 
     //生成签名
-    function signature($time)
+    public function signature($time)
     {
         return sha1($this->user . $this->ukey . $time); //公共参数，请求公钥
     }

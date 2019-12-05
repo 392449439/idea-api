@@ -23,9 +23,9 @@ class PrinterController extends Controller
         $sn = $request->input('item_sn');
         $key = $request->input('item_key');
 
-        $status =  $Feieyun->status($sn);
+        $status =  $Feieyun->list($sn, date('Y-m-d', time()));
 
-        if ($status['ret'] == '1002') {
+        if ($status['ret'] == 1002) {
             // 未绑定，加入到飞鹅
             $result =  $Feieyun->add("$sn#$key");
         } else {
