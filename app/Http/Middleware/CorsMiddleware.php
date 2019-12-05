@@ -20,7 +20,7 @@ class CorsMiddleware
     public function handle(Request $request, \Closure $next)
     {
 
-        Log::info('接口进入:' . '-------------------'  . $request->fullUrl() . '-------------------' . json_encode($request->all()));
+        // Log::info('接口进入:' . '-------------------'  . $request->fullUrl() . '-------------------' . json_encode($request->all()));
 
         $this->headers = [
             "Access-Control-Allow-Methods" => "GET, POST, PATCH, PUT, OPTIONS",
