@@ -250,7 +250,7 @@ class OrderController extends Controller
 
 	public function notify(Request $request)
 	{
-		Log::info('达达进入:' . json_encode($request->all()));
+		Log::info('达达回调:' . json_encode($request->all()));
 		$data = $request->all();
 		DB::table('dada_notify')->insert(['info' => json_encode($data),'order_id' => $data['order_id']]);
 
