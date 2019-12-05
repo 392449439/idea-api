@@ -168,7 +168,7 @@ class OrderController extends Controller
 		$payInfo['pay_id'] = $pay_id;
 		$payInfo['store_id'] = $store_id;
 		$payInfo['price'] = $price;
-		$payInfo['price'] = 0.01;
+//		$payInfo['price'] = 0.01;
 		$payInfo['domain_id'] = $request->domainInfo->domain_id;
 
 
