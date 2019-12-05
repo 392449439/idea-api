@@ -56,8 +56,8 @@ class DomainController extends Controller
 				'code' => 1,
 				'msg' => 'success',
 				'data' => [
-					'$domain_info' => $domain_info,
-					'$user_info' => $user_info
+					'domain_info' => $domain_info,
+					'user_info' => $user_info
 				],
 			];
 		}else {
