@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 class DomainController extends Controller
 {
 
-	// 门店列表
+	// 组织列表
 	public function list(Request $request)
 	{
 
@@ -35,19 +35,55 @@ class DomainController extends Controller
 		];
 	}
 
-	// 门店详情
+	// 组织详情
 	public function info(Request $request)
-	{
+	{	
+		if($request->filled('domain_id')) {
 
-		$result = DB::table('domain')
-			->where('domain_id', $request->input('domain_id'))
-			->first();
+			$domain_info = [];
 
-		return [
-			'code' => $result ? 1 : -1,
-			'msg' => $result ? 'success' : 'error',
-			'data' => $result,
-		];
+			$domain_info= DB::table('domain')
+							->where('domain_id',$request->input('domain_id'))
+							->first();
+			
+			$user_info = [];
+
+			$user_info = DB::table('user')
+							->where('phone',$domain_info->root_user_id)
+							->first();
+
+			return [
+				'code' => 1,
+				'msg' => 'success',
+				'data' => [
+					'domain_info' => $domain_info,
+					'user_info' => $user_info
+				],
+			];
+		}else {
+			$domain_info = [];
+
+			$domain_info= DB::table('domain')
+							->where('domain_id',$request->domain_id)
+							->first();
+			
+			$user_info = [];
+
+			$user_info = DB::table('user')
+							->where('phone',$domain_info->root_user_id)
+							->first();
+
+			return [
+				'code' => 1,
+				'msg' => 'success',
+				'data' => [
+					'$domain_info' => $domain_info,
+					'$user_info' => $user_info
+				],
+			];
+		}
+
+		
 	}
 
 	// 保存或者新增
@@ -83,7 +119,7 @@ class DomainController extends Controller
 		}
 	}
 
-	// 删除门店接口
+	// 删除组织接口
 	public function del(Request $request)
 	{
 
@@ -245,6 +281,7 @@ class DomainController extends Controller
 
 		$domain_data['domain_id'] = $random->getRandom(16, 'D_');
 		$domain_data['name'] = $request->input('name');
+		$domain_data['root_user_id'] = $request->input('phone');
 
 		$result = DB::table('domain')->insert($domain_data);
 
