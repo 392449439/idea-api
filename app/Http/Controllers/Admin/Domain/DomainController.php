@@ -236,4 +236,32 @@ class DomainController extends Controller
 
 	}
 
+	public function open(Request $request)
+	{
+
+		$domain_data = [];
+
+		$random = new Random();
+
+		$domain_data['domain_id'] = $random->getRandom(16, 'D_');
+		$domain_data['name'] = $request->input('name');
+
+		$result = DB::table('domain')->insert($domain_data);
+
+		$user_data = [];
+
+		$user_data['pwd'] = md5($_ENV['APP_KEY'] .  $request->input('pwd'));
+		$user_data['phone'] = $request->input('phone');
+		$user_data['domain_id'] = $domain_data['domain_id'];
+		$user_data['user_type'] = 1;
+
+		$result = DB::table('user')->insert($user_data);
+
+		return response()->json([
+			'code' => $result ? 1 : -1,
+			'msg' => $result ? 'success' : 'error',
+			'data' => $result,
+		]);
+	}
+
 }
