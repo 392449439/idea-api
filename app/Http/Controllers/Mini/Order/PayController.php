@@ -178,7 +178,7 @@ class PayController extends Controller
 			'联系人：' . $orderAddress->contacts,
 			'订餐时间：' . $order->add_time,
 			"<CB>" . '备注：' . ($order->remarks ? $order->remarks : '无') . '</CB><BR><BR>',
-			'<QR>https://www.yihuo-cloud.com/</QR>',
+			// '<QR>https://www.yihuo-cloud.com/</QR>',
 		];
 
 		Log::info('打印机:' . json_encode($printerInfo));
