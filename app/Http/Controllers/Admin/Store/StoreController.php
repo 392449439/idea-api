@@ -32,6 +32,9 @@ class StoreController extends Controller
             $DB->limit($request->input('page_size', 10));
         }
 
+        if($request->filled('is_up')) {
+            $DB->where('is_up',$request->input('is_up'));
+        }
 
         // if ($request->filled('app_id')) {
         // 	$DB->where('app_id', $request->input('app_id'));

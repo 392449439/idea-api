@@ -120,6 +120,7 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'co
         $router->post('list', 'DomainController@list');
         $router->post('info', 'DomainController@info');
         $router->post('del', 'DomainController@del');
+        $router->post('open', 'DomainController@open');
         $router->post('data/total', 'DomainController@dataTotal');
         //哒哒注册商户
         $router->post('addDada', 'DomainController@addDada');
@@ -152,7 +153,7 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'co
         $router->post('info', 'UserController@info');
         $router->post('list', 'UserController@list');
         $router->post('del', 'UserController@del');
-        $router->post('setpwd', 'UserCOntroller@setpwd');
+        $router->post('setpwd', 'UserController@setpwd');
     });
 
     $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($router) {
