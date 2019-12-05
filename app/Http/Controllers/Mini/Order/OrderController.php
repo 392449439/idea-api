@@ -258,7 +258,7 @@ class OrderController extends Controller
         $order_info = DB::table('order')
             ->select('order_id','state')
             ->where([
-                'order_id' ,'=',$data['order_id'],
+                ['order_id' ,'=',$data['order_id']],
             ])
             ->first();
         //达达下单后待接单状态
