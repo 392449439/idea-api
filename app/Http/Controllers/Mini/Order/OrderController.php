@@ -263,15 +263,13 @@ class OrderController extends Controller
             ->first();
         //达达下单后待接单状态
         if($data['order_status'] === 1){    //商家一接单，达达待接单
-            if($order_info->state == 0){
-                DB::table('order')
-                    ->where([
-                        'order_id','=',$data['order_id']
-                    ])
-                    ->update([
-                        'state' => $data['order_status']
-                    ]);
-            }
+            DB::table('order')
+                ->where([
+                    ['order_id','=',$data['order_id']]
+                ])
+                ->update([
+                    'state' => $data['order_status']
+                ]);
         }
 
         //达达接单后待取货状态
@@ -279,7 +277,7 @@ class OrderController extends Controller
             if($order_info->state < 2){
                 DB::table('order')
                     ->where([
-                        'order_id','=',$data['order_id']
+                        ['order_id','=',$data['order_id']]
                     ])
                     ->update([
                         'state' => $data['order_status']
@@ -292,7 +290,7 @@ class OrderController extends Controller
             if($order_info->state < 3){
                 DB::table('order')
                     ->where([
-                        'order_id','=',$data['order_id']
+                        ['order_id','=',$data['order_id']]
                     ])
                     ->update([
                         'state' => $data['order_status']
@@ -305,7 +303,7 @@ class OrderController extends Controller
             if($order_info->state < 4){
                 DB::table('order')
                     ->where([
-                        'order_id','=',$data['order_id']
+                        ['order_id','=',$data['order_id']]
                     ])
                     ->update([
                         'state' => $data['order_status']
@@ -317,7 +315,7 @@ class OrderController extends Controller
         if($data['order_status'] === 5){
             DB::table('order')
                 ->where([
-                    'order_id','=',$data['order_id']
+                    ['order_id','=',$data['order_id']]
                 ])
                 ->update([
                     'state' => $data['order_status']
@@ -329,7 +327,7 @@ class OrderController extends Controller
         if($data['order_status'] === 7){
             DB::table('order')
                 ->where([
-                    'order_id','=',$data['order_id']
+                    ['order_id','=',$data['order_id']]
                 ])
                 ->update([
                     'state' => $data['order_status']
@@ -340,7 +338,7 @@ class OrderController extends Controller
         if($data['order_status'] === 1000){
             DB::table('order')
                 ->where([
-                    'order_id','=',$data['order_id']
+                    ['order_id','=',$data['order_id']]
                 ])
                 ->update([
                     'state' => 9
