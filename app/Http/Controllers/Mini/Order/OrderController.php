@@ -251,7 +251,115 @@ class OrderController extends Controller
 	public function notify(Request $request)
 	{
 		Log::info('达达进入:' . json_encode($request->all()));
-		DB::table('dada_notify')->insert(['info' => json_encode($request->all())]);
-		// echo 'success';
+		$data = $request->all();
+		DB::table('dada_notify')->insert(['info' => json_encode($data),'order_id' => $data['order_id']]);
+
+		//达达订单状态修改
+        $order_info = DB::table('order')
+            ->select('order_id','state')
+            ->where([
+                'order_id' ,'=',$data['order_id'],
+            ])
+            ->first();
+        //达达下单后待接单状态
+        if($data['order_status'] === 1){    //商家一接单，达达待接单
+            if($order_info->state == 0){
+                DB::table('order')
+                    ->where([
+                        'order_id','=',$data['order_id']
+                    ])
+                    ->update([
+                        'state' => $data['order_status']
+                    ]);
+            }
+        }
+
+        //达达接单后待取货状态
+        if($data['order_status'] === 2){
+            if($order_info->state < 2){
+                DB::table('order')
+                    ->where([
+                        'order_id','=',$data['order_id']
+                    ])
+                    ->update([
+                        'state' => $data['order_status']
+                    ]);
+            }
+        }
+
+        //达达取货后配送状态
+        if($data['order_status'] === 3){
+            if($order_info->state < 3){
+                DB::table('order')
+                    ->where([
+                        'order_id','=',$data['order_id']
+                    ])
+                    ->update([
+                        'state' => $data['order_status']
+                    ]);
+            }
+        }
+
+        //达达送货完成状态
+        if($data['order_status'] === 4){
+            if($order_info->state < 4){
+                DB::table('order')
+                    ->where([
+                        'order_id','=',$data['order_id']
+                    ])
+                    ->update([
+                        'state' => $data['order_status']
+                    ]);
+            }
+        }
+
+        //达达订单取消状态
+        if($data['order_status'] === 5){
+            DB::table('order')
+                ->where([
+                    'order_id','=',$data['order_id']
+                ])
+                ->update([
+                    'state' => $data['order_status']
+                ]);
+        }
+
+
+        //达达订单已过期，需要重新派单
+        if($data['order_status'] === 7){
+            DB::table('order')
+                ->where([
+                    'order_id','=',$data['order_id']
+                ])
+                ->update([
+                    'state' => $data['order_status']
+                ]);
+        }
+
+        //达达订单异常
+        if($data['order_status'] === 1000){
+            DB::table('order')
+                ->where([
+                    'order_id','=',$data['order_id']
+                ])
+                ->update([
+                    'state' => 9
+                ]);
+        }
+
 	}
 }
+
+//达达回调例子
+//{
+    //"order_status": 3,    订单状态(待接单＝1,待取货＝2,配送中＝3,已完成＝4,已取消＝5, 已过期＝7,指派单=8,妥投异常之物品返回中=9, 妥投异常之物品返回完成=10,骑士到店=100,创建达达运单失败=1000 可参考文末的状态说明）
+    //"cancel_reason": "",  订单取消原因,其他状态下默认值为空字符串
+    //"update_time": 1575510495,    更新时间,时间戳
+    //"cancel_from": 0,     订单取消原因来源(1:达达配送员取消；2:商家主动取消；3:系统或客服取消；0:默认值)
+    //"dm_id": 666,     达达配送员id，接单以后会传
+    //"signature": "52ff6dc062392a7842127b826900547a",  对client_id, order_id, update_time的值进行字符串升序排列，再连接字符串，取md5值
+    //"dm_name": "达达骑手",    配送员姓名，接单以后会传
+    //"order_id": "A_S1N3AtdPBbnyeK4Z",     添加订单接口中的origin_id值
+    //"client_id": "977435726451299861",    返回达达运单号，默认为空
+    //"dm_mobile": "13546670420"    配送员手机号，接单以后会传
+//}
