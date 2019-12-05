@@ -36,7 +36,7 @@ class CoreMiddleware
         }
 
         if ($domain_id) {
-            $domainInfo = DB::table('domain')->where('domain_id',  $config['domain_id'])->first();
+            $domainInfo = DB::table('domain')->where('domain_id',  $domain_id)->first();
         }
 
         $request->domain_id = $domain_id;
