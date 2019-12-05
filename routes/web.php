@@ -121,6 +121,10 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'co
         $router->post('info', 'DomainController@info');
         $router->post('del', 'DomainController@del');
         $router->post('open', 'DomainController@open');
+        $router->post('appinfo', 'DomainController@appInfo');
+        $router->post('appinfo/save', 'DomainController@appSave');
+        $router->post('mchinfo', 'DomainController@mchInfo');
+        $router->post('mchinfo/save', 'DomainController@mchSave');
         $router->post('data/total', 'DomainController@dataTotal');
         //哒哒注册商户
         $router->post('addDada', 'DomainController@addDada');

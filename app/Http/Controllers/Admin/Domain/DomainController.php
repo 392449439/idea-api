@@ -301,4 +301,124 @@ class DomainController extends Controller
 		]);
 	}
 
+	// APPinfo
+	public function appInfo(Request $request)
+	{
+
+		if($request->filled('domain_id')) {
+
+			$result = DB::table('domain')
+						->where('domain_id',$request->input('domain_id'))
+						->first();
+
+		}else {
+
+			$result = DB::table('domain')
+						->where('domain_id',$request->domain_id)
+						->first();
+
+		}
+
+		return response()->json([
+			'code' => $result ? 1 : -1,
+			'msg' => $result ? 'success' : 'error',
+			'data' => $result,
+		]);
+	}
+
+	// appinfo/save
+	public function appSave(Request $request)
+	{
+
+		if ($request->filled('domain_id')) {
+
+			$result = DB::table('domain')
+				->where('domain_id', $request->input('domain_id'))
+				->update($request->all());
+
+			return response()->json([
+				'code' => $result >= 0 ? 1 : -1,
+				'msg' =>  $result >= 0 ? 'success' : 'error',
+				'data' => $result,
+			]);
+		} else {
+
+			$result = DB::table('domain')
+				->where('domain_id', $request->domain_id)
+				->update($request->all());
+
+			return response()->json([
+				'code' => $result >= 0 ? 1 : -1,
+				'msg' =>  $result >= 0 ? 'success' : 'error',
+				'data' => $result,
+			]);
+
+			return response()->json([
+				'code' => $result ? 1 : -1,
+				'msg' => $result ? 'success' : 'error',
+				'data' => $result,
+			]);
+		}
+	}
+
+	// mchinfo
+	public function mchInfo(Request $request)
+	{
+
+		if($request->filled('domain_id')) {
+
+			$result = DB::table('domain')
+						->where('domain_id',$request->input('domain_id'))
+						->first();
+
+		}else {
+
+			$result = DB::table('domain')
+						->where('domain_id',$request->domain_id)
+						->first();
+
+		}
+
+		return response()->json([
+			'code' => $result ? 1 : -1,
+			'msg' => $result ? 'success' : 'error',
+			'data' => $result,
+		]);
+	}
+
+	// mchinfo/save
+	public function mchSave(Request $request)
+	{
+
+		if ($request->filled('domain_id')) {
+
+			$result = DB::table('domain')
+				->where('domain_id', $request->input('domain_id'))
+				->update($request->all());
+
+			return response()->json([
+				'code' => $result >= 0 ? 1 : -1,
+				'msg' =>  $result >= 0 ? 'success' : 'error',
+				'data' => $result,
+			]);
+		} else {
+
+			$result = DB::table('domain')
+				->where('domain_id', $request->domain_id)
+				->update($request->all());
+
+			return response()->json([
+				'code' => $result >= 0 ? 1 : -1,
+				'msg' =>  $result >= 0 ? 'success' : 'error',
+				'data' => $result,
+			]);
+
+			return response()->json([
+				'code' => $result ? 1 : -1,
+				'msg' => $result ? 'success' : 'error',
+				'data' => $result,
+			]);
+		}
+	}
+
 }
