@@ -159,6 +159,16 @@ class TestController extends Controller
     public function print()
     {
 
+        // $result = $model
+        //     ->table('s_order as t1,s_subject as t2,s_exam as t3,s_school as t4')
+        //     ->field('t1.add_time as t1_add_time,t1.*,t2.*,t3.*,t4.*')
+        //     ->where("t1.subject_id = t2.subject_id AND t2.exam_id =  t3.exam_id AND t3.school_id = t4.school_id AND t4.school_id = " . $get['school_id'])
+        //     ->where($where)
+        //     ->order('t1.add_time desc')
+        //     ->limit(($page - 1) * $limit, $limit)
+        //     ->select();
+
+
         $result =    DB::select("
         SELECT 
         snapshot.goods_id,
@@ -166,8 +176,12 @@ class TestController extends Controller
         goods.goods_head,
         COUNT( snapshot.goods_id ) AS sales_volume 
     FROM
-    snapshot 
-    LEFT JOIN goods ON snapshot.goods_id = goods.id
+        snapshot,
+        goods
+    WHERE
+        snapshot.goods_id = goods.id
+        ADN 
+        snapshot.store_id = '$store_id'
     GROUP BY
         snapshot.goods_id 
     ORDER BY
