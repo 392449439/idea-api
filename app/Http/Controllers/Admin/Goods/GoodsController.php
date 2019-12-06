@@ -103,4 +103,30 @@ class GoodsController extends Controller
 			'data' => $result,
 		];
 	}
+
+	public function volume(Request $request)
+	{
+		$store_id = $request->input('store_id');
+
+		$result = DB::select("
+
+			SELECT 
+				goods_id,
+				goods.title,
+				goods.goods_head,
+				COUNT( snapshot.goods_id ) AS sales_volume
+			FROM
+				snapshot
+			LEFT JOIN goods ON snapshot.goods_id = goods.id
+			WHERE snapshot.store_id  = '$store_id'
+			GROUP BY
+				snapshot.goods_id
+			ORDER BY
+				sales_volume DESC
+			LIMIT 1,10
+
+		");
+
+		return $result;
+	}
 }

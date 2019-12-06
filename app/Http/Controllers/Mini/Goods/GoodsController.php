@@ -3,10 +3,8 @@
 namespace  App\Http\Controllers\Mini\Goods; // @todo: 这里是要生成类的命名空间
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\User\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use EasyWeChat\Factory;
 
 
 class GoodsController extends Controller
@@ -37,5 +35,33 @@ class GoodsController extends Controller
 			'msg' => 'success',
 			'data' => $result,
 		]);
+	}
+
+	public function volume(Request $request) 
+	{
+
+		$store_id = $request->input('store_id');
+
+		$result = DB::select("
+
+			SELECT 
+				goods_id,
+				goods.title,
+				goods.goods_head,
+				COUNT( snapshot.goods_id ) AS sales_volume
+			FROM
+				snapshot
+			LEFT JOIN goods ON snapshot.goods_id = goods.id
+			WHERE snapshot.store_id  = '$store_id'
+			GROUP BY
+				snapshot.goods_id
+			ORDER BY
+				sales_volume DESC
+			LIMIT 1,10
+
+		");
+
+		return $result;
+
 	}
 }

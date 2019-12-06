@@ -138,6 +138,7 @@ $router->group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'co
         $router->post('list', 'GoodsController@list');
         $router->post('info', 'GoodsController@info');
         $router->post('del', 'GoodsController@del');
+        $router->post('volume', 'GoodsController@volume');
     });
     $router->group(['namespace' => 'Article', 'prefix' => 'article'], function () use ($router) {
         $router->post('save', 'ArticleController@save');
@@ -183,6 +184,7 @@ $router->group(['namespace' => 'Mini', 'prefix' => 'mini', 'middleware' => 'core
     });
     $router->group(['namespace' => 'Goods', 'prefix' => 'goods'], function () use ($router) {
         $router->post('list', 'GoodsController@list');
+        $router->post('volume', 'GoodsController@volume');
     });
     $router->group(['namespace' => 'Classi', 'prefix' => 'class'], function () use ($router) {
         $router->post('list', 'ClassiController@list');
