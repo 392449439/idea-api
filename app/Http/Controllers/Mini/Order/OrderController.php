@@ -168,7 +168,7 @@ class OrderController extends Controller
 		$payInfo['pay_id'] = $pay_id;
 		$payInfo['store_id'] = $store_id;
 		$payInfo['price'] = $price;
-//		$payInfo['price'] = 0.01;
+		$payInfo['price'] = 0.01;
 		$payInfo['domain_id'] = $request->domainInfo->domain_id;
 
 
@@ -265,96 +265,95 @@ class OrderController extends Controller
 		DB::table('dada_notify')->insert(['info' => json_encode($data), 'order_id' => $data['order_id']]);
 
 		//达达订单状态修改
-        $order_info = DB::table('order')
-            ->select('order_id','state')
-            ->where([
-                ['order_id' ,'=',$data['order_id']],
-            ])
-            ->first();
-        //达达下单后待接单状态
-        if($data['order_status'] === 1){    //商家一接单，达达待接单
-            DB::table('order')
-                ->where([
-                    ['order_id','=',$data['order_id']]
-                ])
-                ->update([
-                    'state' => $data['order_status']
-                ]);
-        }
+		$order_info = DB::table('order')
+			->select('order_id', 'state')
+			->where([
+				['order_id', '=', $data['order_id']],
+			])
+			->first();
+		//达达下单后待接单状态
+		if ($data['order_status'] === 1) {    //商家一接单，达达待接单
+			DB::table('order')
+				->where([
+					['order_id', '=', $data['order_id']]
+				])
+				->update([
+					'state' => $data['order_status']
+				]);
+		}
 
-        //达达接单后待取货状态
-        if($data['order_status'] === 2){
-            if($order_info->state < 2){
-                DB::table('order')
-                    ->where([
-                        ['order_id','=',$data['order_id']]
-                    ])
-                    ->update([
-                        'state' => $data['order_status']
-                    ]);
-            }
-        }
+		//达达接单后待取货状态
+		if ($data['order_status'] === 2) {
+			if ($order_info->state < 2) {
+				DB::table('order')
+					->where([
+						['order_id', '=', $data['order_id']]
+					])
+					->update([
+						'state' => $data['order_status']
+					]);
+			}
+		}
 
-        //达达取货后配送状态
-        if($data['order_status'] === 3){
-            if($order_info->state < 3){
-                DB::table('order')
-                    ->where([
-                        ['order_id','=',$data['order_id']]
-                    ])
-                    ->update([
-                        'state' => $data['order_status']
-                    ]);
-            }
-        }
+		//达达取货后配送状态
+		if ($data['order_status'] === 3) {
+			if ($order_info->state < 3) {
+				DB::table('order')
+					->where([
+						['order_id', '=', $data['order_id']]
+					])
+					->update([
+						'state' => $data['order_status']
+					]);
+			}
+		}
 
-        //达达送货完成状态
-        if($data['order_status'] === 4){
-            if($order_info->state < 4){
-                DB::table('order')
-                    ->where([
-                        ['order_id','=',$data['order_id']]
-                    ])
-                    ->update([
-                        'state' => $data['order_status']
-                    ]);
-            }
-        }
+		//达达送货完成状态
+		if ($data['order_status'] === 4) {
+			if ($order_info->state < 4) {
+				DB::table('order')
+					->where([
+						['order_id', '=', $data['order_id']]
+					])
+					->update([
+						'state' => $data['order_status']
+					]);
+			}
+		}
 
-        //达达订单取消状态
-        if($data['order_status'] === 5){
-            DB::table('order')
-                ->where([
-                    ['order_id','=',$data['order_id']]
-                ])
-                ->update([
-                    'state' => $data['order_status']
-                ]);
-        }
+		//达达订单取消状态
+		if ($data['order_status'] === 5) {
+			DB::table('order')
+				->where([
+					['order_id', '=', $data['order_id']]
+				])
+				->update([
+					'state' => $data['order_status']
+				]);
+		}
 
 
-        //达达订单已过期，需要重新派单
-        if($data['order_status'] === 7){
-            DB::table('order')
-                ->where([
-                    ['order_id','=',$data['order_id']]
-                ])
-                ->update([
-                    'state' => $data['order_status']
-                ]);
-        }
+		//达达订单已过期，需要重新派单
+		if ($data['order_status'] === 7) {
+			DB::table('order')
+				->where([
+					['order_id', '=', $data['order_id']]
+				])
+				->update([
+					'state' => $data['order_status']
+				]);
+		}
 
-        //达达订单异常
-        if($data['order_status'] === 1000){
-            DB::table('order')
-                ->where([
-                    ['order_id','=',$data['order_id']]
-                ])
-                ->update([
-                    'state' => 9
-                ]);
-        }
-
+		//达达订单异常
+		if ($data['order_status'] === 1000) {
+			DB::table('order')
+				->where([
+					['order_id', '=', $data['order_id']]
+				])
+				->update([
+					'state' => 9
+				]);
+		}
 	}
 }
 
