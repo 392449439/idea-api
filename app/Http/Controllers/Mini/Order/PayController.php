@@ -162,8 +162,11 @@ class PayController extends Controller
 
 		$printer = new Printer();
 
+		$sf = substr($order->order_id, -5);
+
 		$header = [
-			"<CB>" . $store->name . "</CB><BR>",
+			"<CB>****英雄外卖****</CB><BR>",
+			"<C>----<BOLD>#$sf 怪兽炒饭</BOLD>----</C><BR>",
 			'名称           单价  数量 金额<BR>',
 			'--------------------------------<BR>',
 		];
