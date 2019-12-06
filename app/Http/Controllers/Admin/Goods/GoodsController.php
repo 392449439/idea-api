@@ -111,14 +111,17 @@ class GoodsController extends Controller
 		$result = DB::select("
 
 			SELECT 
-				goods_id,
+				snapshot.goods_id,
 				goods.title,
 				goods.goods_head,
 				COUNT( snapshot.goods_id ) AS sales_volume
 			FROM
-				snapshot
-			LEFT JOIN goods ON snapshot.goods_id = goods.id
-			WHERE snapshot.store_id  = '$store_id'
+				snapshot,
+				goods
+			WHERE 
+				snapshot.goods_id  = goods.id
+				AND
+				snapshot.store_id  = '$store_id'
 			GROUP BY
 				snapshot.goods_id
 			ORDER BY
