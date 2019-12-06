@@ -130,6 +130,10 @@ class GoodsController extends Controller
 
 		");
 
-		return $result;
+		return [
+			'code' => $result ? 1 : -1,
+			'msg' => $result ? 'success' : 'error',
+			'data' => $result,
+		];
 	}
 }
