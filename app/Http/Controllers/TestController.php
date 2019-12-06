@@ -158,42 +158,24 @@ class TestController extends Controller
 
     public function print()
     {
-        return [];
-        $order_id = 'ORDER' . Carbon::now()->format('YmdHis') . rand(10000, 99999);
-        $pay_id = 'PAY' . Carbon::now()->format('YmdHis') . rand(10000, 99999);
 
-        $printer = new Printer();
-
-        $sf = substr($order_id, -4);
-
-        $header = [
-            "<CB>****英雄外卖****</CB><BR>",
-            "<C>----<BOLD>#$sf 怪兽炒饭</BOLD>----</C><BR>",
-            '名称           单价  数量 金额<BR>',
-            '--------------------------------<BR>',
-        ];
-        $data = [
-            ['title' => '饭饭饭', 'price' => 1, 'num' => 1,],
-            ['title' => '饭饭饭', 'price' => 1, 'num' => 1,],
-            ['title' => '饭饭饭', 'price' => 1, 'num' => 1,],
-            ['title' => '饭饭饭', 'price' => 1, 'num' => 1,],
-        ];
-
-        $footer = [
-            '--------------------------------<BR>',
-            '订单号：' . $order_id,
-            '支付号：' . $pay_id,
-            '合计：' . 999.99 . '元<BR>',
-            '送货地点：平高世贸大厦<BR>',
-            '联系电话：17621643903',
-            '联系人：陈文柱',
-            '订餐时间：2019年12月6日11:21:36',
-            "<CB>" . '备注：超级辣超级辣超级辣超级辣超级辣</CB><BR><BR>',
-        ];
+        $result =    DB::select("
+        SELECT 
+        snapshot.goods_id,
+        goods.title,
+        goods.goods_head,
+        COUNT( snapshot.goods_id ) AS sales_volume 
+    FROM
+    snapshot 
+    LEFT JOIN goods ON snapshot.goods_id = goods.id
+    GROUP BY
+        snapshot.goods_id 
+    ORDER BY
+    sales_volume DESC
+    LIMIT 1,10
+        ");
 
 
-        $res = $printer->printData($header, $data, $footer, '921510805');
-
-        return [$res];
+        return [$result];
     }
 }
