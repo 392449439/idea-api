@@ -3,10 +3,8 @@
 namespace  App\Http\Controllers\Admin\Classi; // @todo: 这里是要生成类的命名空间
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\User\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use EasyWeChat\Factory;
 
 
 class ClassiController extends Controller
@@ -26,7 +24,13 @@ class ClassiController extends Controller
 			->where('data_state', 1)
 			->orderBy('add_time', 'desc');
 
-		$DB->where('store_id', $request->input('store_id', ''));
+		if($request->filled('store_id')) {
+
+			$DB->where('store_id',$request->input('store_id'));
+			
+		}else {
+			$DB->where('store_id',$request->config['store_id']);
+		}
 
 		$result = $DB->get();
 

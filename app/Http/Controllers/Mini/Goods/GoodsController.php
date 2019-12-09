@@ -27,6 +27,13 @@ class GoodsController extends Controller
 		if ($request->filled('class_id')) {
 			$DB->where('class_id', $request->input('class_id'));
 		}
+		if($request->filled('store_id')) {
+
+			$DB->where('store_id',$request->input('store_id'));
+			
+		}else {
+			$DB->where('store_id',$request->config['store_id']);
+		}
 
 		$result = $DB->get();
 

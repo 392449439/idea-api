@@ -23,8 +23,12 @@ class ClassiController extends Controller
 				->where('data_state',1)
 				->orderBy('sort', 'desc');
 
-		if ($request->filled('store_id')) {
-			$DB->where('store_id', $request->input('store_id'));
+		if($request->filled('store_id')) {
+
+			$DB->where('store_id',$request->input('store_id'));
+			
+		}else {
+			$DB->where('store_id',$request->config['store_id']);
 		}
 
 		$result = $DB->get();
