@@ -32,8 +32,8 @@ class StoreController extends Controller
             $DB->limit($request->input('page_size', 10));
         }
 
-        if($request->filled('is_up')) {
-            $DB->where('is_up',$request->input('is_up'));
+        if ($request->filled('is_up')) {
+            $DB->where('is_up', $request->input('is_up'));
         }
 
         // if ($request->filled('app_id')) {
@@ -80,7 +80,7 @@ class StoreController extends Controller
     {
 
         $data = $request->toArray();
-
+        $store_id = $request->input('store_id');
         unset($data['dada_info']);
         $data['domain_id'] = $request->domain_id;
         $source_id = $request->domainInfo->dada_source_id;
@@ -100,14 +100,18 @@ class StoreController extends Controller
                     ['store_id', '=', $data['store_id']]
                 ])
                 ->first();
-            if (!$is_dada) {
+
+
+            if ($request->domainInfo->is_dada) {
                 return response()->json([
                     'code' => -1,
                     'msg' => '商铺信息有误',
                     'data' => '',
                 ]);
             }
-            if ($is_dada->is_dada == 1) {     //已有哒哒商铺
+
+            if ($request->domainInfo->is_dada == 1) {     //已有哒哒商铺
+
                 $update_data = [];
                 $update_data['origin_shop_id'] = $data['store_id'];
                 $update_data['station_name'] = $data['name'];
@@ -118,20 +122,15 @@ class StoreController extends Controller
                 $update_data['lat'] = $data['x'];
                 $update_data['contact_name'] = $data['contacts'];
                 $update_data['phone'] = $data['phone'];
+                $update_data['business'] = 1;
                 //门店是否绑定哒哒
                 $check_dada = self::checkStore($update_data['origin_shop_id'], $source_id);
-                if ($check_dada['code'] === 0) { //已有门店
+                if ($check_dada['code'] === 0) {
+                    //已有门店
                     $update_data['status'] = $data['is_up'];    //门店状态（1-门店激活，0-门店下线）
-                    $res = self::saveStore($update_data, $source_id);
+                    $res = self::saveDadaStore($update_data, $source_id);
                     if ($res['code'] === 0) { //哒哒修改成功
-                        $result = DB::table('store')
-                            ->where('store_id', $request->input('store_id'))
-                            ->update($data);
-                        return response()->json([
-                            'code' => $result,
-                            'msg' => $result == 0 ? '未作修改' : 'success',
-                            'data' => '',
-                        ]);
+                        return $this->saveStore($store_id, $data);
                     } else {
                         Log::info('门店更新时创建失败:' . json_encode($res));
                         return response()->json([
@@ -140,19 +139,11 @@ class StoreController extends Controller
                             'data' => '',
                         ]);
                     }
-                } else { //没有门店新增
-                    $update_data['business'] = 1;
+                } else {
+                    //没有门店新增
                     $res = self::addStore([$update_data], $source_id);
                     if ($res['code'] === 0) {
-                        unset($data['business'], $data['store_id']);
-                        $result = DB::table('store')
-                            ->where('store_id', $request->input('store_id'))
-                            ->update($data);
-                        return response()->json([
-                            'code' => $result ? 1 : -1,
-                            'msg' => $result ? 'success' : 'error',
-                            'data' => '',
-                        ]);
+                        return $this->saveStore($store_id, $data);
                     } else {
                         return response()->json([
                             'code' => -1,
@@ -162,13 +153,16 @@ class StoreController extends Controller
                         Log::info('门店更新失败:' . json_encode($res));
                     }
                 }
+            } else {
+                return $this->saveStore($store_id, $data);
             }
         } else {    //门店添加
+
             $random = new Random();
             $data['store_id'] = $random->getRandom(16, 'S_');
 
             //是否有哒哒店铺
-            $is_dada = 1;
+            $is_dada = $request->domainInfo->is_dada;
             if ($is_dada) {   //有哒哒添加
                 $add_data = [];
                 $add_data['station_name'] = $data['name'];  //门店名
@@ -209,6 +203,18 @@ class StoreController extends Controller
                 ]);
             }
         }
+    }
+
+    private function saveStore($store_id, $data)
+    {
+        $result = DB::table('store')
+            ->where('store_id', $store_id)
+            ->update($data);
+        return response()->json([
+            'code' => $result ? 1 : -1,
+            'msg' => $result ? 'success' : 'error',
+            'data' => $result,
+        ]);
     }
 
     // 删除门店接口
@@ -257,7 +263,7 @@ class StoreController extends Controller
     }
 
     //修改门店信息
-    public function saveStore($store_info, $source_id)
+    public function saveDadaStore($store_info, $source_id)
     {
         $dada_http = new Dada([
             "app_key" => env('DADA_APP_KEY'),
@@ -270,38 +276,37 @@ class StoreController extends Controller
         return $dada_http->request();
     }
 
-    public function dataTotal(Request $request) {
+    public function dataTotal(Request $request)
+    {
 
-		if($request->filled('store_id')) {
+        if ($request->filled('store_id')) {
 
-			$price = DB::table('pay')
-						->where('store_id', $request->input('store_id'))
-						->sum('price');
-			
-			$order = DB::table('order')
-						->where('store_id',$request->input('store_id'))
-						->count();
-			
-			// $user = DB::table('user')
-			// 			->where('store_id',$request->input('store_id'))
+            $price = DB::table('pay')
+                ->where('store_id', $request->input('store_id'))
+                ->sum('price');
+
+            $order = DB::table('order')
+                ->where('store_id', $request->input('store_id'))
+                ->count();
+
+            // $user = DB::table('user')
+            // 			->where('store_id',$request->input('store_id'))
             // 			->count();
-            
+
             $volume = DB::table('store')
-                        ->where('store_id',$request->input('store_id'))
-                        ->value('volume');
+                ->where('store_id', $request->input('store_id'))
+                ->value('volume');
 
-			return [
-				'code' => 1,
-				'msg' => 'success',
-				'data' => [
-					'price' => $price,
-                    'order'=>$order,
-                    'volume'=>$volume,
-				],
-				
-			];
+            return [
+                'code' => 1,
+                'msg' => 'success',
+                'data' => [
+                    'price' => $price,
+                    'order' => $order,
+                    'volume' => $volume,
+                ],
 
-		}
-
-	}
+            ];
+        }
+    }
 }
