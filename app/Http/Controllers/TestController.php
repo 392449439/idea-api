@@ -159,6 +159,10 @@ class TestController extends Controller
     public function print()
     {
 
+        // yih4d09205bb0075d68f78bd3cb14deb38763caf3a8
+        $md5 = 'yih' . sha1('yh12138..');
+
+        return [$md5, strlen($md5)];
         // $result = $model
         //     ->table('s_order as t1,s_subject as t2,s_exam as t3,s_school as t4')
         //     ->field('t1.add_time as t1_add_time,t1.*,t2.*,t3.*,t4.*')
