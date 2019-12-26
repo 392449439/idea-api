@@ -66,7 +66,9 @@ $router->group(['namespace' => 'Official', 'prefix' => 'official'], function () 
 // ideaH5端api代码
 $router->group(['namespace' => 'Admin' , 'prefix' => 'admin' , 'middleware' => 'core'] , function () use ($router) {
 
-    
+    $router->group(['namespace' => 'Idea' , 'prefix' => 'idea'] , function () use ($router) {
+        
+    });
 
 });
 
