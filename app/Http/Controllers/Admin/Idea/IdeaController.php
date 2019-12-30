@@ -18,11 +18,11 @@ class IdeaController extends Controller
 		$DB = DB::table('thinking') //定义表
 				->orderBy('add_time', 'desc');
 		
-		// $total = $DB->count();
+		$total = $DB->count();
 
 
-		// $DB->offset(($request->input('page', 1) - 1) * $request->input('page_size', 5));
-		// $DB->limit($request->input('page_size', 10));
+		$DB->offset(($request->input('page', 1) - 1) * $request->input('page_size', 5));
+		$DB->limit($request->input('page_size', 10));
 		
 		$result = $DB->get();
 
@@ -30,7 +30,7 @@ class IdeaController extends Controller
 			'code' => $result ? 1 : -1,
 			'msg' => '查询成功',
 			'data' => $result,
-			// 'total' => $total * 1,
+			'total' => $total * 1,
 		];
 
 	}
