@@ -22,7 +22,7 @@ class IdeaController extends Controller
 
 
 		$DB->offset(($request->input('page', 1) - 1) * $request->input('page_size', 5));
-		$DB->limit($request->input('page_size', 10));
+		$DB->limit($request->input('page_size', 5));
 		
 		$result = $DB->get();
 
