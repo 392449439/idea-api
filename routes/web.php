@@ -55,11 +55,12 @@ $router->group(['namespace' => 'Auth', 'prefix' => 'auth', 'middleware' => 'auth
 // ideaH5端api代码
 
 $router->group(['namespace' => 'Client', 'prefix' => 'client'], function () use ($router) {
-    $router->group(['namespace' => 'Idea', 'prefix' => 'idea'], function () use ($router) {
+    $router->group(['namespace' => 'Idea', 'prefix' => 'idea', 'middleware' => 'core'], function () use ($router) {
         $router->post('save', 'IdeaController@save');
         $router->post('list', 'IdeaController@list');
         $router->post('info', 'IdeaController@info');
         $router->post('del', 'IdeaController@del');
+        $router->post('up', 'IdeaController@up');
     });
     $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($router) {
         $router->post('login', 'AuthController@login');

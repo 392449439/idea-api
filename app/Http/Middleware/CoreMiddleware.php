@@ -24,7 +24,6 @@ class CoreMiddleware
             $config[$item[0]] = $item[1];
         });
         $request->config = $config;
-
         try {
             $request->jwt = json_decode(decrypt($request->config['jwt']));
         } catch (\Throwable $th) {
