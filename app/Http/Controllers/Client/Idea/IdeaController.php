@@ -16,6 +16,7 @@ class IdeaController extends Controller
 	{
 
 		$DB = DB::table('thinking') //定义表
+			->where('data_state', 1)
 			->orderBy('add_time', 'desc');
 
 		$total = $DB->count();
@@ -85,12 +86,12 @@ class IdeaController extends Controller
 
 		$result = DB::table('thinking')
 			->where('id', $request->input('id'))
-			->delete();
+			->update(['data_state', 0]);
 
 
 		$result = DB::table('up')
 			->where('idea_id', $request->input('id'))
-			->delete();
+			->update(['data_state', 0]);
 
 		return [
 			'code' => $result ? 1 : -1,
