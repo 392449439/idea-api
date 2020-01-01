@@ -79,6 +79,6 @@ class AuthController extends Controller
 		curl_setopt($curlobj, CURLOPT_HTTPHEADER, array("application/x-www-form-urlencoded;  
 															charset=utf-8", "Content-length: " . strlen($data)));
 		$rtn = curl_exec($curlobj);
-		return $rtn;
+		return json_decode($rtn);
 	}
 }
