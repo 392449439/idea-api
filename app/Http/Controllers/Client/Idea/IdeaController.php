@@ -27,13 +27,13 @@ class IdeaController extends Controller
 
 		$result = $DB->get();
 
-		$result->map(function ($el) {
+		$result->map(function ($el) use ($request) {
 			$el->userInfo = DB::table('user')->where('id', $el->user_id)->first();
 			// 取得赞的数量
 			$el->up = DB::table('up')->where('idea_id', $el->id)->count() * 1;
 			// 当前用户是否赞过了
 			$el->isUp = DB::table('up')
-				->where('user_id', $el->user_id)
+				->where('user_id', $request->iwt->id)
 				->where('idea_id', $el->id)
 				->exists();
 
