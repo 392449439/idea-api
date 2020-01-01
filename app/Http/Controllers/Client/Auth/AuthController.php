@@ -51,11 +51,36 @@ class AuthController extends Controller
 		$access_token = $data['access_token'];
 		$openid = $data['openid'];
 		$unionid = $data['unionid'];
-
 		$url = "https://api.weixin.qq.com/sns/userinfo?access_token=$access_token&openid=$openid&lang=zh_CN";
+		$wx_userInfo = $this->http($url);
 
-		$userInfo = $this->http($url);
-		return $userInfo;
+		$User = DB::table('user');
+
+		$is = $User->where('unionid', $unionid)->exists();
+
+		if (!$is) {
+			// 不存在，就添加
+			$userData = [
+				"openid" => $openid,
+				"unionid" => $unionid,
+				"wx_head" => $wx_userInfo['headimgurl'],
+				"wx_name" => $wx_userInfo['nickname'],
+				"wx_info" => json_encode($wx_userInfo),
+			];
+			$User = DB::table('user');
+			$User->insert($userData);
+		}
+
+		$userInfo = $User->where('unionid', $unionid)->first();
+
+		$jwt = encrypt(json_encode($userInfo));
+
+		return [
+			"code" => 1,
+			"msg" => "success",
+			"data" => $userInfo,
+			'jwt' => $jwt,
+		];
 	}
 
 
