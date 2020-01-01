@@ -86,7 +86,7 @@ class IdeaController extends Controller
 
 		$result = DB::table('thinking')
 			->where('id', $request->input('id'))
-			->update(['data_state', 0]);
+			->update(['data_state' => 0]);
 
 
 		$result = DB::table('up')
