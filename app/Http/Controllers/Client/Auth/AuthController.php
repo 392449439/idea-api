@@ -65,7 +65,6 @@ class AuthController extends Controller
 				"unionid" => $unionid,
 				"wx_head" => $wx_userInfo['headimgurl'],
 				"wx_name" => $wx_userInfo['nickname'],
-				"wx_info" => json_encode($wx_userInfo),
 			];
 			$User = DB::table('user');
 			$User->insert($userData);
