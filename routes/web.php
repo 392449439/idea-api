@@ -14,7 +14,8 @@
 use Carbon\Carbon;
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+
+    return '想法墙'.$router->app->version();
 });
 
 $router->group([], function () use ($router) {
