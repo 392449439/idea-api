@@ -15,7 +15,7 @@ use Carbon\Carbon;
 
 $router->get('/', function () use ($router) {
 
-    return '想法墙'.$router->app->version();
+    return '想法墙' . $router->app->version();
 });
 
 $router->group([], function () use ($router) {
@@ -54,11 +54,14 @@ $router->group(['namespace' => 'Auth', 'prefix' => 'auth', 'middleware' => 'auth
 
 // ideaH5端api代码
 
-$router->group(['namespace' => 'Admin' , 'prefix' => 'admin'] , function () use ($router) {
-    $router->group(['namespace' => 'Idea' , 'prefix' => 'idea'] , function () use ($router) {
-        $router->post('save','IdeaController@save');
-        $router->post('list','IdeaController@list');
-        $router->post('info','IdeaController@info');
-        $router->post('del','IdeaController@del');
+$router->group(['namespace' => 'Client', 'prefix' => 'client'], function () use ($router) {
+    $router->group(['namespace' => 'Idea', 'prefix' => 'idea'], function () use ($router) {
+        $router->post('save', 'IdeaController@save');
+        $router->post('list', 'IdeaController@list');
+        $router->post('info', 'IdeaController@info');
+        $router->post('del', 'IdeaController@del');
+    });
+    $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($router) {
+        $router->post('login', 'AuthController@login');
     });
 });

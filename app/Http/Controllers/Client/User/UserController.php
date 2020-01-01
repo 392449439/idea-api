@@ -1,6 +1,6 @@
 <?php
 
-namespace  App\Http\Controllers\Admin\User; // @todo: 这里是要生成类的命名空间
+namespace  App\Http\Controllers\Client\User; // @todo: 这里是要生成类的命名空间
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
