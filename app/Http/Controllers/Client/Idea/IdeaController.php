@@ -87,6 +87,11 @@ class IdeaController extends Controller
 			->where('id', $request->input('id'))
 			->delete();
 
+
+		$result = DB::table('up')
+			->where('idea_id', $request->input('id'))
+			->delete();
+
 		return [
 			'code' => $result ? 1 : -1,
 			'msg' => '删除成功',
