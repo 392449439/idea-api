@@ -33,7 +33,7 @@ class IdeaController extends Controller
 			$el->up = DB::table('up')->where('idea_id', $el->id)->count() * 1;
 			// 当前用户是否赞过了
 			$el->isUp = DB::table('up')
-				->where('user_id', $request->iwt->id)
+				->where('user_id', $request->jwt->id)
 				->where('idea_id', $el->id)
 				->exists();
 
