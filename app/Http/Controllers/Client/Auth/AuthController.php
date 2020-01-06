@@ -36,22 +36,30 @@ class AuthController extends Controller
 			'data' => $data
 		]);
 	}
+	public function openid(Request $request)
+	{
+		$code = $request->input('code');
+		$appid = 'wx754474ce7640bd0c';
+		$secret = '810c6117c5d0d61392744fde8e8cd010';
+		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=$appid&secret=$secret&code=$code&grant_type=authorization_code";
+		$data = $this->http($url);
+		return response()->json([
+			'code' => 1,
+			'msg' => '',
+			'data' => $data
+		]);
+	}
 
 	public function login(Request $request)
 	{
 
-		$code = $request->input('code');
-
-		$appid = 'wx754474ce7640bd0c';
-		$secret = '810c6117c5d0d61392744fde8e8cd010';
-		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=$appid&secret=$secret&code=$code&grant_type=authorization_code";
-
-		$data = $this->http($url);
+		$data = $request->toArray();
 
 		$access_token = $data['access_token'];
 		$openid = $data['openid'];
 		$unionid = $data['unionid'];
 		$url = "https://api.weixin.qq.com/sns/userinfo?access_token=$access_token&openid=$openid&lang=zh_CN";
+
 		$wx_userInfo = $this->http($url);
 
 		$User = DB::table('user');
