@@ -59,11 +59,12 @@ $router->group(['namespace' => 'Client', 'prefix' => 'client'], function () use 
         $router->post('save', 'IdeaController@save');
         $router->post('list', 'IdeaController@list');
         $router->post('info', 'IdeaController@info');
-        $router->post('openid', 'IdeaController@openid');
         $router->post('del', 'IdeaController@del');
         $router->post('up', 'IdeaController@up');
     });
     $router->group(['namespace' => 'Auth', 'prefix' => 'auth'], function () use ($router) {
         $router->post('login', 'AuthController@login');
+        $router->post('openid', 'AuthController@openid');
+
     });
 });
